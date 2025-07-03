@@ -7,7 +7,7 @@ const connection = knex({
     host: 'localhost',
     user: 'root',
     port: 3306,
-    password: '17091940@ntonio',
+    password: '801680',
     database: 'ottpel' 
   },
 })

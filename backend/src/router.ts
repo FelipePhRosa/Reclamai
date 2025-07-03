@@ -37,7 +37,7 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/login', authController.login.bind(authController));
-
+router.post('/register', (req, res) => userController.createUser(req, res));
 router.post('/user', userController.createUser.bind(userController));
 router.post('/report/:userId', authenticate, reportControllers.createReport.bind(reportControllers));
 
