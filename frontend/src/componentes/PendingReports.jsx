@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import Sidebar from "./Sidebar"
+import Layout from "./Layout";
 
 export default function PendingReports() {
   const { token } = useContext(AuthContext);
@@ -43,10 +43,8 @@ export default function PendingReports() {
   );
 
   return (
-    <>
-    <div className="flex">
-    <Sidebar/>
-    <main className="flex-1 p-6 max-w-7xl mx-auto">
+    <Layout>
+      <main className="p-6 max-w-7xl mx-auto">
         <h1 className="text-2xl font-bold mb-4">Denúncias Pendentes</h1>
 
         <input
@@ -93,7 +91,6 @@ export default function PendingReports() {
           ))}
         </div>
       </main>
-      </div>
-    </>
+    </Layout>
   );
 }

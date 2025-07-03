@@ -1,4 +1,4 @@
-import Sidebar from "../componentes/Sidebar";
+import Layout from '../componentes/Layout';
 import { Lightbulb, Droplet, CircleHelp, UserMinus, House, CircleDashed } from 'lucide-react';
 import { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
@@ -30,7 +30,7 @@ function Problemas() {
       address: endereco,
       latitude: 0,
       longitude: 0,
-      image: urlImagem
+      image: urlImagem,
     };
 
     try {
@@ -38,7 +38,7 @@ function Problemas() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(novoRelato),
       });
@@ -62,13 +62,11 @@ function Problemas() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <Sidebar />
-
-      <div className="flex-1 overflow-auto p-1">
+    <Layout>
+      <div className="flex justify-center items-start min-h-[80vh] p-4">
         <form
-          className="bg-white p-6 rounded-md shadow-md max-w-2xl mx-auto mt-6 space-y-6"
           onSubmit={handleSubmit}
+          className="bg-white p-6 rounded-md shadow-md max-w-2xl w-full space-y-6"
         >
           <div>
             <h2 className="text-xl font-bold text-gray-800">Reportar Novo Problema</h2>
@@ -162,7 +160,7 @@ function Problemas() {
           </button>
         </form>
       </div>
-    </div>
+    </Layout>
   );
 }
 
