@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 function Report() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [reports, setReports] = useState([  ]);
 
   const toggleSidebar = () => {
@@ -47,7 +47,7 @@ function Report() {
             <div className="flex justify-end items-center border-b pb-3 mb-5 px-4 py-1 rounded-md">
             <Link
             to="/reportar"
-            className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 px-5 py-1.5 rounded-md text-white font-semibold"
+            className="flex items-center gap-1 bg-blue-500 hover:bg-blue-700 px-5 py-1.5 rounded-md text-white font-semibold"
           >
             <Plus size={20} className='animate-spin' />
             Reportar
