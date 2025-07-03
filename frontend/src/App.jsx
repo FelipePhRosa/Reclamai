@@ -6,6 +6,7 @@ import Report from "./componentes/Reportados2";
 import ReportarProblemas from "./paginas/ReportarProblemas";
 import ChatBot from "./paginas/chatBot";
 import Login from "./componentes/Login";
+import Registro from "./componentes/Registro";
 import PendingReports from "./componentes/PendingReports"
 import { AuthProvider } from './context/AuthProvider';
 
@@ -15,6 +16,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/registro" element={<Registro />} />
           <Route path="/login" element={<Login />} />
           <Route path="/pendingreports" element={<PendingReports />} />
           <Route path="/chat" element={<Chat />} />
