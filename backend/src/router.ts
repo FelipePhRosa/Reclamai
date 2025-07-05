@@ -4,11 +4,13 @@ import ReportControllers from "./controllers/reportController";
 import UserController from "./controllers/userController";
 import AuthController from "./controllers/AuthController";
 import { authenticate } from './Services/authMiddleware';
+import ChatbotController from './chatbot';
 
 const router = Router();
 const userController = new UserController();
 const reportControllers = new ReportControllers();
 const authController = new AuthController();
+const chatBotController = new ChatbotController()
 
 router.get('/', async (req, res) => {
     res.json({ 
@@ -35,6 +37,7 @@ router.get('/', async (req, res) => {
         }
     );    
 });
+router.post('/chatbot', chatBotController.pergunta.bind(chatBotController));
 
 router.post('/login', authController.login.bind(authController));
 router.post('/register', (req, res) => userController.createUser(req, res));
