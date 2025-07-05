@@ -1,58 +1,45 @@
 import React, { useState } from "react";
 
-export default function App() {
+export default function Chatbot() {
   const [pergunta, setPergunta] = useState("");
   const [resposta, setResposta] = useState("");
-  const [carregando, setCarregando] = useState(false);
 
-  async function handlePerguntar() {
-    setCarregando(true);
-    setResposta("Carregando...");
-    try {
-      const apiKey = window.env?.GEMINI_API_KEY;
-      const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-      const body = {
-        contents: [
-          { parts: [{ text: pergunta }] }
-        ]
-      };
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-      if (!response.ok) {
-        throw new Error('Erro na API: ' + response.statusText);
-      }
-      const data = await response.json();
-      setResposta(data.candidates[0].content.parts[0].text);
-    } catch (e) {
-      setResposta('Erro: ' + e.message);
-    }
-    setCarregando(false);
+  async function enviarPergunta() {
+    const response = await fetch("/chatbot", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ pergunta })
+    });
+
+    const data = await response.json();
+    setResposta(data.resposta);
   }
 
   return (
-    <div style={{ fontFamily: "Arial, sans-serif", padding: 20 }}>
-      <h2>BotChat Gemini</h2>
+    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-2xl shadow-xl">
+      <h1 className="text-2xl font-bold mb-4 text-center text-gray-800">💬 Chatbot Urbano</h1>
+
       <input
-        id="pergunta"
         type="text"
-        placeholder="Digite sua pergunta"
-        style={{ width: "80%" }}
         value={pergunta}
-        onChange={e => setPergunta(e.target.value)}
-        disabled={carregando}
+        onChange={(e) => setPergunta(e.target.value)}
+        placeholder="Digite sua pergunta..."
+        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
       />
-      <button id="btnPerguntar" onClick={handlePerguntar} disabled={carregando}>
-        Perguntar
-      </button>
-      <div
-        id="resposta"
-        style={{ whiteSpace: "pre-wrap", marginTop: 20 }}
+
+      <button
+        onClick={enviarPergunta}
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"
       >
-        {resposta}
-      </div>
+        Enviar
+      </button>
+
+      {resposta && (
+        <div className="mt-6 p-4 bg-gray-100 rounded-lg border border-gray-200">
+          <h3 className="text-lg font-semibold text-gray-700 mb-2">Resposta:</h3>
+          <p className="text-gray-800 whitespace-pre-line">{resposta}</p>
+        </div>
+      )}
     </div>
   );
 }
