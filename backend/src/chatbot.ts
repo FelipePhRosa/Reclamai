@@ -1,17 +1,8 @@
-import { json, Request, Response } from "express";
+import { Request, Response } from "express";
 import fetch from "node-fetch";
 import ReportService from "./Services/reportService";
 import UserService from "./Services/userService";
 
-type ChatbotResponse = {
-    candidates?: {
-        content?: {
-            parts?: {
-                text?: string;
-            }[];
-        };
-    }[];
-};
 
 const categorias: Record<number, string> = {
     1: "Deslizamentos",
@@ -37,7 +28,6 @@ export default class ChatbotController {
 
         try {
             const reports = await this.reportService.getAllReports();
-            const userName = await (await this.userService.getAllUsers()).filter
 
             if (!reports || reports.length === 0) {
                 res.json({ resposta: "Não existe reistros recentes de denuncias" });
@@ -84,32 +74,51 @@ ${lista}
         }
     }
 
-
-
-
     private async chamarGemini(prompt: string): Promise<string> {
         const apiKey = process.env.GEMINI_API_KEY;
-        const response = await fetch(
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + apiKey,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    contents: [
-                        {
-                            parts: [{ text: prompt }],
-                            role: "user",
-                        },
-                    ],
-                }),
+        console.log("DEBUG: Chave da API:", apiKey ? "Presente" : "Ausente/Indefinida"); // Verifica se a chave foi carregada
+        console.log("DEBUG: Prompt enviado para o Gemini:", prompt); // Registra o prompt completo
+
+        try {
+            const response = await fetch(
+                "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + apiKey,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        contents: [
+                            {
+                                parts: [{ text: prompt }],
+                                role: "user",
+                            },
+                        ],
+                    }),
+                }
+            );
+
+            console.log("DEBUG: Status da Resposta da API Gemini:", response.status, response.statusText);
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error("ERRO: A API Gemini retornou um erro:", errorText);
+                return "Desculpe, a API do Gemini retornou um erro.";
             }
-        );
 
-        const data = (await response.json() as ChatbotResponse);
-        const resposta = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+            const data = await response.json();
+            console.log("DEBUG: Dados Brutos da Resposta da API Gemini:", JSON.stringify(data, null, 2)); // Registra a resposta JSON completa
 
-        return resposta || "Desculpe, não consegui gerar uma resposta.";
+            const resposta = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+            console.log("DEBUG: Resposta Extraída:", resposta); // Registra a parte extraída
+
+            return resposta || "Desculpe, não consegui gerar uma resposta.";
+        } catch (error) {
+            console.error("ERRO: Erro ao chamar a API Gemini:", error);
+            if (error instanceof Error) {
+                console.error(error.stack);
+            }
+            return "Desculpe, ocorreu um erro ao se comunicar com a API do Gemini.";
+        }
     }
 }
