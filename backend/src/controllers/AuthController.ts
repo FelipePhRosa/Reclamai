@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import AuthService from "../Services/authService";
+import AuthService from "../services/authService";
 
 export default class AuthController {
   constructor(private authService = new AuthService()) {}
