@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function Registro() {
+  const [nameUser, setNameUser] = useState('');
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [cpf, setCpf] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState(null);
@@ -17,25 +21,29 @@ export default function Registro() {
     }
 
     try {
-      const res = await fetch('http://localhost:3000/register', 
-        {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              nameUser: email.split('@')[0], // ou peça um campo nome real no formulário
-              email,
-              password_hash: password,
-              }),
-        });
+      const res = await fetch('http://localhost:3000/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nameUser,
+          fullName,
+          email,
+          telefone,
+          cpf,
+          password,  // aqui envia password, não password_hash
+        }),
+      });
 
-
-      if (!res.ok) throw new Error('Erro ao registrar');
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || 'Erro ao registrar');
+      }
 
       const data = await res.json();
       console.log('Registro response:', data);
 
       setError(null);
-      navigate('/login'); // Vai para login após registro bem-sucedido
+      navigate('/login');
     } catch (err) {
       setError(err.message);
     }
@@ -45,6 +53,25 @@ export default function Registro() {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
       <form onSubmit={handleRegistro} className="bg-white p-6 rounded shadow-md w-full max-w-sm">
         <h2 className="text-2xl mb-4 font-bold text-center text-blue-600">Registrar</h2>
+
+        <input
+          type="text"
+          placeholder="Nome de usuário (apelido)"
+          className="border p-2 w-full mb-4 rounded"
+          value={nameUser}
+          onChange={(e) => setNameUser(e.target.value)}
+          required
+        />
+
+        <input
+          type="text"
+          placeholder="Nome completo"
+          className="border p-2 w-full mb-4 rounded"
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
+          required
+        />
+
         <input
           type="email"
           placeholder="Email"
@@ -53,6 +80,25 @@ export default function Registro() {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
+
+        <input
+          type="text"
+          placeholder="Telefone"
+          className="border p-2 w-full mb-4 rounded"
+          value={telefone}
+          onChange={(e) => setTelefone(e.target.value)}
+          required
+        />
+
+        <input
+          type="text"
+          placeholder="CPF"
+          className="border p-2 w-full mb-4 rounded"
+          value={cpf}
+          onChange={(e) => setCpf(e.target.value)}
+          required
+        />
+
         <input
           type="password"
           placeholder="Senha"
@@ -61,6 +107,7 @@ export default function Registro() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
+
         <input
           type="password"
           placeholder="Confirme a senha"
@@ -69,8 +116,13 @@ export default function Registro() {
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
+
         {error && <p className="text-red-500 mb-4">{error}</p>}
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded w-full hover:bg-blue-400">
+
+        <button
+          type="submit"
+          className="bg-blue-500 text-white p-2 rounded w-full hover:bg-blue-400"
+        >
           Registrar
         </button>
       </form>

@@ -3,7 +3,7 @@ import jwt, { Secret, SignOptions } from "jsonwebtoken";
 import connection from "../connection";
 
 interface LoginCredentials {
-  email: string;
+  identifier: string; // pode ser email OU nome de usuário
   password: string;
 }
 
@@ -24,23 +24,27 @@ export default class AuthService {
     return jwt.sign(payload, this.JWT_SECRET, options);
   }
 
-  // Verifica se o token é válido
   verifyToken(token: string): TokenPayload {
     try {
       return jwt.verify(token, this.JWT_SECRET) as TokenPayload;
-
     } catch (error) {
-        
       throw new Error("Invalid Token or Expired.");
     }
   }
 
-  // Autentica um usuário
   async login(credentials: LoginCredentials) {
     try {
-      const user = await connection('users')
-        .where({ email: credentials.email })
+      console.log("Login attempt:", credentials);
+
+      // Normaliza o identificador: tira espaços e coloca tudo em minúsculo
+      const identifierClean = credentials.identifier.trim().toLowerCase();
+
+      const user = await connection("users")
+        .whereRaw("LOWER(TRIM(email)) = ?", [identifierClean])
+        .orWhereRaw("LOWER(TRIM(nameUser)) = ?", [identifierClean])
         .first();
+
+      console.log("User found:", user);
 
       if (!user) {
         throw new Error("Invalid Credentials");
@@ -51,6 +55,8 @@ export default class AuthService {
         user.password_hash
       );
 
+      console.log("Password valid:", isPasswordValid);
+
       if (!isPasswordValid) {
         throw new Error("Invalid Credentials");
       }
@@ -58,7 +64,7 @@ export default class AuthService {
       const token = this.generateToken({
         userId: user.id,
         email: user.email,
-        role: user.role
+        role: user.role,
       });
 
       return {
@@ -69,6 +75,7 @@ export default class AuthService {
         token,
       };
     } catch (error) {
+      console.error("Login error:", error);
       throw error;
     }
   }

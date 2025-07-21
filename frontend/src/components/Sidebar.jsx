@@ -11,21 +11,40 @@ import {
   Bot
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext'; // ajuste o caminho se necessário
 
 function Sidebar({ isSidebarOpen, toggleSidebar }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const items = [
+  const { user } = useContext(AuthContext);
+  const userRole = user?.role;
+
+  // Itens visíveis apenas para admins (roles 1 a 4)
+  const allItemsAdm = [
     { label: 'Home', icon: <House />, path: '/' },
     { label: 'Chat da Comunidade', icon: <MessageSquare />, path: '/chat' },
     { label: 'Mapa de Problemas', icon: <Map />, path: '/mapa' },
     { label: 'Problemas Reportados', icon: <TriangleAlert />, path: '/Report' },
-    { label: 'ChatBot', icon: <Bot/>, path: '/ChatBot'},
+    { label: 'ChatBot', icon: <Bot />, path: '/ChatBot' },
     { label: 'Reportar Problema', icon: <MapPin />, path: '/reportar' },
     { label: 'Denúncias Pendentes', icon: <FileWarning />, path: '/pendingreports' },
-    { label: 'Usuários', icon: <UsersRound />, path: '/login' }
+    { label: 'Usuários', icon: <UsersRound />, path: '/Userlist' }
   ];
+
+  // Itens para usuários comuns (role 5)
+  const allItemsUser = [
+    { label: 'Home', icon: <House />, path: '/' },
+    { label: 'Chat da Comunidade', icon: <MessageSquare />, path: '/chat' },
+    { label: 'Mapa de Problemas', icon: <Map />, path: '/mapa' },
+    { label: 'Problemas Reportados', icon: <TriangleAlert />, path: '/Report' },
+    { label: 'ChatBot', icon: <Bot />, path: '/ChatBot' },
+    { label: 'Reportar Problema', icon: <MapPin />, path: '/reportar' },
+    { label: 'Denúncias Em Analise', icon: <FileWarning />, path: '/Analise' },
+  ];
+
+  const items = userRole >= 1 && userRole <= 4 ? allItemsAdm : allItemsUser;
 
   const handleItemClick = (item) => {
     navigate(item.path);
@@ -50,9 +69,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
           <div
             key={item.label}
             className={`flex items-center space-x-3 p-2 rounded-md cursor-pointer ${
-              location.pathname === item.path
-                ? 'bg-blue-500 text-white'
-                : 'hover:bg-blue-100'
+              location.pathname === item.path ? 'bg-blue-500 text-white' : 'hover:bg-blue-100'
             }`}
             onClick={() => handleItemClick(item)}
           >
@@ -63,13 +80,13 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
       </div>
 
       <div className="space-y-2 pb-4">
-        <div className="flex items-center space-x-3 p-2 rounded-md cursor-pointer">
+        <div className="flex items-center space-x-3 p-2 rounded-md cursor-pointer hover:bg-blue-100">
           <Settings />
           {isSidebarOpen && <span className="text-base font-semibold">Configurações</span>}
         </div>
         <div
-          className="flex items-center space-x-3 p-2 rounded-md cursor-pointer"
-          onClick={toggleSidebar}
+          className="flex items-center space-x-3 p-2 rounded-md cursor-pointer hover:bg-blue-100"
+          onClick={() => navigate('/Ajuda')}
         >
           <CircleHelp />
           {isSidebarOpen && <span className="text-base font-semibold">Ajuda</span>}

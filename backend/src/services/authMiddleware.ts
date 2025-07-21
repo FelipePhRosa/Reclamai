@@ -1,10 +1,11 @@
 // src/middlewares/authMiddleware.ts
 import { Request, Response, NextFunction } from "express";
-import AuthService from "../Services/authService";
+import AuthService from "../services/authService";
 import connection from "../connection";
 import { AuthRequest } from "../types/express";
 
 const authService = new AuthService();
+
 // Middleware para verificar se o usuário está autenticado
 export const authenticate = async (
   req: AuthRequest,
@@ -16,50 +17,52 @@ export const authenticate = async (
 
     if (!authHeader || !authHeader.startsWith("Bearer")) {
       res.status(401).json({ error: "Invalid Token or Expired." });
-      return
+      return;
     }
 
     const token = authHeader.split(" ")[1];
     const decoded = authService.verifyToken(token);
 
-    const user = await connection('users')
+    const user = await connection("users")
       .where({ id: decoded.userId })
       .first();
 
     if (!user) {
       res.status(401).json({ error: "User not found." });
-      return
+      return;
     }
 
     req.user = {
       id: decoded.userId,
       email: decoded.email,
-      role: decoded.role
+      role: decoded.role,
     };
 
     next();
   } catch (error) {
     res.status(401).json({ error: "Invalid Token or Expired." });
-    return
+    return;
   }
 };
 
+// Middleware para verificar se o usuário tem permissão de Owner
 export const isOwner = async (
   req: AuthRequest,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const user = await connection('users')
+    const user = await connection("users")
       .where({ id: req.user?.id })
       .first();
 
-    if (!user?.isOwner) {
-      return res.status(403).json({ error: "Acess Denied: You need been Owner." });
+    // Verifica se o usuário tem role = '1' (Owner)
+    if (user?.role !== "1") {
+      return res.status(403).json({ error: "Access Denied: You need to be Owner." });
     }
 
     next();
   } catch (error) {
-    return res.status(500).json({ error: "Error server to verify Owner." });
+    return res.status(500).json({ error: "Server error verifying Owner." });
   }
 };

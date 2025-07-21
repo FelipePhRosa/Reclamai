@@ -1,10 +1,22 @@
 import Layout from '../components/Layout';
-import { Lightbulb, Droplet, CircleHelp, UserMinus, House, CircleDashed } from 'lucide-react';
+import {
+  Lightbulb,
+  Droplet,
+  CircleHelp,
+  UserMinus,
+  House,
+  CircleDashed,
+} from 'lucide-react';
 import { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 
 function Problemas() {
-  const { token, userId } = useContext(AuthContext);
+  const { token, user } = useContext(AuthContext);
+  const userId = user?.userId; // CORRIGIDO: antes estava user?.id
+
+  console.log('user do contexto:', user);
+  console.log('userId extraído:', userId);
+
   const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
   const [tipoProblema, setTipoProblema] = useState(null);
@@ -23,17 +35,23 @@ function Problemas() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const novoRelato = {
-      reportTitle: titulo,
-      description: descricao,
-      category_id: tipoProblema,
-      address: endereco,
-      latitude: 0,
-      longitude: 0,
-      image: urlImagem,
-    };
+    if (!userId) {
+      alert('Erro: usuário não identificado. Faça login novamente.');
+      return;
+    }
 
     try {
+      const novoRelato = {
+        reportTitle: titulo,
+        user_id: userId,
+        description: descricao,
+        category_id: tipoProblema,
+        address: endereco,
+        latitude: 0,
+        longitude: 0,
+        image: urlImagem,
+      };
+
       const response = await fetch(`http://localhost:3000/report/${userId}`, {
         method: 'POST',
         headers: {
@@ -45,14 +63,15 @@ function Problemas() {
 
       if (response.ok) {
         alert('Denúncia enviada com sucesso!');
+        // Limpar os campos
         setTitulo('');
         setDescricao('');
         setTipoProblema(null);
         setEndereco('');
         setUrlImagem('');
       } else {
-        const erro = await response.json();
-        console.error('Erro ao enviar:', erro);
+        const text = await response.text();
+        console.error('Resposta do servidor (não JSON):', text);
         alert('Erro ao enviar a denúncia');
       }
     } catch (error) {
@@ -84,6 +103,7 @@ function Problemas() {
               onChange={(e) => setTitulo(e.target.value)}
               placeholder="Ex: Buraco na Rua Dom Pedro"
               className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
             />
           </div>
 
@@ -98,6 +118,7 @@ function Problemas() {
               rows={4}
               placeholder="Descreva o problema com o máximo de detalhes possível..."
               className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
             />
           </div>
 
@@ -105,7 +126,6 @@ function Problemas() {
             <h3 className="text-sm font-medium text-gray-700 mb-2">
               Tipo de Problema <span className="text-red-600">*</span>
             </h3>
-
             <div className="grid grid-cols-2 gap-3">
               {tipos.map((item) => (
                 <div
@@ -135,6 +155,7 @@ function Problemas() {
               onChange={(e) => setEndereco(e.target.value)}
               placeholder="Rua, número, bairro, cidade..."
               className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
             />
           </div>
 
@@ -155,6 +176,7 @@ function Problemas() {
           <button
             type="submit"
             className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+            disabled={!tipoProblema}
           >
             Enviar Denúncia
           </button>

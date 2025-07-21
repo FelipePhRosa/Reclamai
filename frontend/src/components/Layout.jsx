@@ -1,12 +1,13 @@
 // src/componentes/Layout.jsx
 import { useState } from 'react';
 import Sidebar from './Sidebar';
+import Navbar from './Navbar'; // ✅ importa o navbar
 
 function Layout({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
     const saved = localStorage.getItem('sidebar');
     return saved === null ? true : JSON.parse(saved);
-  })
+  });
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => {
@@ -24,10 +25,16 @@ function Layout({ children }) {
           isSidebarOpen ? 'ml-60' : 'ml-16'
         }`}
       >
-        <div className="p-4">{children}</div>
+        {/* ✅ Adiciona a Navbar no topo */}
+        <Navbar toggleSidebar={toggleSidebar} />
+
+        <div className="p-4">
+          {children}
+        </div>
       </div>
     </div>
   );
 }
 
 export default Layout;
+

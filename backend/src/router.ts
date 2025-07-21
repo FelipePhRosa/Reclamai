@@ -3,47 +3,47 @@ import { Router } from "express";
 import ReportControllers from "./controllers/reportController";
 import UserController from "./controllers/userController";
 import AuthController from "./controllers/AuthController";
-import { authenticate } from './Services/authMiddleware';
+import { authenticate } from './services/authMiddleware';
 import ChatbotController from './chatbot';
 
 const router = Router();
 const userController = new UserController();
 const reportControllers = new ReportControllers();
 const authController = new AuthController();
-const chatBotController = new ChatbotController()
+const chatBotController = new ChatbotController();
 
 router.get('/', async (req, res) => {
-    res.json({ 
-        message: "Welcome to the Reclamaí API!",
-            routes: {
-
-                users: {
-                    create: "POST /user",
-                    list: "GET /userList",
-                    byId: "GET /userById",
-                    delete: "DELETE /delUser"
-                },
-                reports: {
-                    create: "POST /report/:userId (auth required)",
-                    approve: "POST /approveReport/:reportId (auth required)",
-                    decline: "POST /declineReport/:reportId (auth required)",
-                    list: "GET /reportList",
-                    pending: "GET /reportPending",
-                    declined: "GET /reportDecline (auth required)",
-                    byId: "GET /reportById",
-                    delete: "DELETE /delReport"
-                },
-                auth: {
-                    login: "POST /login"
-                },
-
-            }
-        }
-    );    
+  res.json({ 
+    message: "Welcome to the Reclamaí API!",
+    routes: {
+      users: {
+        create: "POST /user",
+        list: "GET /userList",
+        byId: "GET /userById",
+        delete: "DELETE /delUser"
+      },
+      reports: {
+        create: "POST /report/:userId (auth required)",
+        approve: "POST /approveReport/:reportId (auth required)",
+        decline: "POST /declineReport/:reportId (auth required)",
+        list: "GET /reportList",
+        pending: "GET /reportPending",
+        declined: "GET /reportDecline (auth required)",
+        byId: "GET /reportById",
+        delete: "DELETE /delReport"
+      },
+      auth: {
+        login: "POST /login",
+        register: "POST /register"
+      },
+    }
+  });    
 });
+
 router.post('/chatbot', chatBotController.pergunta.bind(chatBotController));
 router.post('/login', authController.login.bind(authController));
-router.post('/register', (req, res) => userController.createUser(req, res));
+router.post('/register', userController.createUser.bind(userController)); // ⬅ Corrigido aqui
+
 router.post('/user', userController.createUser.bind(userController));
 router.post('/report/:userId', authenticate, reportControllers.createReport.bind(reportControllers));
 
@@ -58,7 +58,6 @@ router.get('/reportPending', reportControllers.getAllReportsPending.bind(reportC
 router.get('/reportDecline', reportControllers.getAllReportsDecline.bind(reportControllers));
 
 router.delete('/delUser', userController.deleteUser.bind(userController));
-router.delete('/delReport', reportControllers.deleteReport.bind(reportControllers))
+router.delete('/delReport', reportControllers.deleteReport.bind(reportControllers));
 
 export default router;
-    

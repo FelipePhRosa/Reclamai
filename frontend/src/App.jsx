@@ -7,9 +7,12 @@ import ReportarProblemas from "./pages/ReportarProblemas";
 import ChatBot from "./pages/ChatBot";
 import Login from "./components/Login";
 import Registro from "./components/Registro";
+import Ajuda from "./pages/Ajuda";
+import Analise from "./components/Analise";
 import PendingReports from "./components/PendingReports"
 import { AuthProvider } from './context/AuthProvider';
 import Layout from "./components/Layout";
+import UserList from "./components/Userlist";
 
 function App() {
   return (
@@ -24,6 +27,9 @@ function App() {
           <Route path="/mapa" element={<Mapa />} />
           <Route path="/Report" element={<Report />} />
           <Route path="/reportar" element={<ReportarProblemas />} />
+          <Route path="/Userlist" element={<UserList/>} />
+           <Route path="/Analise" element={<Analise />} />
+          <Route path="/Ajuda" element={<Ajuda/>}/>
           <Route path="/ChatBot" element={<Layout><ChatBot /></Layout>} />
         </Routes>
       </Router>

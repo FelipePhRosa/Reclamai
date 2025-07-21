@@ -4,36 +4,41 @@ import axios from 'axios';
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token') || null);
-  const [userId, setUserId] = useState(localStorage.getItem('userId') || null);
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem('user')) || null
+  );
 
-  useEffect(() => {
-    if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      localStorage.setItem('token', token);
-    } else {
-      delete axios.defaults.headers.common['Authorization'];
-      localStorage.removeItem('token');
-    }
+useEffect(() => {
+  console.log('🔍 TOKEN:', token);
+  console.log('🔍 USER:', user); // Veja aqui se tem "id", "_id", ou nenhum
 
-    if (userId) {
-      localStorage.setItem('userId', userId);
-    } else {
-      localStorage.removeItem('userId');
-    }
-  }, [token, userId]);
+  if (token) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    localStorage.setItem('token', token);
+  } else {
+    delete axios.defaults.headers.common['Authorization'];
+    localStorage.removeItem('token');
+  }
 
-  const login = (newToken, newUserId) => {
+  if (user) {
+    localStorage.setItem('user', JSON.stringify(user));
+  } else {
+    localStorage.removeItem('user');
+  }
+}, [token, user]);
+
+  const login = (newToken, newUser) => {
     setToken(newToken);
-    setUserId(newUserId);
+    setUser(newUser);
   };
 
   const logout = () => {
     setToken(null);
-    setUserId(null);
+    setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ token, userId, login, logout }}>
+    <AuthContext.Provider value={{ token, user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

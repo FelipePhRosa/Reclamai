@@ -6,14 +6,16 @@ export default class AuthController {
 
   async login(req: Request, res: Response) {
     console.log("Login Request Body:", req.body);
-    const { email, password } = req.body;
+    const { identifier, password } = req.body;
 
     try {
-      const token = await this.authService.login({ email, password });
-        res.status(200).json({ token });
+      const loginResult = await this.authService.login({ identifier, password });
+      // loginResult = { userId, name, email, role, token }
+      
+      res.status(200).json(loginResult);  // envia tudo para o frontend
     } catch (error) {
       console.error(error);
-        res.status(401).json({ error: "Invalid credentials" });
+      res.status(401).json({ error: "Invalid credentials" });
     }
   }
 }
