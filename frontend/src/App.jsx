@@ -13,6 +13,8 @@ import PendingReports from "./components/PendingReports"
 import { AuthProvider } from './context/AuthProvider';
 import Layout from "./components/Layout";
 import UserList from "./components/Userlist";
+import EditarPerfil from "./components/EditarPerfil";
+
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
            <Route path="/Analise" element={<Analise />} />
           <Route path="/Ajuda" element={<Ajuda/>}/>
           <Route path="/ChatBot" element={<Layout><ChatBot /></Layout>} />
+          <Route path="/EditarPerfil" element={<EditarPerfil/>}/>
+          
         </Routes>
       </Router>
     </AuthProvider>

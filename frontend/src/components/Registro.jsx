@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { Undo2 } from 'lucide-react';
 
 export default function Registro() {
   const [nameUser, setNameUser] = useState('');
@@ -52,6 +53,12 @@ export default function Registro() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
       <form onSubmit={handleRegistro} className="bg-white p-6 rounded shadow-md w-full max-w-sm">
+        <div>
+        <Link to ="/login"
+        ><Undo2  className='text-blue-500'/>
+        </Link>
+        </div>
+
         <h2 className="text-2xl mb-4 font-bold text-center text-blue-600">Registrar</h2>
 
         <input

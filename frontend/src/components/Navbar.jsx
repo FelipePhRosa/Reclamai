@@ -18,6 +18,10 @@ export default function Navbar({ toggleSidebar }) {
     navigate('/login');
   };
 
+  const handleProfile = () => {
+    navigate('/EditarPerfil');
+  };
+
   return (
     <div className="w-full flex items-center bg-white shadow pr-0 py-2">
       <div className="ml-auto relative">
@@ -36,12 +40,21 @@ export default function Navbar({ toggleSidebar }) {
             <hr className="my-1" />
 
             {user ? (
-              <button
-                onClick={handleLogout}
-                className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 font-bold hover:text-red-500"
-              >
-                Sair
-              </button>
+              <>
+                <button
+                  onClick={handleProfile}
+                  className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 font-bold text-gray-700 hover:text-blue-500"
+                >
+                  Editar Perfil
+                </button>
+
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 font-bold hover:text-red-500"
+                >
+                  Sair
+                </button>
+              </>
             ) : (
               <button
                 onClick={handleLoginRedirect}
