@@ -4,8 +4,11 @@ import connection from "../connection"
 
 interface UserData{
     nameUser: string,
+    fullName: string,
     email: string,
     password_hash: string,
+    telefone?: string,
+    cpf?: string,
     role: number
 }
 
@@ -15,14 +18,43 @@ export default class UserService {
     }
 
     async getUserById(userId: number){
-        return await connection('users').where({ id: userId }).select('*').first()
+        return await connection('users').where({ id: userId }).select('*').first();
+    }
+
+    async getUserByName(fullName: string){
+        return await connection('users').where({ fullName: fullName }).select('*').first();
     }
 
     async getAllUsers(){
-        return await connection('users').select('*')
+        return await connection('users').select('*');
     }
 
     async deleteUser(userId: number){
-        return await connection('users').where({ id: userId }).delete()
+        return await connection('users').where({ id: userId }).delete();
     }
+
+    async userLiked(userId: number, reportId: number){
+        return await connection('likes').insert({ user_id: userId, report_id: reportId });
+    }
+
+    async userUnlike(userId: number, reportId: number){
+        return await connection('likes').where({ user_id: userId, report_id: reportId }).delete()
+    }
+
+    async getUsersWithReportStats() {
+        return await connection('users as u')
+            .leftJoin('reports as r', 'u.id', 'r.user_id')
+            .select(
+            'u.id',
+            'u.nameUser',
+            'u.email',
+            connection.raw('COUNT(r.id) as totalReports'),
+            connection.raw(`SUM(CASE WHEN r.status = 'aprovado' THEN 1 ELSE 0 END) as aprovados`),
+            connection.raw(`SUM(CASE WHEN r.status = 'rejeitado' THEN 1 ELSE 0 END) as rejeitados`),
+            connection.raw(`SUM(CASE WHEN r.status = 'pendente' THEN 1 ELSE 0 END) as pendentes`)
+            )
+            .groupBy('u.id');
+    }
+
+
 }
