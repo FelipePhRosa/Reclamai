@@ -39,7 +39,10 @@ function ReportCardHome() {
         reports.map((report) => (
           <ReportCard
             key={report.id}
+            id={report.id}
             image={report.image}
+            status={report.status}
+            statusColor="green"
             category={report.category}
             title={report.reportTitle}
             address={report.address}
@@ -47,7 +50,8 @@ function ReportCardHome() {
               addSuffix: true,
               locale: ptBR,
             })}
-            likes={8}
+            likes={report.likes}
+            likedByCurrentUser={report.likedByCurrentUser}
             comments={1}
           />
         ))
