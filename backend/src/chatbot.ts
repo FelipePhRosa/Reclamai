@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import fetch from "node-fetch";
-import ReportService from "./Services/reportService";
-import UserService from "./Services/userService";
+import ReportService from "./services/reportService";
+import UserService from "./services/userService";
 
 
 const categorias: Record<number, string> = {
