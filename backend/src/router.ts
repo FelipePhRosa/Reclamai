@@ -3,33 +3,27 @@ import { Router } from "express";
 import ReportControllers from "./controllers/reportController";
 import UserController from "./controllers/userController";
 import AuthController from "./controllers/AuthController";
-import { authenticate } from './Services/authMiddleware';
-import ChatbotController from './chatbot';
+import { authenticate } from './services/authMiddleware';
 
 const router = Router();
 const userController = new UserController();
 const reportControllers = new ReportControllers();
 const authController = new AuthController();
-const chatBotController = new ChatbotController()
 
 router.get('/', async (req, res) => {
     res.json({ 
-        message: "Welcome to the Reclamaí API!",
+        message: "Welcome to the LocalTED API!",
             routes: {
 
                 users: {
                     create: "POST /user",
                     list: "GET /userList",
                     byId: "GET /userById",
-                    delete: "DELETE /delUser"
+                    delete: "DELETE /delUser (auth required)"
                 },
                 reports: {
-                    create: "POST /report/:userId (auth required)",
-                    approve: "POST /approveReport/:reportId (auth required)",
-                    decline: "POST /declineReport/:reportId (auth required)",
+                    create: "POST /report/:userId",
                     list: "GET /reportList",
-                    pending: "GET /reportPending",
-                    declined: "GET /reportDecline (auth required)",
                     byId: "GET /reportById",
                     delete: "DELETE /delReport"
                 },
@@ -41,11 +35,13 @@ router.get('/', async (req, res) => {
         }
     );    
 });
-router.post('/chatbot', chatBotController.pergunta.bind(chatBotController));
+
 router.post('/login', authController.login.bind(authController));
-router.post('/register', (req, res) => userController.createUser(req, res));
-router.post('/user', userController.createUser.bind(userController));
+
+router.post('/register', userController.createUser.bind(userController));
+
 router.post('/report/:userId', authenticate, reportControllers.createReport.bind(reportControllers));
+router.post('/report/:reportId/like', authenticate, userController.userLiked.bind(userController))
 
 router.post('/approveReport/:reportId', authenticate, reportControllers.approveReport.bind(reportControllers) as RequestHandler);
 router.post('/declineReport/:reportId', authenticate, reportControllers.declineReport.bind(reportControllers) as RequestHandler);
@@ -54,8 +50,10 @@ router.get('/userList', userController.listAllUsers.bind(userController));
 router.get('/userById', userController.listUserById.bind(userController));
 router.get('/reportList', reportControllers.getAllReports.bind(reportControllers));
 router.get('/reportById', reportControllers.getReportById.bind(reportControllers));
+router.get('/report/:id/likes', reportControllers.getAllLikes.bind(reportControllers))
 router.get('/reportPending', reportControllers.getAllReportsPending.bind(reportControllers));
 router.get('/reportDecline', reportControllers.getAllReportsDecline.bind(reportControllers));
+router.get('/likes/:reportId', reportControllers.getAllLikes.bind(reportControllers));
 
 router.delete('/delUser', userController.deleteUser.bind(userController));
 router.delete('/delReport', reportControllers.deleteReport.bind(reportControllers))
