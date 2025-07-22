@@ -59,7 +59,7 @@ export default function PendingReports() {
           <p className="text-gray-600">Nenhuma denúncia pendente encontrada.</p>
         )}
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 ">
           {filteredReports.map((report) => (
             <div key={report.id} className="bg-white shadow-md rounded p-4">
               <img
@@ -68,7 +68,7 @@ export default function PendingReports() {
                 className="h-48 w-full object-cover rounded mb-4"
               />
               <h2 className="text-lg font-semibold">{report.reportTitle}</h2>
-              <p className="text-sm text-gray-600 mt-1">{report.description}</p>
+              <p className="text-sm text-gray-600 mt-1 break-words">{report.description}</p>
               <p className="text-sm text-gray-500 mt-2 italic">
                 Endereço: {report.address}
               </p>
