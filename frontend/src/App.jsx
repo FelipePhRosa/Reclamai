@@ -14,6 +14,7 @@ import { AuthProvider } from './context/AuthProvider';
 import Layout from "./components/Layout";
 import UserList from "./components/Userlist";
 import EditarPerfil from "./components/EditarPerfil";
+import Config from "./components/Config";
 
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
           <Route path="/Ajuda" element={<Ajuda/>}/>
           <Route path="/ChatBot" element={<Layout><ChatBot /></Layout>} />
           <Route path="/EditarPerfil" element={<EditarPerfil/>}/>
+          <Route path="/Config" element={<Config/>}/>
           
         </Routes>
       </Router>

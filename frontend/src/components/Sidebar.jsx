@@ -80,7 +80,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
       </div>
 
       <div className="space-y-2 pb-4">
-        <div className="flex items-center space-x-3 p-2 rounded-md cursor-pointer hover:bg-blue-100">
+        <div className="flex items-center space-x-3 p-2 rounded-md cursor-pointer hover:bg-blue-100" onClick={() => navigate ('/Config')}>
           <Settings />
           {isSidebarOpen && <span className="text-base font-semibold">Configurações</span>}
         </div>
