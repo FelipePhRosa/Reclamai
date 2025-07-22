@@ -1,6 +1,6 @@
 // src/middlewares/authMiddleware.ts
 import { Request, Response, NextFunction } from "express";
-import AuthService from "../Services/authService";
+import AuthService from "./authService";
 import connection from "../connection";
 import { AuthRequest } from "../types/express";
 
