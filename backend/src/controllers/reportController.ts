@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import connection from "../connection";
-import ReportService from "../Services/reportService";
+import ReportService from "../services/reportService";
 import { AuthRequest } from "../types/express";
 
 export default class ReportControllers{
@@ -33,7 +33,6 @@ export default class ReportControllers{
                  longitude,
                  image 
                 });
-                console.log('Body recebido:', req.body);
             res.status(201).json({ message: `${user.nameUser} create report: ${reportTitle}.` });
             return;
 
@@ -51,8 +50,6 @@ export default class ReportControllers{
         console.log("Report ID:", reportId);
         console.log("User ID from token:", userId);
         console.log("User Role: ", req.user?.role);
-
-        
 
         if (isNaN(reportId) || !userId) {
             return res.status(400).json({ error: "Invalid reportId or userId." });
@@ -193,7 +190,7 @@ export default class ReportControllers{
     async getAllReports(req: Request, res: Response) {
         try{
             const AllReports = await this.reportService.getAllReports();
-
+            
             res.status(200).json({ 
                 message: `All Reports Informations: `,
                 data: AllReports
@@ -205,6 +202,28 @@ export default class ReportControllers{
                 message: `Internal Server Error. `, 
                 details: error});
             return;
+        }
+    }
+    
+
+    async getAllLikes(req: Request, res: Response): Promise<void> {
+        const reportId = Number(req.params.reportId)
+
+        if (!reportId || isNaN(reportId)) {
+            res.status(400).json({ message: 'Report ID inválido.' });
+            return;
+        }
+
+        try{
+            const result = await this.reportService.getAllLikes(reportId)
+            const totalLikes = result[0].total;
+
+            res.json({ total: Number(totalLikes)});
+        } catch(error){
+            console.error('Error to search likes. ', error);
+            res.status(500).json({
+                message: `Error Internal Server.`
+            });
         }
     }
 
