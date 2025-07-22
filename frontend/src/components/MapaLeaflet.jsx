@@ -22,7 +22,7 @@ function MapaDenuncia() {
 }
 
   return (
-    <div className="h-screen w-full border rounded-xl ">
+    <div className="h-screen w-full rounded-xl ">
       <MapContainer
         center={[-31.769, -52.341]}
         zoom={15}
