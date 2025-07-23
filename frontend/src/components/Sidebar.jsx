@@ -24,12 +24,18 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
     { label: 'ChatBot', icon: <Bot/>, path: '/ChatBot'},
     { label: 'Reportar Problema', icon: <MapPin />, path: '/reportar' },
     { label: 'Denúncias Pendentes', icon: <FileWarning />, path: '/pendingreports' },
-    { label: 'Usuários', icon: <UsersRound />, path: '/login' }
+    { label: 'Usuários', icon: <UsersRound />, path: '/userList' }
   ];
+
+  const items2 = [
+    { label: 'Configurações', icon: <Settings/>, path: '/settings'},
+    { label: 'Ajuda', icon: <CircleHelp/>, path: '/help'}
+  ]
 
   const handleItemClick = (item) => {
     navigate(item.path);
   };
+  
 
   return (
     <div
@@ -49,7 +55,25 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
         {items.map((item) => (
           <div
             key={item.label}
-            className={`flex items-center space-x-3 p-2 rounded-md cursor-pointer ${
+            className={`flex items-center space-x-3 p-2 rounded-md cursor-pointer 
+              ${
+              location.pathname === item.path
+                ? 'bg-blue-500 text-white'
+                : 'hover:bg-blue-100'
+          }`}
+            onClick={() => handleItemClick(item)}
+          >
+            {item.icon}
+            {isSidebarOpen && <span className="text-base font-semibold">{item.label}</span>}
+          </div>
+        ))}
+      </div>
+
+      <div className="space-y-2 pb-4">
+        {items2.map((item) => (
+          <div
+          key={item.label}
+          className={`flex items-center space-x-3 p-2 rounded-md cursor-pointer ${
               location.pathname === item.path
                 ? 'bg-blue-500 text-white'
                 : 'hover:bg-blue-100'
@@ -60,20 +84,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
             {isSidebarOpen && <span className="text-base font-semibold">{item.label}</span>}
           </div>
         ))}
-      </div>
 
-      <div className="space-y-2 pb-4">
-        <div className="flex items-center space-x-3 p-2 rounded-md cursor-pointer">
-          <Settings />
-          {isSidebarOpen && <span className="text-base font-semibold">Configurações</span>}
-        </div>
-        <div
-          className="flex items-center space-x-3 p-2 rounded-md cursor-pointer"
-          onClick={toggleSidebar}
-        >
-          <CircleHelp />
-          {isSidebarOpen && <span className="text-base font-semibold">Ajuda</span>}
-        </div>
       </div>
     </div>
   );
