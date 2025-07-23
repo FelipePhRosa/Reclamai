@@ -10,13 +10,19 @@ import {
   TrendingUp,
   Plus
 } from 'lucide-react';
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
+
 
 function Home() {
+  const { user } = useContext(AuthContext);
+  const primeiroNome = user?.nameUser ? user.nameUser.split(' ')[0] : 'Usuário';
+
   return (
     <Layout>
       <div className="mt-4 mb-4 ml-1">
         <h1 className="text-3xl font-bold text-gray-800 mb-1">
-          Bem-vindo ao <span className="text-blue-500">Reclamaí</span>
+          Olá, <span className="text-blue-500">{primeiroNome}</span> Bem-vindo ao <span className="text-blue-500">Reclamaí</span>
         </h1>
         <p className="text-gray-500 text-sm font-inter">
           Visualize e gerencie problemas reportados na nossa cidade
@@ -65,7 +71,7 @@ function Home() {
       {/* Mapa e Problemas */}
       <div className="grid grid-cols-2 gap-6 w-full m-2 mx-auto">
         <div className="max-h-[780px] overflow-hidden">
-          <div className=" border-2 rounded-t-xl p-4">
+          <div className="rounded-t-xl p-4">
             <h2 className="font-bold text-xl">Mapa de Problemas</h2>
             <p className="text-gray-500">
               Clique nos marcadores para ver detalhes dos problemas reportados
