@@ -10,7 +10,7 @@ import {
   TrendingUp,
   Plus
 } from 'lucide-react';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 
 
