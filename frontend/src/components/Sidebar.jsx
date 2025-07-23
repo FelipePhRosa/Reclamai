@@ -10,13 +10,18 @@ import {
   FileWarning,
   Bot
 } from 'lucide-react';
+import { useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 function Sidebar({ isSidebarOpen, toggleSidebar }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const items = [
+  const { user } = useContext(AuthContext);
+  const userRole = user?.role;
+
+  const allItemsAdm = [
     { label: 'Home', icon: <House />, path: '/' },
     { label: 'Chat da Comunidade', icon: <MessageSquare />, path: '/chat' },
     { label: 'Mapa de Problemas', icon: <Map />, path: '/mapa' },
@@ -27,10 +32,23 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
     { label: 'Usuários', icon: <UsersRound />, path: '/userList' }
   ];
 
+  
   const items2 = [
     { label: 'Configurações', icon: <Settings/>, path: '/settings'},
     { label: 'Ajuda', icon: <CircleHelp/>, path: '/help'}
   ]
+
+  const allItemsUser = [
+    { label: 'Home', icon: <House />, path: '/' },
+    { label: 'Chat da Comunidade', icon: <MessageSquare />, path: '/chat' },
+    { label: 'Mapa de Problemas', icon: <Map />, path: '/mapa' },
+    { label: 'Problemas Reportados', icon: <TriangleAlert />, path: '/Report' },
+    { label: 'ChatBot', icon: <Bot />, path: '/ChatBot' },
+    { label: 'Reportar Problema', icon: <MapPin />, path: '/reportar' },
+    { label: 'Denúncias Em Analise', icon: <FileWarning />, path: '/Analise' },
+  ];
+  
+  const items = userRole >= 1 && userRole <= 4 ? allItemsAdm : allItemsUser;
 
   const handleItemClick = (item) => {
     navigate(item.path);
