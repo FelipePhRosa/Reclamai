@@ -76,8 +76,8 @@ export default function ReportModal({ isOpen, onClose, lat, lng }) {
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-40">
-      <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-md relative">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[rgba(0,0,0,0.8)]">
+      <div className="bg-white rounded-xl shadow-xl p-6 w-full sm:max-w-[80vw] xl:max-w-md relative">
         <button
           onClick={onClose}
           className="absolute top-2 right-3 text-gray-500 hover:text-red-500 text-2xl font-bold"
