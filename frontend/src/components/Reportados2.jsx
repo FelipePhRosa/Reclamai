@@ -51,10 +51,10 @@
           {reports.map((report) => (
             <ReportCard
               key={report.id}
-              id={report.id} // ← ESSENCIAL para o botão de like funcionar
+              id={report.id} 
               image={report.image}
               status={report.status}
-              statusColor="green" // opcional: ou mapeie baseado no status
+              statusColor="green"
               category={report.category}
               title={report.reportTitle}
               address={report.address}
@@ -63,8 +63,8 @@
                 locale: ptBR,
               })}
               likes={report.likes}
-              likedByCurrentUser={report.likedByCurrentUser} // ← NOVO!
-              comments={1} // placeholder por enquanto
+              likedByCurrentUser={report.likedByCurrentUser}
+              comments={1}
             />
           ))}
         </div>

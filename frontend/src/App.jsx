@@ -10,6 +10,11 @@ import Registro from "./components/Registro";
 import PendingReports from "./components/PendingReports"
 import { AuthProvider } from './context/AuthProvider';
 import Layout from "./components/Layout";
+import UserList from "./components/Userslist";
+import Ajuda from "./pages/Ajuda";
+import Analise from "./components/Analise"
+import Config from "./components/Config"
+import EditarPerfil from "./components/EditarPerfil"
 
 function App() {
   return (
@@ -25,6 +30,11 @@ function App() {
           <Route path="/Report" element={<Report />} />
           <Route path="/reportar" element={<ReportarProblemas />} />
           <Route path="/ChatBot" element={<Layout><ChatBot /></Layout>} />
+          <Route path="/userList" element={<UserList/>}/>
+          <Route path="/Analise" element={<Analise/>}/>
+          <Route path="/help" element={<Ajuda/>}/>
+          <Route path="/settings" element={<Config/>}/>
+          <Route path="/EditarPerfil" element={<EditarPerfil/>}/>
         </Routes>
       </Router>
     </AuthProvider>
