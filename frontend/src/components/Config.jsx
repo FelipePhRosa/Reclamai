@@ -23,7 +23,7 @@ export default function Config() {
 
           <div className='flex flex-col gap-5 py-5'>
             {/* Editar perfil */}
-            <div>
+            <div className='transition-transform transform hover:scale-102 active:scale-95 duration-150'>
               <button onClick={handleProfile} className='flex items-center gap-1 text-left'>
                 <span className='font-semibold text-blue-500 text-xl'>Editar perfil</span>
                 <UserPen className="h-5 w-5" />
@@ -35,7 +35,7 @@ export default function Config() {
             </div>
 
             {/* Histórico */}
-            <div>
+            <div className='transition-transform transform hover:scale-102 active:scale-95 duration-150'>
               <button className='flex items-center gap-1 text-left'>
                 <span className='font-semibold text-blue-500 text-xl'>Histórico</span>
                 <ClipboardList className="h-5 w-5" />
@@ -47,7 +47,7 @@ export default function Config() {
             </div>
 
             {/* Acessibilidade */}
-            <div>
+            <div className='transition-transform transform hover:scale-102 active:scale-95 duration-150'>
               <button className='flex items-center gap-1 text-left'>
                 <span className='font-semibold text-blue-500 text-xl'>Acessibilidade</span>
                 <PersonStanding className="h-5 w-5" />
@@ -59,7 +59,7 @@ export default function Config() {
             </div>
 
             {/* Notificações */}
-            <div>
+            <div className='transition-transform transform hover:scale-102 active:scale-95 duration-150'>
               <button className='flex items-center gap-1 text-left'>
                 <span className='font-semibold text-blue-500 text-xl'>Notificações</span>
                 <BellRing className="h-5 w-5" />
@@ -71,7 +71,7 @@ export default function Config() {
             </div>
 
             {/* Ambiente */}
-            <div>
+            <div className='transition-transform transform hover:scale-102 active:scale-95 duration-150'>
               <button className='flex items-center gap-1 text-left'>
                 <span className='font-semibold text-blue-500 text-xl'>Ambiente</span>
                 <Eclipse className="h-5 w-5" />
