@@ -33,7 +33,7 @@ export default class UserController{
                 password_hash: hashedPassword,
                 role: role ?? 5
             })
-            res.status(201).json({ message: `User: ${fullName}, registered successfully`});
+            res.status(201).json({ message: `User: ${fullName}, registered successfully`, user});
             return;
 
         } catch (error) {
