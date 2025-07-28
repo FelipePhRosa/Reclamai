@@ -50,23 +50,6 @@ function Home() {
       </div>
       ))}
     </div>
-      <div className='flex gap-5 py-3'>
-        <div className='flex bg-gray-200 border border-blue-400 w-20 h-8 rounded-full justify-center hover:bg-blue-200 hover:cursor-pointer gap-1'>
-          <button className='font-semibold'>Todos</button>
-        </div>
-
-        <div className='flex bg-gray-200 border border-blue-400 w-28 h-8 rounded-full justify-center pl-1 hover:bg-blue-200 hover:cursor-pointer gap-1'>
-          <button className='font-semibold'>Reportados</button>
-        </div>
-
-        <div className='flex bg-gray-200 border border-blue-400 w-28 h-8 rounded-full justify-center pl-1 hover:bg-blue-200 hover:cursor-pointer gap-1'>
-          <button className='font-semibold'>Em analise</button>
-        </div>
-
-        <div className='flex bg-gray-200 border border-blue-400 w-24 h-8 rounded-full justify-center pl-1 hover:bg-blue-200 hover:cursor-pointer gap-1'>
-          <button className='font-semibold'>Resolvidos</button>
-        </div>
-      </div>
 
       {/* Mapa e Problemas */}
       <div className="grid grid-cols-2 gap-6 w-full m-2 mx-auto">
@@ -80,7 +63,7 @@ function Home() {
           <MapaDenuncia />
         </div>
 
-        <div className="flex flex-col border-2 border-gray-200 p-8">
+        <div className="hidden md:flex flex-col border-2 border-gray-200 p-8">
           <div className="flex justify-between items-center mb-4 rounded-xl">
             <h2 className="font-bold text-xl">Problemas Reportados</h2>
             <Link
