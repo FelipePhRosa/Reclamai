@@ -1,5 +1,6 @@
 // src/componentes/Layout.jsx
 import { useState } from 'react';
+import Sidebar2 from './Sidebar2';
 import Sidebar from './Sidebar';
 
 function Layout({ children }) {
@@ -17,14 +18,18 @@ function Layout({ children }) {
 
   return (
     <div className="flex min-h-screen bg-gray-100 relative">
-      <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-
+      <div className="hidden md:flex">
+        <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      </div>
       <div
         className={`flex-1 transition-all duration-75 ease-linear ${
-          isSidebarOpen ? 'ml-60' : 'ml-16'
+          isSidebarOpen ? 'ml-0 lg:ml-60' : 'ml-16'
         }`}
       >
-        <div className="p-4">{children}</div>
+        <div className="md:p-4">{children}</div>
+      </div>
+      <div className="fixed bottom-0 left-0 right-0 z-999 md:hidden">
+        <Sidebar2 />
       </div>
     </div>
   );
