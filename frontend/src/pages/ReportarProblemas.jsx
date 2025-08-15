@@ -4,7 +4,8 @@ import { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 
 function Problemas() {
-  const { token, userId } = useContext(AuthContext);
+  const { token, user } = useContext(AuthContext);
+  const userId = user?.userId;
   const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
   const [tipoProblema, setTipoProblema] = useState(null);
