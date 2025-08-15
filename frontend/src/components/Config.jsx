@@ -1,86 +1,77 @@
-import { UserPen, ClipboardList, PersonStanding, BellRing, Eclipse } from 'lucide-react';
+import {
+  UserPen,
+  ClipboardList,
+  PersonStanding,
+  BellRing,
+  Eclipse,
+  Info,
+  HelpCircle,
+  LogOut
+} from 'lucide-react';
 import Layout from "./Layout";
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { ChevronRight } from 'lucide-react';
+import { AuthContext } from '../context/AuthContext';
 
 export default function Config() {
   const navigate = useNavigate();
+  const { logout } = useContext(AuthContext);
 
-  const handleProfile = () => {
-    navigate('/EditarPerfil');
+  const handleLogout = () => {
+    logout();
+    navigate('/login'); // redireciona para tela de login
   };
+
+  const menuItems = [
+    { label: 'Conta', icon: UserPen, path: '/EditarPerfil' },
+    { label: 'Notificações', icon: BellRing, path: '/notificacoes' },
+    { label: 'Aparência', icon: Eclipse, path: '/aparencia' },
+    { label: 'Histórico', icon: ClipboardList, path: '/historico' },
+    { label: 'Ajuda e Suporte', icon: HelpCircle, path: '/suporte' },
+    { label: 'Sobre', icon: Info, path: '/sobre' }
+  ];
 
   return (
     <Layout>
-      <div className='flex justify-center items-center min-h-screen bg-gray-100'>
-        <div className="bg-white w-[450px] p-6 rounded-lg shadow">
-          <div className="text-center">
-            <h1 className="text-blue-500 font-bold text-2xl">Configurações</h1>
-            <p className="text-gray-400 text-sm mt-1">
-              Altere preferências da sua conta, personalize a experiência e mantenha seus dados atualizados.
-            </p>
-          </div>
+      <div className="w-full h-screen">
+        <div className="p-8">
+          <h1 className="font-ios font-medium text-xl text-center">Configurações</h1>
+        </div>
 
-          <div className='flex flex-col gap-5 py-5'>
-            {/* Editar perfil */}
-            <div>
-              <button onClick={handleProfile} className='flex items-center gap-1 text-left'>
-                <span className='font-semibold text-blue-500 text-xl'>Editar perfil</span>
-                <UserPen className="h-5 w-5" />
+        <div className="flex flex-col justify-center items-center w-full max-w-md mx-auto px-8">
+          {menuItems.map((item, index) => (
+            <div key={index} className="w-full">
+              <button
+                onClick={() => item.path && navigate(item.path)}
+                className="flex items-center justify-between w-full py-7 text-left"
+              >
+                <div className="flex items-center">
+                  <item.icon className="w-6 h-6 mr-3" />
+                  <span className="font-semibold text-xl">
+                    {item.label}
+                  </span>
+                </div>
+                <ChevronRight className="text-gray-500" />
               </button>
-              <p className='text-gray-400 text-sm'>
-                Atualize seu nome, e-mail, telefone e outras informações pessoais.
-              </p>
-              <hr className="my-1 border-gray-300" />
+              <hr className="opacity-30 border-gray-400" />
             </div>
+          ))}
 
-            {/* Histórico */}
-            <div>
-              <button className='flex items-center gap-1 text-left'>
-                <span className='font-semibold text-blue-500 text-xl'>Histórico</span>
-                <ClipboardList className="h-5 w-5" />
-              </button>
-              <p className='text-gray-400 text-sm'>
-                Visualize registros de atividades recentes e alterações feitas na sua conta.
-              </p>
-              <hr className="my-1 border-gray-300" />
-            </div>
-
-            {/* Acessibilidade */}
-            <div>
-              <button className='flex items-center gap-1 text-left'>
-                <span className='font-semibold text-blue-500 text-xl'>Acessibilidade</span>
-                <PersonStanding className="h-5 w-5" />
-              </button>
-              <p className='text-gray-400 text-sm'>
-                Ajuste opções para tornar a navegação mais acessível de acordo com suas necessidades.
-              </p>
-              <hr className="my-1 border-gray-300" />
-            </div>
-
-            {/* Notificações */}
-            <div>
-              <button className='flex items-center gap-1 text-left'>
-                <span className='font-semibold text-blue-500 text-xl'>Notificações</span>
-                <BellRing className="h-5 w-5" />
-              </button>
-              <p className='text-gray-400 text-sm'>
-                Defina como e quando deseja ser notificado sobre atualizações importantes.
-              </p>
-              <hr className="my-1 border-gray-300" />
-            </div>
-
-            {/* Ambiente */}
-            <div>
-              <button className='flex items-center gap-1 text-left'>
-                <span className='font-semibold text-blue-500 text-xl'>Ambiente</span>
-                <Eclipse className="h-5 w-5" />
-              </button>
-              <p className='text-gray-400 text-sm'>
-                Personalize o tema visual, idioma e outras preferências do sistema.
-              </p>
-              <hr className="my-1 border-gray-300" />
-            </div>
+          {/* Botão de Logout */}
+          <div className="w-full mt-13 flex justify-center items-center">
+            <button
+              onClick={handleLogout}
+              className="flex items-center justify-center w-30 h-10 py-7 bg-red-500 rounded-xl text-left"
+            >
+              <div className="flex items-center">
+                <LogOut className="w-6 h-6 mr-3 text-white" />
+                <span className="font-semibold text-xl text-white">
+                  Sair
+                </span>
+              </div>
+            </button>
+            
           </div>
         </div>
       </div>
