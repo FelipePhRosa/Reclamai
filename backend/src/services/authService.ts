@@ -11,6 +11,7 @@ interface TokenPayload {
   userId: number;
   email: string;
   role: number;
+  avatar_url: string;
 }
 
 export default class AuthService {
@@ -65,6 +66,7 @@ export default class AuthService {
         userId: user.id,
         email: user.email,
         role: user.role,
+        avatar_url: user.avatar_url
       });
 
       return {
@@ -72,6 +74,7 @@ export default class AuthService {
         name: user.nameUser,
         email: user.email,
         role: user.role,
+        avatar_url: user.avatar_url,
         token,
       };
     } catch (error) {

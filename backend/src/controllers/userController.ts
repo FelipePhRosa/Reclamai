@@ -10,7 +10,7 @@ export default class UserController{
     
     async createUser(req: Request, res: Response) {
         try{
-            const { nameUser, fullName, email, password, role } = req.body
+            const { nameUser, fullName, email, password, role, avatar_url } = req.body
 
             const hashedPassword = await bcrypt.hash(password, 10);
             if (!nameUser || !fullName || !email || !password) {
@@ -31,7 +31,8 @@ export default class UserController{
                 fullName,
                 email,
                 password_hash: hashedPassword,
-                role: role ?? 5
+                role: role ?? 5,
+                avatar_url
             })
             res.status(201).json({ message: `User: ${fullName}, registered successfully`});
             return;

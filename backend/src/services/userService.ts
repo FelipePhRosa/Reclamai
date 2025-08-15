@@ -9,7 +9,8 @@ interface UserData{
     password_hash: string,
     telefone?: string,
     cpf?: string,
-    role: number
+    role: number,
+    avatar_url: string
 }
 
 export default class UserService {
