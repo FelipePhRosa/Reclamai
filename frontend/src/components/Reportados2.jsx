@@ -37,7 +37,7 @@
         {/* Se quiser manter o sidebar toggle dentro do Layout, remova o Sidebar daqui */}
         <div className="max-w-3xl mx-auto pt-5">
           {/* Header */}
-          <div className="flex justify-end items-center border-b pb-3 mb-5 px-4 py-1 rounded-md">
+          <div className="flex justify-end items-center pb-3 mb-5 px-4 py-1 rounded-md">
             <Link
               to="/reportar"
               className="flex items-center gap-1 bg-blue-500 hover:bg-blue-700 px-5 py-1.5 rounded-md text-white font-semibold"
