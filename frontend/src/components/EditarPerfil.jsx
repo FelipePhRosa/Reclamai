@@ -1,7 +1,7 @@
-import Layout from "../../../../Reclamai-main/frontend/src/components/Layout";
+import Layout from "./Layout";
 import { Camera, Pencil } from "lucide-react";
 import { useContext } from "react";
-import { AuthContext } from "../../../../Reclamai-main/frontend/src/context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 
 export default function EditarPerfil() {
   const { user } = useContext(AuthContext);
@@ -31,7 +31,7 @@ return (
 
           <div className="relative w-32 h-32">
             <img
-              src={user?.fotoPerfil || "/default-avatar.png"}
+              src={user?.avatar_url || "/default-avatar.png"}
               alt=""
               className="w-full h-full rounded-full object-cover border border-gray-400 bg-gray-100"
             />
