@@ -25,14 +25,13 @@ async function handleLogin(e) {
 
     const data = await res.json();
     console.log('Login response:', data);
-
-            // Aqui, chama login passando token e objeto user completo
-        login(data.token, {
-          userId: data.userId,
-          nameUser: data.name,  // aqui 'name', conforme backend
-          email: data.email,
-          role: data.role
-        });
+    login(data.token, {
+      userId: data.userId,
+      nameUser: data.name,
+      email: data.email,
+      role: data.role,
+      avatar_url: data.avatar_url
+    });
 
 
     setError(null);
