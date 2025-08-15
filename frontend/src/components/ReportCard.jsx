@@ -16,7 +16,7 @@ function ReportCard({
   likedByCurrentUser,
 }) {
   return (
-    <div className="flex items-center border rounded-md shadow-sm overflow-hidden bg-white mt-5 min-h-[150px] pl-5">
+    <div className="flex items-center rounded-md shadow-sm overflow-hidden bg-white mt-5 min-h-[150px] pl-5">
       {/* Imagem */}
       <img src={image} alt={title} className="h-32 w-32 object-cover rounded-xl" />
 
@@ -26,7 +26,7 @@ function ReportCard({
           {/* Status e Categoria */}
           <div className="flex items-center gap-2 mb-2">
             <span
-              className={`bg-${statusColor}-100 text-${statusColor}-600 text-xs font-semibold py-0.5 rounded-full`}
+              className={`bg-${statusColor}-100 text-${statusColor}-600 text-xs font-semibold p-2 rounded-full`}
             >
               {status}
             </span>
