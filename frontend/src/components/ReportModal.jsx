@@ -3,12 +3,14 @@ import { Lightbulb, Droplet, CircleHelp, UserMinus, House, CircleDashed } from '
 import { AuthContext } from '../context/AuthContext';
 
 export default function ReportModal({ isOpen, onClose, lat, lng }) {
-  const { token, userId } = useContext(AuthContext);
+  const { token, user } = useContext(AuthContext);
+  const userId = user?.userId
   const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
   const [tipoProblema, setTipoProblema] = useState(null);
   const [endereco, setEndereco] = useState('');
   const [imagens, setImagens] = useState([]);
+  const [urlImagem, setUrlImagem] = useState('');
 
   const tipos = [
     { id: 2, icon: <Droplet />, label: 'Alagamento' },
@@ -44,7 +46,7 @@ export default function ReportModal({ isOpen, onClose, lat, lng }) {
       address: endereco,
       latitude: lat,
       longitude: lng,
-      image: imagens.map(img => img.file.name), 
+      image: urlImagem, 
     };
 
     try {
@@ -95,35 +97,19 @@ export default function ReportModal({ isOpen, onClose, lat, lng }) {
             className='border border-gray-300 rounded p-2 resize-none h-18'
           />
 
-          <label className='text-sm font-medium'>Fotos:</label>
-          <input 
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={handleImagemChange}
-            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:border-0 file:rounded-md file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-          />
-
-          {imagens.length > 0 && (
-            <div className="grid grid-cols-3 gap-2 mt-2">
-              {imagens.map((img, index) => (
-                <div key={index} className="relative">
-                  <img
-                    src={img.preview}
-                    alt={`preview-${index}`}
-                    className="w-full h-24 object-cover rounded shadow"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => removerImagem(index)}
-                    className="absolute top-0 right-0 bg-black bg-opacity-50 text-white rounded-full px-2 text-xs hover:bg-opacity-80"
-                  >
-                    ×
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
+          <div>
+            <label htmlFor="imagem" className="block text-sm font-medium text-gray-700 mb-1">
+              URL da Imagem
+            </label>
+            <input
+              type="url"
+              id="imagem"
+              value={urlImagem}
+              onChange={(e) => setUrlImagem(e.target.value)}
+              placeholder="https://exemplo.com/imagem.jpg"
+              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
 
           <label className="text-sm font-medium">Descrição:</label>
           <textarea
