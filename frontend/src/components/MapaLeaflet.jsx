@@ -5,6 +5,7 @@ import 'leaflet.awesome-markers/dist/leaflet.awesome-markers.css';
 import L from 'leaflet';
 import 'leaflet.awesome-markers';
 import ReportModal from './ReportModal';
+import { categoryIcons } from '../icons/CategoryIcons';
 
 function MapaDenuncia() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -25,19 +26,6 @@ function MapaDenuncia() {
 
     fetchReports();
   }, []);
-
-  // criar ícones AwesomeMarkers baseados na categoria
-  const categoryIcons = {
-    1: L.AwesomeMarkers.icon({ icon: 'exclamation-triangle', markerColor: 'orange', prefix: 'fa' }), // Deslizamentos
-    2: L.AwesomeMarkers.icon({ icon: 'tint', markerColor: 'blue', prefix: 'fa' }), // Alagamentos
-    3: L.AwesomeMarkers.icon({ icon: 'gun', markerColor: 'red', prefix: 'fa' }), // Assalto
-    4: L.AwesomeMarkers.icon({ icon: 'fire', markerColor: 'red', prefix: 'fa' }), // Incêndio
-    5: L.AwesomeMarkers.icon({ icon: 'lightbulb', markerColor: 'yellow', prefix: 'fa' }), // Iluminação
-    6: L.AwesomeMarkers.icon({ icon: 'road', markerColor: 'gray', prefix: 'fa' }), // Buracos
-    7: L.AwesomeMarkers.icon({ icon: 'building', markerColor: 'darkred', prefix: 'fa' }), // Desabamentos
-    8: L.AwesomeMarkers.icon({ icon: 'question', markerColor: 'green', prefix: 'fa' }), // Outros
-    default: L.AwesomeMarkers.icon({ icon: 'map-marker', markerColor: 'cadetblue', prefix: 'fa' })
-  };
 
   function handleMapClick(lat, lng) {
     setCoords({ lat, lng });
@@ -60,7 +48,7 @@ function MapaDenuncia() {
         zoom={15}
         className="h-full w-full rounded-xl"
         scrollWheelZoom={false}
-        zoomControl={false}
+        zoomControl={true}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
