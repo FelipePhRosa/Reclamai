@@ -8,9 +8,22 @@ import ReportModal from './ReportModal';
 import { categoryIcons } from '../icons/CategoryIcons';
 
 function MapaDenuncia() {
+    const [darkMode, setDarkMode] = useState(
+    JSON.parse(localStorage.getItem('darkMode')) || false
+  );
   const [modalOpen, setModalOpen] = useState(false);
   const [coords, setCoords] = useState(null);
   const [reports, setReports] = useState([]);
+
+    useEffect(() => {
+    // Atualiza sempre que o localStorage mudar
+    const interval = setInterval(() => {
+      const saved = JSON.parse(localStorage.getItem('darkMode'));
+      setDarkMode(saved);
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -50,7 +63,14 @@ function MapaDenuncia() {
         scrollWheelZoom={false}
         zoomControl={true}
       >
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <TileLayer
+          url={
+            darkMode
+              ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+              : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          }
+          className='transition-all duration-75'
+      />
 
         {reports.map((report, idx) => {
           const lat = parseFloat(report.latitude);
