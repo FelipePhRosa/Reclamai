@@ -17,7 +17,7 @@ function Layout({ children }) {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-100 relative">
+    <div className="flex min-h-screen bg-gray-100 relative dark:bg-gray-900">
       <div className="hidden md:flex">
         <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       </div>
