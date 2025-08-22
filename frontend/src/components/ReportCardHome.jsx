@@ -27,11 +27,11 @@ function ReportCardHome() {
     }, []);
 
   return (
-    <div className="max-w-full max-h-[660px] overflow-y-auto p-2 bg-transparent">
+    <div className="max-w-full max-h-[715px] bg-transparent overflow-y-scroll scrollbar-none scrollbar-thumb-gray-600 scrollbar-track-transparent">
         {/* Cards */}
         {reports.length === 0 ? (
-        <div className="flex justify-center">
-          <h1 className='text-center text-3xl mt-10'>
+        <div className="flex justify-center items-center">
+          <h1 className='text-center text-5xl mt-50 dark:text-gray-200 font-black w-70'>
             Não há registros disponíveis.
           </h1>
         </div>
