@@ -9,13 +9,34 @@ import {
   House,
   FileWarning,
   Bot,
-  LogOut
+  LogOut,
+  Sun,
+  Moon
 } from 'lucide-react';
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 function Sidebar({ isSidebarOpen, toggleSidebar }) {
+  const [darkMode, setDarkMode] = useState(() => {
+    const saved = localStorage.getItem('darkMode');
+    return saved ? JSON.parse(saved) : document.documentElement.classList.contains('dark');
+  });
+  
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    // atualiza a preferência de tema no localstorage
+    localStorage.setItem('darkMode', JSON.stringify(darkMode));
+  }, [darkMode]);
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -33,12 +54,11 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
     { label: 'Usuários', icon: <UsersRound />, path: '/userList' }
   ];
 
-  
   const items2 = [
     { label: 'Configurações', icon: <Settings/>, path: '/settings'},
     { label: 'Ajuda', icon: <CircleHelp/>, path: '/help'},
     { label: 'Sair', icon: <LogOut/>, path:'/login', isLogout: true}
-  ]
+  ];
 
   const allItemsUser = [
     { label: 'Home', icon: <House />, path: '/' },
@@ -54,16 +74,15 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
   const handleItemClick = (item) => {
     if (item.isLogout) {
       logout();
-      navigate('/login')
-    }
-    else {
+      navigate('/login');
+    } else {
       navigate(item.path);
     }
   };
   
   return (
     <div
-      className={`fixed top-0 left-0 h-full z-999 flex flex-col bg-white text-black space-y-2 shadow-md ${
+      className={`fixed top-0 left-0 h-full z-999 flex flex-col bg-white dark:bg-gray-900 dark:shadow-2xl text-black dark:text-white space-y-2 shadow-md transition-colors duration-200 ${
         isSidebarOpen ? 'w-60 p-4' : 'w-16 p-2'
       }`}
     >
@@ -76,17 +95,15 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
       </div>
 
       <div className='flex-1 flex flex-col justify-start'>
-
-        <div className="space-y-2 border-b pb-4">
+        <div className="space-y-2 border-b border-gray-200 dark:border-gray-700 pb-4">
           {items.map((item) => (
             <div
               key={item.label}
-              className={`flex items-center space-x-3 p-2 rounded-md cursor-pointer 
-                ${
+              className={`flex items-center space-x-3 p-2 rounded-md cursor-pointer transition-colors duration-150 ${
                 location.pathname === item.path
                   ? 'bg-blue-500 text-white'
-                  : 'hover:bg-blue-100'
-            }`}
+                  : 'hover:bg-blue-100 dark:hover:bg-gray-800'
+              }`}
               onClick={() => handleItemClick(item)}
             >
               {item.icon}
@@ -98,11 +115,11 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
         <div className="flex flex-col space-y-2 pb-4 mt-5">
           {items2.map((item) => (
             <div
-            key={item.label}
-            className={`flex items-center space-x-3 p-2 rounded-md cursor-pointer ${
+              key={item.label}
+              className={`flex items-center space-x-3 p-2 rounded-md cursor-pointer transition-colors duration-150 ${
                 location.pathname === item.path
                   ? 'bg-blue-500 text-white'
-                  : 'hover:bg-blue-100'
+                  : 'hover:bg-blue-100 dark:hover:bg-gray-800'
               }`}
               onClick={() => handleItemClick(item)}
             >
@@ -112,8 +129,9 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
           ))}
         </div>
       </div>
+
       <Link to='/editarperfil'>
-        <div className="mt-auto flex gap-2 p-2 bg-gray-200 rounded-xl">
+        <div className="mt-auto flex gap-2 p-2 bg-gray-200 dark:bg-gray-800 rounded-xl transition-colors duration-200">
           <img
             src={
               user?.avatar_url ||
@@ -124,12 +142,26 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
           />
           {isSidebarOpen && (
             <div className="flex flex-col items-start justify-center ml-2">
-              <h2 className="text-sm font-semibold text-black">{user?.nameUser}</h2>
-              <h3 className="text-sm text-gray-600 group-hover:text-white duration-300">{user?.email}</h3>
+              <h2 className="text-sm font-semibold text-black dark:text-white">{user?.nameUser}</h2>
+              <h3 className="text-sm text-gray-600 dark:text-gray-400 group-hover:text-white duration-300">{user?.email}</h3>
             </div>
           )}
         </div>
       </Link>
+
+      <div className='flex justify-center items-center w-full h-10 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm transition-colors duration-200'>
+        <button 
+          onClick={toggleDarkMode}
+          className="flex items-center justify-center w-full h-full rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-150 cursor-pointer"
+          title={darkMode ? 'Modo Claro' : 'Modo Escuro'}
+        >
+          {darkMode ? (
+            <Sun className="w-5 h-5 text-yellow-500" />
+          ) : (
+            <Moon className="w-5 h-5 text-gray-600" />
+          )}
+        </button>
+      </div>
     </div>
   );
 }
