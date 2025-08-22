@@ -21,10 +21,10 @@ function Home() {
   return (
     <Layout>
       <div className="mt-4 mb-4 ml-1">
-        <h1 className="text-3xl font-bold text-gray-800 mb-1">
+        <h1 className="text-3xl font-bold text-gray-800 mb-1 dark:text-gray-300">
           Olá, <span className="text-blue-500">{primeiroNome}</span> Bem-vindo ao <span className="text-blue-500">Reclamaí</span>
         </h1>
-        <p className="text-gray-500 text-sm font-inter">
+        <p className="text-gray-500 text-sm font-inter dark:text-gray-400">
           Visualize e gerencie problemas reportados na nossa cidade
         </p>
       </div>
@@ -34,15 +34,13 @@ function Home() {
       {[
         { title: 'Total', value: 6, color: 'blue', Icon: ChartColumn },
         { title: 'Reportados', value: 3, color: 'red', Icon: TriangleAlert },
-        { title: 'Em análise', value: 2, color: 'yellow', Icon: Clock },
         { title: 'Resolvidos', value: 1, color: 'green', Icon: CircleCheckBig },
-        { title: 'Votos', value: 73, color: 'purple', Icon: TrendingUp }
       ].map(({ title, value, color, Icon }) => (
         <div
           key={title}
-          className="flex justify-between items-center bg-white p-4 rounded-md border-2 border-gray-200"
+          className="flex justify-between items-center bg-white p-4 rounded-md border-2 border-gray-200 dark:bg-gray-700 dark:border-gray-700"
         >
-          <div>
+          <div className='dark:text-gray-200'>
             <h2 className="font-bold">{title}</h2>
             <p className={`font-bold text-${color}-500`}>{value}</p>
           </div>
@@ -55,17 +53,17 @@ function Home() {
       <div className="grid grid-cols-2 gap-6 w-full m-2 mx-auto">
         <div className="max-h-[780px] overflow-hidden">
           <div className="rounded-t-xl p-4">
-            <h2 className="font-bold text-xl">Mapa de Problemas</h2>
-            <p className="text-gray-500">
+            <h2 className="font-bold text-xl dark:text-gray-200">Mapa de Problemas</h2>
+            <p className="text-gray-500 dark:text-gray-200">
               Clique nos marcadores para ver detalhes dos problemas reportados
             </p>
           </div>
           <MapaDenuncia />
         </div>
 
-        <div className="hidden md:flex flex-col border-1 rounded-xl border-gray-200 p-8">
+        <div className="hidden md:flex flex-col rounded-xl p-8">
           <div className="flex justify-between items-center rounded-xl">
-            <h2 className="font-bold text-xl">Problemas Reportados</h2>
+            <h2 className="font-bold text-xl dark:text-gray-200">Problemas Reportados</h2>
             <Link
               to="/reportar"
               className="flex items-center gap-1 bg-blue-500 hover:bg-blue-700 px-5 py-1.5 rounded-md text-white font-semibold"
