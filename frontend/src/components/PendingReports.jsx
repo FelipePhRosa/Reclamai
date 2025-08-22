@@ -45,43 +45,43 @@ export default function PendingReports() {
   return (
     <Layout>
       <main className="p-6 max-w-7xl mx-auto">
-        <h1 className="text-2xl font-bold mb-4">Denúncias Pendentes</h1>
+        <h1 className="text-2xl font-bold mb-4 dark:text-white">Denúncias Pendentes</h1>
 
         <input
           type="text"
           placeholder="Filtrar por título..."
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          className="border p-2 mb-6 w-full md:w-1/2 rounded"
+          className="border p-2 mb-6 w-full md:w-1/2 rounded dark:placeholder-gray-400 dark:border-gray-400"
         />
 
         {filteredReports.length === 0 && (
-          <p className="text-gray-600">Nenhuma denúncia pendente encontrada.</p>
+          <p className="text-gray-600 dark:text-gray-200">Nenhuma denúncia pendente encontrada.</p>
         )}
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 ">
           {filteredReports.map((report) => (
-            <div key={report.id} className="bg-white shadow-md rounded p-4">
+            <div key={report.id} className="bg-white shadow-md rounded p-4 dark:bg-gray-800">
               <img
                 src={report.image}
                 alt={report.reportTitle}
                 className="h-48 w-full object-cover rounded mb-4"
               />
-              <h2 className="text-lg font-semibold">{report.reportTitle}</h2>
-              <p className="text-sm text-gray-600 mt-1 break-words">{report.description}</p>
-              <p className="text-sm text-gray-500 mt-2 italic">
+              <h2 className="text-lg font-semibold dark:text-white">{report.reportTitle}</h2>
+              <p className="text-sm text-gray-600 mt-1 break-words dark:text-white">{report.description}</p>
+              <p className="text-sm text-gray-500 mt-2 italic dark:text-white">
                 Endereço: {report.address}
               </p>
 
               <div className="flex gap-3 mt-4">
                 <button
-                  className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+                  className="bg-green-600 font-semibold text-white px-3 py-1 rounded hover:bg-green-700"
                   onClick={() => handleAction(report.id, "approve")}
                 >
                   Aprovar
                 </button>
                 <button
-                  className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+                  className="bg-red-600 text-white font-semibold px-3 py-1 rounded hover:bg-red-700"
                   onClick={() => handleAction(report.id, "decline")}
                 >
                   Rejeitar
