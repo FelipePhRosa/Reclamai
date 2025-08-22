@@ -35,7 +35,7 @@
     return (
       <Layout>
         {/* Se quiser manter o sidebar toggle dentro do Layout, remova o Sidebar daqui */}
-        <div className="max-w-3xl mx-auto pt-5">
+        <div className="mx-auto pt-5">
           {/* Header */}
           <div className="flex justify-end items-center pb-3 mb-5 px-4 py-1 rounded-md">
             <Link
@@ -48,25 +48,27 @@
           </div>
 
           {/* Cards */}
-          {reports.map((report) => (
-            <ReportCard
-              key={report.id}
-              id={report.id} 
-              image={report.image}
-              status={report.status}
-              statusColor="green"
-              category={report.category}
-              title={report.reportTitle}
-              address={report.address}
-              time={formatDistanceToNow(new Date(report.updated_at), {
-                addSuffix: true,
-                locale: ptBR,
-              })}
-              likes={report.likes}
-              likedByCurrentUser={report.likedByCurrentUser}
-              comments={1}
-            />
-          ))}
+          <div className='xl:grid grid-cols-3 gap-4'>
+            {reports.map((report) => (
+              <ReportCard
+                key={report.id}
+                id={report.id} 
+                image={report.image}
+                status={report.status}
+                statusColor="green"
+                category={report.category}
+                title={report.reportTitle}
+                address={report.address}
+                time={formatDistanceToNow(new Date(report.updated_at), {
+                  addSuffix: true,
+                  locale: ptBR,
+                })}
+                likes={report.likes}
+                likedByCurrentUser={report.likedByCurrentUser}
+                comments={1}
+              />
+            ))}
+          </div>
         </div>
       </Layout>
     );
