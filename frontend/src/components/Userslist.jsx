@@ -42,26 +42,26 @@ export default function UserList(){
         <>
             <Layout>
                 <div className="p-6 max-w-7xl mx-auto">
-                    <h1 className="font-[montserrat] font-semibold text-3xl">
+                    <h1 className="font-[montserrat] font-semibold text-3xl dark:text-blue-500">
                         Usuários Cadastrados
                     </h1>
-                    <div className="w-56 h-1 lg:w-[33vh] rounded-xl bg-blue-500 my-4" />
+                    <div className="w-56 h-1 lg:w-[33vh] rounded-xl bg-blue-500 my-4 dark:bg-gray-200" />
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {users.map((user, index) => (
                         <div
                         key={index}
-                        className="flex flex-col bg-white gap-2 p-4 rounded-xl shadow-md border border-gray-200">
-                            <UsersRound className="mb-2"/>
-                            <p className="font-semibold text-md">ID: <span className="font-normal">{user.id}</span></p>
-                            <p className="font-semibold text-md">Nome: <span className="font-normal">{user.nameUser}</span></p>
-                            <p className="font-semibold text-md">Email: <span className="font-normal">{user.email}</span></p>
-                            <p className="font-semibold text-md">Criado: <span className="font-normal"> {formatDate(user.created_at)}</span></p>
-                            <p className="font-semibold text-md">Cargo: <span className="font-normal">{user.role}</span></p>
-                            <p className="font-semibold text-md">Último Login: <span className="font-normal">{formatDate(user.last_login)}</span></p>
-                            <p className="font-semibold text-md">Total de denúncias: <span className="font-normal">{user.totalReports}</span></p>
-                            <p className="font-semibold text-md">Aprovadas: <span className="text-green-600">{user.aprovados}</span></p>
-                            <p className="font-semibold text-md">Rejeitadas: <span className="text-red-600">{user.rejeitados}</span></p>
-                            <p className="font-semibold text-md">Pendentes: <span className="text-yellow-600">{user.pendentes}</span></p>
+                        className="flex flex-col bg-white gap-2 p-4 rounded-xl shadow-md border border-gray-200 dark:bg-gray-800 dark:border-gray-400">
+                            <UsersRound className="mb-2 dark:text-white"/>
+                            <p className="font-semibold text-md dark:text-gray-200">ID: <span className="font-normal">{user.id}</span></p>
+                            <p className="font-semibold text-md dark:text-gray-200">Nome: <span className="font-normal">{user.nameUser}</span></p>
+                            <p className="font-semibold text-md dark:text-gray-200">Email: <span className="font-normal">{user.email}</span></p>
+                            <p className="font-semibold text-md dark:text-gray-200">Criado: <span className="font-normal"> {formatDate(user.created_at)}</span></p>
+                            <p className="font-semibold text-md dark:text-gray-200">Cargo: <span className="font-normal">{user.role}</span></p>
+                            <p className="font-semibold text-md dark:text-gray-200">Último Login: <span className="font-normal">{formatDate(user.last_login)}</span></p>
+                            <p className="font-semibold text-md dark:text-gray-200">Total de denúncias: <span className="font-normal">{user.totalReports}</span></p>
+                            <p className="font-semibold text-md dark:text-gray-200">Aprovadas: <span className="text-green-600">{user.aprovados}</span></p>
+                            <p className="font-semibold text-md dark:text-gray-200">Rejeitadas: <span className="text-red-600">{user.rejeitados}</span></p>
+                            <p className="font-semibold text-md dark:text-gray-200">Pendentes: <span className="text-yellow-600">{user.pendentes}</span></p>
                         </div>
                         ))}
                     </div>
