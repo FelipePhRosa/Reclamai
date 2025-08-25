@@ -141,7 +141,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
             alt="avatar"
           />
           {isSidebarOpen && (
-            <div className="flex flex-col items-start justify-center ml-2">
+            <div className="flex flex-col items-start justify-center ml-2 w-36 overflow-hidden">
               <h2 className="text-sm font-semibold text-black dark:text-white">{user?.nameUser}</h2>
               <h3 className="text-sm text-gray-600 dark:text-gray-400 group-hover:text-white duration-300">{user?.email}</h3>
             </div>
