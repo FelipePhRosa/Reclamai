@@ -36,10 +36,10 @@ export default function Config() {
     <Layout>
       <div className="w-full h-screen">
         <div className="p-8">
-          <h1 className="font-ios font-medium text-xl text-center">Configurações</h1>
+          <h1 className="font-semibold text-xl text-center dark:text-white">Configurações</h1>
         </div>
 
-        <div className="flex flex-col justify-center items-center w-full max-w-md mx-auto px-8">
+        <div className="flex flex-col justify-center items-center w-full max-w-md mx-auto px-8 dark:text-white">
           {menuItems.map((item, index) => (
             <div key={index} className="w-full">
               <button
