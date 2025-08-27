@@ -10,6 +10,7 @@ interface LoginCredentials {
 interface TokenPayload {
   userId: number;
   email: string;
+  fullName: string;
   role: number;
   avatar_url: string;
 }
@@ -65,6 +66,7 @@ export default class AuthService {
       const token = this.generateToken({
         userId: user.id,
         email: user.email,
+        fullName: user.fullName,
         role: user.role,
         avatar_url: user.avatar_url
       });
@@ -72,6 +74,7 @@ export default class AuthService {
       return {
         userId: user.id,
         name: user.nameUser,
+        fullName: user.fullName,
         email: user.email,
         role: user.role,
         avatar_url: user.avatar_url,
