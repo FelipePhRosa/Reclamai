@@ -48,6 +48,7 @@ router.post('/declineReport/:reportId', authenticate, reportControllers.declineR
 
 router.get('/userList', userController.listAllUsers.bind(userController));
 router.get('/userById', userController.listUserById.bind(userController));
+router.get('/myreports', authenticate, reportControllers.getMyReports.bind(reportControllers));
 router.get('/reportList', reportControllers.getAllReports.bind(reportControllers));
 router.get('/reportById', reportControllers.getReportById.bind(reportControllers));
 router.get('/report/:id/likes', reportControllers.getAllLikes.bind(reportControllers))
