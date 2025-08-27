@@ -60,7 +60,7 @@ function MapaDenuncia() {
         center={[-31.769, -52.341]}
         zoom={15}
         className="h-full w-full rounded-xl"
-        scrollWheelZoom={false}
+        scrollWheelZoom={true}
         zoomControl={true}
       >
         <TileLayer
