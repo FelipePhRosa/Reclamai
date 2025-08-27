@@ -65,8 +65,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
     { label: 'Chat da Comunidade', icon: <MessageSquare />, path: '/chat' },
     { label: 'Mapa de Problemas', icon: <Map />, path: '/mapa' },
     { label: 'Problemas Reportados', icon: <TriangleAlert />, path: '/Report' },
-    { label: 'Reportar Problema', icon: <MapPin />, path: '/reportar' },
-    { label: 'Denúncias Em Analise', icon: <FileWarning />, path: '/Analise' }
+    { label: 'Reportar Problema', icon: <MapPin />, path: '/reportar' }
   ];
   
   const items = userRole >= 1 && userRole <= 4 ? allItemsAdm : allItemsUser;
