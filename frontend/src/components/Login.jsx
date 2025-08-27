@@ -28,6 +28,7 @@ async function handleLogin(e) {
     login(data.token, {
       userId: data.userId,
       nameUser: data.name,
+      fullName: data.fullName,
       email: data.email,
       role: data.role,
       avatar_url: data.avatar_url
