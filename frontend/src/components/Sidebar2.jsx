@@ -39,7 +39,7 @@ import {
     const handleClick = (path) => navigate(path);
   
     return (
-      <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 flex flex-row bg-white  shadow-lg rounded-full px-6 py-3 gap-6 justify-center items-center z-999 w-80 max-w-md md:hidden">
+      <nav className="fixed bottom-8 left-1/2 -translate-x-1/2 flex flex-row bg-white  shadow-lg rounded-full px-6 py-3 gap-6 justify-center items-center z-999 w-80 max-w-md md:hidden dark:bg-gray-700">
         {items.map((item, index) => (
           <button
             key={index}
