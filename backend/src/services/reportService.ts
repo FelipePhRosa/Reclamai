@@ -60,4 +60,8 @@ export default class ReportService {
     async getAllLikes(reportId: number){
         return await connection('likes').where({ report_id: reportId }).count('* as total');
     }
+
+    async getMyReports(user_id: number){
+      return await connection('reports').where({ user_id }).orderBy('created_at', 'desc');
+    }
 }
