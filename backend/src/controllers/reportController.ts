@@ -280,4 +280,29 @@ export default class ReportControllers{
             return;
         }
     }
+
+    async getMyReports(req: AuthRequest, res: Response){
+        const userId = req.user?.id;
+
+        if (!userId){
+            res.status(401).json({ error: 'User not found.' });
+            return;
+        }
+    
+        try{
+            const userReports = await this.reportService.getMyReports(userId);
+
+            res.status(200).json({
+                message: `All reports created by ${req.user?.fullName} user.`,
+                data: userReports,
+            });
+            return;
+        } catch (error) {
+            res.status(500).json({
+                message: 'Internal Server Error (500)',
+                details: error
+            });
+            return;
+        }
+    }
 }
