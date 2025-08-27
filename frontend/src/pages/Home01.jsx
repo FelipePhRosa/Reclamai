@@ -20,7 +20,7 @@ function Home() {
 
   return (
     <Layout>
-      <div className="mt-4 mb-4 ml-1">
+      <div className="mt-4 mb-4 ml-1 px-4">
         <h1 className="text-3xl font-bold text-gray-800 mb-1 dark:text-gray-300">
           Olá, <span className="text-blue-500">{primeiroNome}</span> Bem-vindo ao <span className="text-blue-500">Reclamaí</span>
         </h1>
@@ -30,7 +30,7 @@ function Home() {
       </div>
 
       {/* Cards Resumo */}
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 px-4">
       {[
         { title: 'Total', value: 6, color: 'blue', Icon: ChartColumn },
         { title: 'Reportados', value: 3, color: 'red', Icon: TriangleAlert },
@@ -50,7 +50,7 @@ function Home() {
     </div>
 
       {/* Mapa e Problemas */}
-      <div className="grid grid-cols-2 gap-6 w-full m-2 mx-auto">
+      <div className="grid grid-cols-2 gap-6 w-full m-2 mx-auto px-4">
         <div className="max-h-[870px] overflow-hidden">
           <div className="rounded-t-xl p-4">
             <h2 className="font-bold text-xl dark:text-gray-200">Mapa de Problemas</h2>
