@@ -26,7 +26,7 @@ function Layout({ children }) {
           isSidebarOpen ? 'ml-0 lg:ml-60' : 'ml-16'
         }`}
       >
-        <div className="md:p-4">{children}</div>
+        <div className="md:p-0">{children}</div>
       </div>
       <div className="fixed bottom-0 left-0 right-0 z-999 md:hidden">
         <Sidebar2 />
