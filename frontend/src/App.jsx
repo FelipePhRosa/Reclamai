@@ -15,6 +15,8 @@ import Analise from "./components/Analise"
 import Config from "./components/Config"
 import EditarPerfil from "./components/EditarPerfil"
 import HomeWrapper from "./pages/HomeWrapper";
+import AboutPage from "./components/About";
+import History from "./components/History";
 
 function App() {
   return (
@@ -34,6 +36,8 @@ function App() {
           <Route path="/help" element={<Ajuda/>}/>
           <Route path="/settings" element={<Config/>}/>
           <Route path="/EditarPerfil" element={<EditarPerfil/>}/>
+          <Route path="/about" element={<Layout><AboutPage/></Layout>}/>
+          <Route path="/myreports" element={<Layout><History/></Layout>}/>
         </Routes>
       </Router>
     </AuthProvider>
