@@ -34,6 +34,7 @@ export const authenticate = async (
     req.user = {
       id: decoded.userId,
       email: decoded.email,
+      fullName: decoded.fullName,
       role: decoded.role,
       avatar_url: decoded.avatar_url
     };
