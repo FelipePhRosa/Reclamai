@@ -27,7 +27,7 @@ function ReportCardHome() {
     }, []);
 
   return (
-    <div className="max-w-full max-h-[715px] bg-transparent overflow-y-scroll scrollbar-none scrollbar-thumb-gray-600 scrollbar-track-transparent">
+    <div className="max-w-full max-h-[800px] bg-transparent overflow-y-scroll scrollbar-none scrollbar-thumb-gray-600 scrollbar-track-transparent">
         {/* Cards */}
         {reports.length === 0 ? (
         <div className="flex justify-center items-center">
