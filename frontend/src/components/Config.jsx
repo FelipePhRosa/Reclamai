@@ -27,24 +27,24 @@ export default function Config() {
     { label: 'Conta', icon: UserPen, path: '/EditarPerfil' },
     { label: 'Notificações', icon: BellRing, path: '/notificacoes' },
     { label: 'Aparência', icon: Eclipse, path: '/aparencia' },
-    { label: 'Histórico', icon: ClipboardList, path: '/historico' },
+    { label: 'Histórico', icon: ClipboardList, path: '/myreports' },
     { label: 'Ajuda e Suporte', icon: HelpCircle, path: '/suporte' },
-    { label: 'Sobre', icon: Info, path: '/sobre' }
+    { label: 'Sobre', icon: Info, path: '/about' }
   ];
 
   return (
     <Layout>
-      <div className="w-full h-screen">
+      <div className="w-full h-screen dark:text-white">
         <div className="p-8">
-          <h1 className="font-semibold text-xl text-center dark:text-white">Configurações</h1>
+          <h1 className="font-ios font-medium text-xl text-center">Configurações</h1>
         </div>
 
-        <div className="flex flex-col justify-center items-center w-full max-w-md mx-auto px-8 dark:text-white">
+        <div className="flex flex-col justify-center items-center w-full max-w-md mx-auto px-8">
           {menuItems.map((item, index) => (
             <div key={index} className="w-full">
               <button
                 onClick={() => item.path && navigate(item.path)}
-                className="flex items-center justify-between w-full py-7 text-left"
+                className="flex items-center justify-between w-full py-7 text-left cursor-pointer"
               >
                 <div className="flex items-center">
                   <item.icon className="w-6 h-6 mr-3" />
