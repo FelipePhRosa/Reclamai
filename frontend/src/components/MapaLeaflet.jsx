@@ -59,7 +59,7 @@ function MapaDenuncia() {
       <MapContainer
         center={[-31.769, -52.341]}
         zoom={15}
-        className="h-full w-full rounded-xl"
+        className="h-full w-full rounded-2xl"
         scrollWheelZoom={true}
         zoomControl={true}
       >
