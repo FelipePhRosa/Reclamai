@@ -8,6 +8,18 @@ export default {
     extend: {
       fontFamily: {
         inter: ['Inter', 'sans-serif'],
+        ios: [
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'Segoe UI',
+          'Roboto',
+          'Oxygen',
+          'Ubuntu',
+          'Cantarell',
+          'Open Sans',
+          'Helvetica Neue',
+          'sans-serif'
+        ],
       }
     },
   },

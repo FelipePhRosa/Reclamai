@@ -20,8 +20,8 @@ function Home() {
 
   return (
     <Layout>
-      <div className="mt-4 mb-4 ml-1 px-4">
-        <h1 className="text-3xl font-bold text-gray-800 mb-1 dark:text-gray-300">
+      <div className="mt-4 mb-4 ml-1 px-4 py-4">
+        <h1 className="text-3xl font-bold text-gray-800 mb-1 dark:text-white">
           Olá, <span className="text-blue-500">{primeiroNome}</span> Bem-vindo ao <span className="text-blue-500">Reclamaí</span>
         </h1>
         <p className="text-gray-500 text-sm font-inter dark:text-gray-400">
@@ -40,7 +40,7 @@ function Home() {
           key={title}
           className="flex justify-between items-center bg-white p-4 rounded-md border-2 border-gray-200 dark:bg-gray-700 dark:border-gray-700"
         >
-          <div className='dark:text-gray-200'>
+          <div className='dark:text-white'>
             <h2 className="font-bold">{title}</h2>
             <p className={`font-bold text-${color}-500`}>{value}</p>
           </div>
