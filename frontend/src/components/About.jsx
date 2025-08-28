@@ -32,7 +32,7 @@ const AboutPage = () => {
       <div className="border border-gray-200 rounded-lg overflow-hidden dark:border-gray-400">
         <button
           onClick={() => toggleSection(id)}
-          className="w-full flex items-center justify-between p-4 bg-white hover:bg-gray-50 transition-colors dark:bg-gray-800"
+          className="w-full flex items-center justify-between p-4 bg-white hover:bg-gray-50 transition-colors dark:bg-gray-800 dark:hover:bg-gray-900"
         >
           <div className="flex items-center gap-3">
             <Icon className="w-5 h-5 text-blue-600 dark:text-white" />
@@ -197,7 +197,7 @@ const AboutPage = () => {
 
           <ExpandableSection id="privacidade" title="Privacidade e Segurança" icon={Lock}>
             <div className="space-y-4">
-                 <div className="grid md:grid-cols-2 gap-4 py-3">
+                 <div className="grid md:grid-cols-1 py-3">
                     <div className="space-y-1">
                         <div className="flex items-center gap-2">
                         <Shield className="w-4 h-4 text-red-500" />
