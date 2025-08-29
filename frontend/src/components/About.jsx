@@ -17,6 +17,7 @@ import {
   TableOfContents,
   Infinity
 } from 'lucide-react';
+import logo from '../assets/AppLogo2.png'
 
 const AboutPage = () => {
   const [expandedSection, setExpandedSection] = useState(null);
@@ -54,14 +55,13 @@ const AboutPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:bg-gradient-to-br dark:from-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:bg-gradient-to-br dark:from-gray-900 rounded-3xl shadow-2xl">
       <div className="max-w-4xl mx-auto px-4 py-8">
-        
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-blue-600 rounded-2xl mb-6 dark:bg-blue-400 dark:shadow-2xl dark:shadow-blue-600 dark:border dark:border-blue-300">
-            <MapPin className="w-10 h-10 text-white" />
+          <div className="inline-flex items-center justify-center w-40 h-30 mt-5">
+            <img src={logo} alt="Logo Reclamaí"/>
           </div>
-          <h1 className="text-4xl font-bold text-gray-800 mb-4 dark:text-gray-200">
+          <h1 className="text-4xl font-bold text-gray-800 mb-4 dark:text-gray-200 mt-2">
             Reclamaí
           </h1>
           <p className="text-2lg text-gray-600 max-w-2xl mx-auto dark:text-white font-semibold">
@@ -238,11 +238,11 @@ const AboutPage = () => {
             <div className="space-y-2 text-sm text-gray-600">
               <div className="flex justify-between">
                 <span className='dark:text-white dark:font-semibold'>Versão:</span>
-                <span className="font-mono bg-gray-100 px-2 py-1 rounded">v1.2.5</span>
+                <span className="font-mono bg-gray-100 px-2 py-1 rounded">v1.2.8</span>
               </div>
               <div className="flex justify-between">
                 <span className='dark:text-white dark:font-semibold'>Última Atualização:</span>
-                <span className='dark:text-white dark:font-semibold'>27/08/2025</span>
+                <span className='dark:text-white dark:font-semibold'>28/08/2025</span>
               </div>
             </div>
             
