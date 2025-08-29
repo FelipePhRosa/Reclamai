@@ -1,5 +1,5 @@
   import React, { useState } from "react";
-  import { FaHeart, FaRegHeart } from "react-icons/fa";
+  import { BiUpvote, BiSolidUpvote } from "react-icons/bi";
 
   export function LikeButton({ reportId, initialLiked, initialLikes }) {
     const [liked, setLiked] = useState(initialLiked);
@@ -38,10 +38,10 @@
       <button
         onClick={toggleLike}
         disabled={loading}
-        className="flex items-center gap-1 text-red-600 hover:scale-110 transition-transform disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+        className="flex items-center gap-1 text-orange-600 hover:scale-110 transition-transform disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         aria-label={liked ? "Descurtir" : "Curtir"}
       >
-        {liked ? <FaHeart /> : <FaRegHeart />}
+        {liked ? <BiSolidUpvote /> : <BiUpvote />}
         <span>{likesCount}</span>
       </button>
     );
