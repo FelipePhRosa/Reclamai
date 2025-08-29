@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { Lightbulb, Droplet, CircleHelp, UserMinus, Home, CircleDashed, X, MapPin, Camera } from 'lucide-react';
+import { Lightbulb, Droplet, CircleHelp, UserMinus, Home, CircleDashed, X, MapPin, Camera, CarFront } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 
 export default function ReportModal({ isOpen, onClose, lat, lng }) {
@@ -16,7 +16,7 @@ export default function ReportModal({ isOpen, onClose, lat, lng }) {
     { id: 2, icon: <Droplet className="w-5 h-5" />, label: 'Alagamento', color: 'blue' },
     { id: 6, icon: <CircleDashed className="w-5 h-5" />, label: 'Buraco na via', color: 'orange' },
     { id: 3, icon: <UserMinus className="w-5 h-5" />, label: 'Assalto', color: 'red' },
-    { id: 7, icon: <Home className="w-5 h-5" />, label: 'Desabamento', color: 'purple' },
+    { id: 7, icon: <CarFront className="w-5 h-5" />, label: 'Acidente de Trânsito', color: 'purple' },
     { id: 5, icon: <Lightbulb className="w-5 h-5" />, label: 'Iluminação', color: 'yellow' },
     { id: 8, icon: <CircleHelp className="w-5 h-5" />, label: 'Outro', color: 'gray' },
   ];
