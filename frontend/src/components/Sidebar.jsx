@@ -54,10 +54,12 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
     { label: 'Usuários', icon: <UsersRound />, path: '/userList' }
   ];
 
-  const items2 = [
-    { label: 'Configurações', icon: <Settings/>, path: '/settings'},
-    { label: 'Ajuda', icon: <CircleHelp/>, path: '/help'},
-    { label: 'Sair', icon: <LogOut/>, path:'/login', isLogout: true}
+   const items2 = [
+    { label: 'Configurações', icon: <Settings />, path: '/settings'},
+    { label: 'Ajuda', icon: <CircleHelp />, path: '/help'},
+    user 
+      ? { label: 'Sair', icon: <LogOut />, path:'/login', isLogout: true }
+      : { label: 'Entrar', icon: <LogOut />, path:'/login', isLogin: true }
   ];
 
   const allItemsUser = [
@@ -129,7 +131,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
         </div>
       </div>
 
-      <Link to='/editarperfil'>
+      <Link to='/settings'>
         <div className="mt-auto flex gap-2 p-2 bg-gray-200 dark:bg-gray-800 rounded-xl transition-colors duration-200">
           <img
             src={
