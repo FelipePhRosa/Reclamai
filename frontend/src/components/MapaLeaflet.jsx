@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import 'leaflet.awesome-markers/dist/leaflet.awesome-markers.css';
 import L from 'leaflet';
-import 'leaflet.awesome-markers';
 import ReportModal from './ReportModal';
 import { categoryIcons } from '../icons/CategoryIcons';
 
