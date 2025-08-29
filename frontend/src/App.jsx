@@ -12,11 +12,13 @@ import Layout from "./components/Layout";
 import UserList from "./components/Userslist";
 import Ajuda from "./pages/Ajuda";
 import Analise from "./components/Analise"
-import Config from "./components/Config"
+import ConfigWrapper from './pages/ConfigWrapper'
 import EditarPerfil from "./components/EditarPerfil"
 import HomeWrapper from "./pages/HomeWrapper";
 import AboutPage from "./components/About";
 import History from "./components/History";
+import Notificacoes from "./components/Notifications";
+import Preferencias from "./components/Preferencias";
 
 function App() {
   return (
@@ -34,10 +36,12 @@ function App() {
           <Route path="/userList" element={<UserList/>}/>
           <Route path="/Analise" element={<Analise/>}/>
           <Route path="/help" element={<Ajuda/>}/>
-          <Route path="/settings" element={<Config/>}/>
+          <Route path="/settings" element={<ConfigWrapper/>}/>
           <Route path="/EditarPerfil" element={<EditarPerfil/>}/>
           <Route path="/about" element={<Layout><AboutPage/></Layout>}/>
           <Route path="/myreports" element={<Layout><History/></Layout>}/>
+          <Route path="/notifications" element={<Notificacoes/>}/>
+          <Route path="/preferences" element={<Preferencias/>}/>
         </Routes>
       </Router>
     </AuthProvider>
