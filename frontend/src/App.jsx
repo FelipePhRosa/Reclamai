@@ -19,6 +19,7 @@ import AboutPage from "./components/About";
 import History from "./components/History";
 import Notificacoes from "./components/Notifications";
 import Preferencias from "./components/Preferencias";
+import ReportPage from "./pages/ReportPage";
 
 function App() {
   return (
@@ -42,6 +43,8 @@ function App() {
           <Route path="/myreports" element={<Layout><History/></Layout>}/>
           <Route path="/notifications" element={<Notificacoes/>}/>
           <Route path="/preferences" element={<Preferencias/>}/>
+          <Route path="/report/:id" element={<ReportPage />} />
+
         </Routes>
       </Router>
     </AuthProvider>
