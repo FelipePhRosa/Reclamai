@@ -35,7 +35,7 @@
     return (
       <Layout>
         {/* Se quiser manter o sidebar toggle dentro do Layout, remova o Sidebar daqui */}
-        <div className="mx-auto pt-5">
+        <div className="mx-auto pt-5 p-5">
           {/* Header */}
           <div className="flex justify-end items-center pb-3 mb-5 px-4 py-1 rounded-md">
             <Link
