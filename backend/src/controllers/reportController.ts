@@ -228,25 +228,25 @@ export default class ReportControllers{
     }
 
     async getReportById(req: Request, res: Response) {
-        const { reportId } = req.body
+        const { id } = req.params; // <-- mudança aqui, pega de params ao invés de body
 
-        if (isNaN(reportId)) {
-            res.status(400).json({ error: "reportId must be a valid number." });
+        if (isNaN(Number(id))) {
+            res.status(400).json({ error: "id must be a valid number." });
             return;
         }
 
-        try{
-            const report = await this.reportService.getReportById(reportId);
-            
+        try {
+            const report = await this.reportService.getReportById(Number(id));
+
             res.status(200).json({ 
-                message: `Informations for Report {${reportId}}`,
-                reportInf: report });
-            return;
-        } catch(error){
+                message: `Informations for Report {${id}}`,
+                reportInf: report 
+            });
+        } catch (error) {
             res.status(500).json({ 
                 message: `Error Internal Server.`,
-                details: error });
-            return;
+                details: error 
+            });
         }
     }
 
