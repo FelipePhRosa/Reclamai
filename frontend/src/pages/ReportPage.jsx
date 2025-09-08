@@ -18,120 +18,7 @@ import { useParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import Layout from "../components/Layout";
 import MiniMap from "../components/MiniMap";
-
-// LikeButton Component
-function LikeButton({ reportId, initialLiked, initialLikes }) {
-  const [liked, setLiked] = useState(false); // Começa sempre como false
-  const [likesCount, setLikesCount] = useState(initialLikes || 0);
-  const [loading, setLoading] = useState(true); // Começa carregando
-
-  // Busca o estado real do like quando o componente carrega
-  useEffect(() => {
-    const fetchLikeStatus = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        
-        // Busca o estado atual do like
-        const res = await fetch(`http://localhost:3000/report/${reportId}/like`, {
-          method: "GET",
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
-          },
-          credentials: "include",
-        });
-        
-        if (res.ok) {
-          const data = await res.json();
-          setLiked(data.liked || false);
-          setLikesCount(data.totalLikes || initialLikes || 0);
-        } else {
-          // Se não conseguir buscar, usa os valores iniciais
-          setLiked(initialLiked || false);
-          setLikesCount(initialLikes || 0);
-        }
-      } catch (error) {
-        console.error("Erro ao buscar status do like:", error);
-        setLiked(initialLiked || false);
-        setLikesCount(initialLikes || 0);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (reportId) {
-      fetchLikeStatus();
-    } else {
-      setLoading(false);
-    }
-  }, [reportId, initialLiked, initialLikes]);
-
-  const toggleLike = async () => {
-    if (loading) return;
-
-    // Otimistic update (atualiza a UI imediatamente)
-    const previousLiked = liked;
-    const previousCount = likesCount;
-    
-    setLiked(!liked);
-    setLikesCount(count => count + (liked ? -1 : 1));
-    setLoading(true);
-
-    try {
-      const token = localStorage.getItem('token');
-
-      const res = await fetch(`http://localhost:3000/report/${reportId}/like`, {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
-        },
-        credentials: "include",
-      });
-      
-      const data = await res.json();
-
-      if (res.ok && data.liked !== undefined) {
-        // Confirma o estado com a resposta do servidor
-        setLiked(data.liked);
-        setLikesCount(data.totalLikes || (data.liked ? previousCount + 1 : previousCount - 1));
-      } else {
-        // Reverte se deu erro
-        setLiked(previousLiked);
-        setLikesCount(previousCount);
-        console.error("Erro na resposta:", data);
-      }
-    } catch (error) {
-      // Reverte se deu erro
-      setLiked(previousLiked);
-      setLikesCount(previousCount);
-      console.error("Erro ao curtir/descurtir:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <button
-      onClick={toggleLike}
-      disabled={loading}
-      className={`group flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${
-        liked 
-          ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 hover:-translate-y-0.5' 
-          : 'bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-orange-50 dark:hover:bg-orange-900/20 hover:border-orange-300 dark:hover:border-orange-500 hover:text-orange-600 dark:hover:text-orange-400'
-      }`}
-      aria-label={liked ? "Descurtir" : "Curtir"}
-    >
-      <ChevronUp 
-        size={18} 
-        className={`transition-transform duration-200 ${liked ? 'text-white' : 'group-hover:scale-110'} ${loading ? 'animate-pulse' : ''}`}
-      />
-      <span className="font-semibold">
-        {loading ? '...' : likesCount}
-      </span>
-    </button>
-  );
-}
+import LikeButton from "../components/LikeButton";
 
 export default function ReportPage() {
   const [darkMode, setDarkMode] = useState(
@@ -147,12 +34,27 @@ export default function ReportPage() {
   useEffect(() => {
     if (!id) return;
 
+    const token = localStorage.getItem('token');
+    
+    console.log('=== FRONTEND DEBUG ===');
+    console.log('Report ID:', id);
+    console.log('Token exists:', !!token);
+
     fetch(`http://localhost:3000/report/${id}`, {
       method: "GET",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}` // Importante!
+      },
+      credentials: "include"
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log('=== RESPONSE ===');
+        console.log('Full data:', data);
+        console.log('Report likes:', data.reportInf?.likes);
+        console.log('Report likedByCurrentUser:', data.reportInf?.likedByCurrentUser);
+        
         setReport(data.reportInf);
         setLoading(false);
       })
@@ -330,8 +232,8 @@ export default function ReportPage() {
                 <div className="flex flex-wrap gap-4">
                   <LikeButton
                     reportId={report.id}
-                    initialLiked={false} // Não importa mais, será buscado da API
-                    initialLikes={0} // Será atualizado com o valor real da API
+                    initialLiked={report.likedByCurrentUser}
+                    initialLikes={report.likes}
                   />
                   <button className="group flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-medium hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">
                     <MessageSquare size={18} className="group-hover:scale-110 transition-transform" />
