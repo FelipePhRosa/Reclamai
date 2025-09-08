@@ -105,7 +105,8 @@ export default class ReportControllers{
 
     async declineReport(req: AuthRequest, res: Response){
         const reportId = Number(req.params.reportId)
-        const userId = req.user?.role
+        const userId = req.user?.id
+        
 
         if(isNaN(reportId) || !userId){
             return res.status(400).json({
@@ -205,6 +206,31 @@ export default class ReportControllers{
         }
     }
     
+    async getLikeStatus(req: AuthRequest, res: Response): Promise<void> {
+    const reportId = Number(req.params.id);
+    const userId = Number(req.user?.id);
+
+    if (!reportId || isNaN(reportId)) {
+        res.status(400).json({ message: 'Report ID inválido.' });
+        return;
+    }
+
+    try {
+        const report = await this.reportService.getReportById(reportId, userId);
+        if (!report) {
+            res.status(404).json({ message: 'Report não encontrado.' });
+            return;
+        }
+
+        res.json({
+            liked: Boolean(report.likedByCurrentUser),
+            totalLikes: Number(report.likes)
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Erro interno.' });
+    }
+}
 
     async getAllLikes(req: Request, res: Response): Promise<void> {
         const reportId = Number(req.params.reportId)
@@ -227,8 +253,13 @@ export default class ReportControllers{
         }
     }
 
-    async getReportById(req: Request, res: Response) {
+    async getReportById(req: AuthRequest, res: Response) {
         const { id } = req.params; // <-- mudança aqui, pega de params ao invés de body
+        const userId = req.user?.id;
+
+        console.log('=== DEBUG GET REPORT BY ID ===');
+        console.log('Report ID:', id);
+        console.log('User ID:', userId);
 
         if (isNaN(Number(id))) {
             res.status(400).json({ error: "id must be a valid number." });
@@ -237,6 +268,12 @@ export default class ReportControllers{
 
         try {
             const report = await this.reportService.getReportById(Number(id));
+            
+            console.log('Report result:', {
+            id: report?.id,
+            likes: report?.likes,
+            likedByCurrentUser: report?.likedByCurrentUser
+        });
 
             res.status(200).json({ 
                 message: `Informations for Report {${id}}`,
