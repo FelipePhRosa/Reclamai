@@ -29,7 +29,7 @@ function Home() {
         </p>
       </div>
 
-      {/* Cards Resumo */}
+      
     <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 px-4">
       {[
         { title: 'Total', value: 6, color: 'blue', Icon: ChartColumn },
@@ -49,15 +49,8 @@ function Home() {
       ))}
     </div>
 
-      {/* Mapa e Problemas */}
       <div className="grid grid-cols-2 gap-6 w-full m-2 mx-auto px-4">
         <div className="max-h-[870px] overflow-hidden">
-          <div className="rounded-t-xl p-4">
-            <h2 className="font-bold text-xl dark:text-gray-200">Mapa de Problemas</h2>
-            <p className="text-gray-500 dark:text-gray-200">
-              Clique nos marcadores para ver detalhes dos problemas reportados
-            </p>
-          </div>
           <MapaDenuncia />
         </div>
 
