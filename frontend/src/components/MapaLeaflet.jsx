@@ -4,6 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import ReportModal from './ReportModal';
 import { categoryIcons } from '../icons/CategoryIcons';
+import MiniModal from './MiniModal';
 
 function MapaDenuncia() {
     const [darkMode, setDarkMode] = useState(
@@ -80,7 +81,9 @@ function MapaDenuncia() {
 
           return (
             <Marker key={idx} position={[lat, lng]} icon={icon}>
-              <Popup>{report.description}</Popup>
+              <Popup closeButton={false} className="bg-transparent shadow-none p-0">
+                <MiniModal report={report} id={report.id} />
+              </Popup>
             </Marker>
           );
         })}
