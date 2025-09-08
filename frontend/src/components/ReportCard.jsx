@@ -1,5 +1,5 @@
 import { Clock5, ThumbsUp, MessageSquare, ArrowDownRight } from "lucide-react";
-import { LikeButton } from "./LikeButton"; // ajuste caminho
+import LikeButton from "./LikeButton"; // ajuste caminho
 import { Link } from "react-router-dom";
 
 function ReportCard({
