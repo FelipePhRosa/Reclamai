@@ -40,6 +40,30 @@ export default class ReportService {
       return reports;
     }
 
+    async getReportById(reportId: number, userId?: number) {
+    const report = await connection('reports')
+        .where({ id: reportId })
+        .select(
+            'reports.*',
+            // Total de likes
+            connection('likes')
+                .count('*')
+                .whereRaw('likes.report_id = reports.id')
+                .as('likes'),
+
+            // Se o usuário curtiu
+            connection.raw(
+                `(SELECT EXISTS (
+                    SELECT 1 FROM likes 
+                    WHERE likes.report_id = reports.id AND likes.user_id = ?
+                )) as likedByCurrentUser`,
+                [userId ?? 0]
+            )
+        )
+        .first(); // retorna um único registro
+
+    return report;
+}
 
     async getAllReportsPending(){
         return await connection('reports').where({ status: 'pendente' }).select('*');
@@ -47,10 +71,6 @@ export default class ReportService {
 
     async getAllReportsRejected(){
         return await connection('reports').where({ status: 'rejeitado' }).select('*')
-    }
-
-    async getReportById(reportId: number){
-        return await connection('reports').where({ id: reportId }).select('*').first();
     }
 
     async deleteReport(reportId: number){
