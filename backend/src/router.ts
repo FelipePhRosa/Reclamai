@@ -52,7 +52,8 @@ router.get('/myreports', authenticate, reportControllers.getMyReports.bind(repor
 router.get('/reportList', reportControllers.getAllReports.bind(reportControllers));
 
 router.get('/report/:id', reportControllers.getReportById.bind(reportControllers));
-router.get('/report/:id/likes', reportControllers.getAllLikes.bind(reportControllers))
+router.get('/report/:id/like', authenticate, reportControllers.getLikeStatus.bind(reportControllers));
+router.get('/report/:id/likes', reportControllers.getAllLikes.bind(reportControllers));
 router.get('/reportPending', reportControllers.getAllReportsPending.bind(reportControllers));
 router.get('/reportDecline', reportControllers.getAllReportsDecline.bind(reportControllers));
 router.get('/likes/:reportId', reportControllers.getAllLikes.bind(reportControllers));
