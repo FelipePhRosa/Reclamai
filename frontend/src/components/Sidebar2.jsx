@@ -18,6 +18,8 @@ export default function MobileBottomNav() {
   const { user } = useContext(AuthContext);
   const userRole = user?.role;
 
+  if (location.pathname === '/chat') return null;
+
 
   const items = [
     { icon: <House size={24} />, path: '/' },
@@ -39,7 +41,7 @@ export default function MobileBottomNav() {
   const handleClick = (path) => navigate(path);
 
   return (
-    <nav className="fixed bottom-8 left-1/2 -translate-x-1/2 flex flex-row bg-white  shadow-lg rounded-full px-6 py-3 gap-6 justify-center items-center z-999 w-80 max-w-md md:hidden dark:bg-gray-700">
+    <nav className="fixed bottom-8 left-1/2 -translate-x-1/2 flex flex-row bg-white shadow-lg rounded-full px-6 py-3 gap-6 justify-center items-center z-999 w-80 max-w-md md:hidden dark:bg-gray-700">
       {items.map((item, index) => (
         <button
           key={index}
