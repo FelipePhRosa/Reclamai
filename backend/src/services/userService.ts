@@ -39,7 +39,7 @@ export default class UserService {
     }
 
     async userUnlike(userId: number, reportId: number){
-        return await connection('likes').where({ user_id: userId, report_id: reportId }).delete()
+        return await connection('likes').where({ user_id: userId, report_id: reportId }).delete();
     }
 
     async getUsersWithReportStats() {
@@ -57,5 +57,8 @@ export default class UserService {
             .groupBy('u.id');
     }
 
+    async updateRole(userId: number, newRole: number){
+        return await connection('users').where({ id: userId }).update({ role: newRole });
+    }
 
 }
