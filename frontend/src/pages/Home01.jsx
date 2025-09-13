@@ -50,11 +50,11 @@ function Home() {
     </div>
 
       <div className="grid grid-cols-2 gap-6 w-full m-2 mx-auto px-4">
-        <div className="max-h-[870px] overflow-hidden">
+        <div className="max-h-[770px] overflow-hidden mt-4">
           <MapaDenuncia />
         </div>
 
-        <div className="hidden md:flex flex-col rounded-xl p-8">
+        <div className="hidden md:flex flex-col rounded-xl p-8 max-h-[810px]">
           <div className="flex justify-between items-center rounded-xl">
             <h2 className="font-bold text-xl dark:text-gray-200">Problemas Reportados</h2>
             <Link
