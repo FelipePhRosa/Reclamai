@@ -28,7 +28,7 @@ export default function Config() {
     { label: 'Notificações', icon: BellRing, path: '/notifications' },
     { label: 'Preferências', icon: Eclipse, path: '/preferences' },
     { label: 'Histórico', icon: ClipboardList, path: '/myreports' },
-    { label: 'Ajuda e Suporte', icon: HelpCircle, path: '/suporte' },
+    { label: 'Ajuda e Suporte', icon: HelpCircle, path: '/help' },
     { label: 'Sobre', icon: Info, path: '/about' }
   ];
 
@@ -61,20 +61,19 @@ export default function Config() {
           ))}
 
        {/* Botão de Logout */}
-<div className="w-full mt-6 flex justify-center">
-  <button
-    onClick={handleLogout}
-    className="flex items-center justify-center bg-red-600 rounded-xl hover:bg-red-500 transition-colors duration-150 py-3 px-6"
-  >
-    <div className="flex items-center gap-3">
-      <LogOut className="w-6 h-6 text-white" />
-      <span className="font-semibold text-xl text-white">
-        Sair
-      </span>
-    </div>
-  </button>
-</div>
-
+          <div className="w-full mt-6 flex justify-center">
+            <button
+              onClick={handleLogout}
+              className="flex items-center justify-center bg-red-600 rounded-xl hover:bg-red-500 transition-colors duration-150 py-3 px-6"
+            >
+              <div className="flex items-center gap-3">
+                <LogOut className="w-6 h-6 text-white" />
+                <span className="font-semibold text-xl text-white">
+                  Sair
+                </span>
+              </div>
+            </button>
+          </div>
         </div>
       </div>
     </Layout>
