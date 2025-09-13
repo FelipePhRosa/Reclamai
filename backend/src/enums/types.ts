@@ -10,7 +10,10 @@ enum Role {
     Moderador = 3,
     Suporte = 4,
     UserComum = 5,
-    Banned = 6
+    Banned = 6,
+    Prefeito = 7,
+    Vereador = 8,
+    Presidente = 9
 };
 
 export enum ReportCategory {
