@@ -20,11 +20,14 @@ import History from "./components/History";
 import Notificacoes from "./components/Notifications";
 import Preferencias from "./components/Preferencias";
 import ReportPage from "./pages/ReportPage";
+import MoreOptions from "./components/MoreOptions";
+import ModalUpdate from "./components/UpdateRole";
 
 function App() {
   return (
     <AuthProvider>
       <Router>
+        
         <Routes>
           <Route path="/" element={<HomeWrapper />} />
           <Route path="/registro" element={<Registro />} />
@@ -36,6 +39,7 @@ function App() {
           <Route path="/reportar" element={<ReportarProblemas />} />
           <Route path="/userList" element={<UserList/>}/>
           <Route path="/Analise" element={<Analise/>}/>
+          <Route path="/Modal" element={<ModalUpdate/>}/>
           <Route path="/help" element={<Ajuda/>}/>
           <Route path="/settings" element={<ConfigWrapper/>}/>
           <Route path="/EditarPerfil" element={<EditarPerfil/>}/>
@@ -44,7 +48,6 @@ function App() {
           <Route path="/notifications" element={<Notificacoes/>}/>
           <Route path="/preferences" element={<Preferencias/>}/>
           <Route path="/report/:id" element={<ReportPage />} />
-
         </Routes>
       </Router>
     </AuthProvider>
