@@ -46,6 +46,9 @@ router.post('/report/:reportId/like', authenticate, userController.userLiked.bin
 router.post('/approveReport/:reportId', authenticate, reportControllers.approveReport.bind(reportControllers) as RequestHandler);
 router.post('/declineReport/:reportId', authenticate, reportControllers.declineReport.bind(reportControllers) as RequestHandler);
 
+router.post('/updateRole', authenticate, userController.updateRole.bind(userController));
+
+
 router.get('/userList', userController.listAllUsers.bind(userController));
 router.get('/userById', userController.listUserById.bind(userController));
 router.get('/myreports', authenticate, reportControllers.getMyReports.bind(reportControllers));
