@@ -171,4 +171,61 @@ export default class UserController{
         }
     }
 
+    async updateRole(req: AuthRequest, res: Response){
+        try {
+            const { userId, newRole } = req.body
+            const requester = req.user;
+            
+            if(!requester){
+                res.status(401).json({
+                    message: `User not authenticated.`
+                });
+                return;
+            }
+
+            if(Number(requester.role) !== 1 && Number(requester.role) !== 2){
+                res.status(403).json({
+                    message: `You don't have permission for this action.`
+                });
+                return;
+            }
+
+            if (!userId || isNaN(userId) || !newRole) {
+                res.status(400).json({ 
+                    message: "Parameters Invalid. Send new parameters value." 
+                });
+                return;
+            }
+            const user = await this.userService.getUserById(userId);
+
+            if(!user){
+                res.status(404).json({
+                    message: `User not found. Send new parameters value.`
+                })
+                return;
+            }
+
+            if(Number(requester.role) == Number(user.role)){
+                res.status(403).json({
+                    message: `You can't change role that user because you have same role.`
+                })
+                return;
+            }
+
+            await this.userService.updateRole(userId, newRole);
+
+            res.status(200).json({
+                message: `Role for ${user.fullName} was updated to ${newRole}.`
+            });
+
+        } catch(error){
+            console.error("Error to update new role:", error);
+            res.status(500).json({
+                message: `Error to update new role.`,
+                details: error instanceof Error ? error.message : error
+            });
+            return;
+        }
+    }
+
 }
