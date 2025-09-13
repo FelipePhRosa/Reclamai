@@ -4,6 +4,7 @@ import {
   User, 
   Bell, 
   Palette, 
+  Pencil,
   Clock, 
   HelpCircle, 
   Info,
@@ -35,11 +36,18 @@ const SettingsInterface = () => {
     localStorage.setItem('darkMode', JSON.stringify(darkMode));
   }, [darkMode]);
 
+
   const { user } = useContext(AuthContext);
   const primeiroNome = user?.nameUser ? user.nameUser.split(" ")[0] : "Usuário";
   const segundoNome = user?.fullName || 'John Wick';
   const EmailUser = user?.email || "E-mail";
   const TelefoneUser = user?.telefone || "Número de Celular";
+
+  const [ edit, setEdit ] = useState(false)
+  const [ nome, setNome ] = useState(user.fullName || '');
+  const [ username, setUser ] = useState(user.nameUser || 'Username')
+  const [ email, setEmail ] = useState(user.email || '');
+  const [ telefone, setTelefone ] = useState('');
 
   const [activeTab, setActiveTab] = useState('account');
   const [showPassword, setShowPassword] = useState(false);
@@ -107,7 +115,7 @@ const SettingsInterface = () => {
         return (
           <div className="space-y-6">
             <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-xl dark:border-gray-400 dark:bg-linear-to-tr from-gray-900 to-neutral-500 from-84%">
-              <h3 className="text-lg font-semibold mb-4 dark:text-white">Informações Pessoais</h3>
+              <h3 className="text-lg font-semibold mb-8 dark:text-white">Informações Pessoais</h3>
               <div className="grid grid-cols-2 gap-4">
               <div className="relative w-full h-32">
                 <img
@@ -115,11 +123,40 @@ const SettingsInterface = () => {
                   alt=""
                   className="w-32 h-32 rounded-full object-cover border border-gray-400 bg-gray-100"
                 />
-                <div className='absolute bottom-0 left-40'>
-                  <h1 className='font-medium text-gray-600 dark:text-gray-300'>Nome:</h1>
-                  <p className='font-semibold text-2xl dark:text-white'>{segundoNome}</p>
-                  <h2 className='font-medium mt-5 dark:text-gray-300'>Usuário:</h2>
-                  <p className='font-semibold text-2xl mt-1 dark:text-white'>@{primeiroNome}</p>
+                
+                <div className='absolute bottom-0 left-40'> 
+                  <div className='absolute bottom-24 left-74 w-10 bg-gray-200 hover:bg-gray-600 h-10 rounded-xl flex justify-center items-center p-2 shadow-2xl dark:bg-gray-700 dark:hover:bg-gray-600 duration-300 transition cursor-pointer'>
+                    <Pencil 
+                      size={20} 
+                      className="cursor-pointer text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-900" 
+                      onClick={() => setEdit(!edit)} 
+                    />
+                  </div>
+                    <div className='flex flex-col gap-2 ml-10'>
+                      <label className="text-sm font-medium text-gray-700 dark:text-white">Nome:</label>
+                      {edit ? (
+                        <input
+                          type="text"
+                          value={nome}
+                          onChange={(e) => setNome(e.target.value)}
+                          className="w-70 p-2 px-4 flex border rounded-xl dark:text-gray-200 dark:bg-gray-700"
+                        />
+                      ) : (
+                        <p className='dark:text-gray-200 font-semibold border p-2 px-4 border-gray-700 w-70 rounded-xl overflow-hidden'>{nome}</p>
+                      )}
+                      <label className='text-sm font-medium text-gray-700 dark:text-white'>Usuário: </label>
+                      {edit ? (
+                        <input
+                          type='text'
+                          value={username}
+                          onChange={(e) => setUser(e.target.value)}
+                          className='w-70 p-2 px-4 flex border rounded-xl dark:text-gray-200 dark:bg-gray-700'
+                          placeholder='@Reclamai'
+                          />
+                      ) : (
+                        <p className='dark:text-gray-200 font-semibold border p-2 px-4 border-gray-700 w-70 rounded-xl overflow-hidden'>@{username}</p>
+                      )}
+                    </div>
                 </div>
                 <div className="absolute bottom-0 left-23 bg-white rounded-full p-1 border border-gray-300 cursor-pointer hover:bg-gray-100">
                   <Camera size={20} className="text-gray-600" />
@@ -132,31 +169,51 @@ const SettingsInterface = () => {
               </div>
               <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-white">Email:</label>
-                  <p className='dark:text-gray-200 font-semibold border p-2 px-4 border-gray-700 w-90 rounded-xl'>{EmailUser}</p>
+                  {edit ? (
+                    <input
+                      type='text'
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className='w-90 py-2 px-4 flex border rounded-xl dark:text-gray-200 dark:bg-gray-700'
+                      placeholder='suportereclamai@gmail.com'
+                    />
+                  ) : (
+                    <p className='dark:text-gray-200 font-semibold border p-2 px-4 border-gray-700 w-90 rounded-xl overflow-hidden'>{email}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-white">Senha:</label>
                   <div className="relative">
-                    <p className='dark:text-gray-200 font-semibold border p-2 px-4 border-gray-700 w-90 rounded-xl'>************</p>
-                    <button
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
-                    >
-                    </button>
+                    <p className='dark:text-gray-200 font-semibold border py-2 px-4 border-gray-700 w-90 rounded-xl'>************</p>
                   </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-white">Telefone:</label>
-                  <p className='dark:text-gray-200 font-semibold border p-2 px-4 border-gray-700 w-90 rounded-xl'>{TelefoneUser}</p>
+                  {edit ? (
+                    <input
+                      type="number"
+                      value={telefone}
+                      onChange={(e) => setTelefone(e.target.value)}
+                      className='w-90 py-2 px-4 flex border rounded-xl dark:text-gray-200 dark:bg-gray-700'
+                      placeholder='Número de Celular'
+                    />
+                  ) : (
+                    <p className='dark:text-gray-200 font-semibold border py-2 px-4 border-gray-700 w-90 rounded-xl'>{TelefoneUser}</p>
+                  )}
+
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-white">Data de Nascimento:</label>
                   <p className='dark:text-gray-200 font-semibold border p-2 px-4 border-gray-700 w-90 rounded-xl'>21/11/2003</p>
                 </div>
               </div>
-              <button className="mt-8 font-semibold px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+              {edit ? (
+                <button className="mt-8 font-semibold px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
                 Salvar Alterações
               </button>
+              ) : (
+                <p></p>
+              )}
             </div>
           </div>
         );
@@ -164,14 +221,14 @@ const SettingsInterface = () => {
       case 'notifications':
         return (
           <div className="space-y-6">
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold mb-4">Preferências de Notificação</h3>
+            <div className="bg-white rounded-lg border border-gray-200 p-6 dark:bg-gray-900 dark:border-gray-400">
+              <h3 className="text-lg font-semibold mb-4 dark:text-white">Preferências de Notificação</h3>
               <div className="space-y-4">
                 {Object.entries(notifications).map(([key, value]) => (
                   <div key={key} className="flex items-center justify-between">
                     <div>
-                      <h4 className="font-medium capitalize">Notificações por {key === 'push' ? 'Push' : key === 'sms' ? 'SMS' : 'Email'}</h4>
-                      <p className="text-sm text-gray-600">
+                      <h4 className="font-medium capitalize dark:text-white">Notificações por {key === 'push' ? 'Push' : key === 'sms' ? 'SMS' : 'Email'}</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
                         Receber notificações via {key === 'push' ? 'push' : key === 'sms' ? 'SMS' : 'email'}
                       </p>
                     </div>
@@ -197,7 +254,7 @@ const SettingsInterface = () => {
       case 'appearance':
         return (
           <div className="space-y-6 ">
-            <div className="bg-white rounded-lg border border-gray-500 p-6 dark:bg-gray-900 dark:shadow-xl">
+            <div className="bg-white rounded-lg border border-gray-200 p-6 dark:bg-gray-900 dark:shadow-xl">
               <h3 className="text-lg font-semibold mb-4 dark:text-white">Configurações de Aparência</h3>
               <div className="space-y-4">
                 <div>
