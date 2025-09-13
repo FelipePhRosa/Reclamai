@@ -212,6 +212,12 @@ export default class UserController{
                 return;
             }
 
+            if(Number(requester.role) < Number(user.role)){
+                res.status(403).json({
+                    message: `You don't have permissions for that action. Saving Log.`
+                })
+            }
+
             await this.userService.updateRole(userId, newRole);
 
             res.status(200).json({
