@@ -15,7 +15,8 @@ export default class ReportControllers{
         }
 
         try{
-            const { reportTitle, category_id, description, address, latitude, longitude, image } = req.body
+            const { reportTitle, category_id, description, address, latitude, longitude } = req.body
+            const image = req.file?.filename;
             const user = await connection('users').where({ id: userId }).first()
 
             if (!user){
@@ -255,6 +256,7 @@ export default class ReportControllers{
 
     async getReportById(req: AuthRequest, res: Response) {
         const { id } = req.params; // <-- mudança aqui, pega de params ao invés de body
+        const user = req.user
         const userId = req.user?.id;
 
         console.log('=== DEBUG GET REPORT BY ID ===');
