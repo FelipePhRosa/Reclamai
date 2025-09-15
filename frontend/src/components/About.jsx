@@ -238,7 +238,7 @@ const AboutPage = () => {
             <div className="space-y-2 text-sm text-gray-600">
               <div className="flex justify-between">
                 <span className='dark:text-white dark:font-semibold'>Versão:</span>
-                <span className="font-mono bg-gray-100 px-2 py-1 rounded">v1.2.8</span>
+                <span className="font-mono bg-gray-100 px-2 py-1 rounded">v1.3.1</span>
               </div>
               <div className="flex justify-between">
                 <span className='dark:text-white dark:font-semibold'>Última Atualização:</span>
