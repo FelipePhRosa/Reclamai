@@ -5,7 +5,7 @@ export default function MiniModal({ report, id }) {
     <div className="w-64 p-4 bg-white dark:bg-gray-900 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300">
       {report.image && (
         <img
-          src={report.image}
+          src={report.image ? `http://localhost:3000/uploads/${report.image}` : '/placeholder.png' }
           alt="Denúncia"
           className="w-full h-32 object-cover rounded-lg mb-3 border border-gray-200 dark:border-gray-700"
         />
