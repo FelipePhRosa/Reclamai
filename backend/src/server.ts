@@ -2,6 +2,7 @@ import express from "express"
 import dotenv from "dotenv"
 import cors from "cors"
 import router from "./router"
+import path from "path"
 
 dotenv.config()
 
@@ -13,6 +14,7 @@ server.use(cors({
     credentials: true
 }));
 
+server.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 server.use(express.json());
 server.use(router)
 
