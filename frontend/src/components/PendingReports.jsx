@@ -63,7 +63,7 @@ export default function PendingReports() {
           {filteredReports.map((report) => (
             <div key={report.id} className="bg-white shadow-md rounded p-4 dark:bg-gray-800">
               <img
-                src={report.image}
+                src={report.image ? `http://localhost:3000/uploads/${report.image}` : '/placeholder.png'}
                 alt={report.reportTitle}
                 className="h-48 w-full object-cover rounded mb-4"
               />
