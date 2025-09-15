@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { Lightbulb, Droplet, CircleHelp, UserMinus, Home, CircleDashed, X, MapPin, Camera, CarFront } from 'lucide-react';
+import { Lightbulb, Droplet, CircleHelp, UserMinus, Home, CircleDashed, X, MapPin, Camera, CarFront, Upload, Trash2 } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 
 export default function ReportModal({ isOpen, onClose, lat, lng }) {
@@ -10,7 +10,6 @@ export default function ReportModal({ isOpen, onClose, lat, lng }) {
   const [tipoProblema, setTipoProblema] = useState(null);
   const [endereco, setEndereco] = useState('');
   const [imagens, setImagens] = useState([]);
-  const [urlImagem, setUrlImagem] = useState('');
 
   const tipos = [
     { id: 2, icon: <Droplet className="w-5 h-5" />, label: 'Alagamento', color: 'blue' },
@@ -33,51 +32,57 @@ export default function ReportModal({ isOpen, onClose, lat, lng }) {
   };
 
   const removerImagem = (index) => {
-    setImagens(prev => prev.filter((_, i) => i !== index));
+    setImagens(prev => {
+      // Revoga a URL do objeto para liberar memória
+      URL.revokeObjectURL(prev[index].preview);
+      return prev.filter((_, i) => i !== index);
+    });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    const handleSubmit = async (e) => {
+      e.preventDefault();
 
-    const novoRelato = {
-      reportTitle: titulo,
-      description: descricao,
-      category_id: tipoProblema,
-      address: endereco,
-      latitude: lat,
-      longitude: lng,
-      image: urlImagem, 
-    };
+      const formData = new FormData();
+      formData.append('reportTitle', titulo);
+      formData.append('description', descricao);
+      formData.append('category_id', tipoProblema); // se precisar, parseInt(tipoProblema)
+      formData.append('address', endereco);
+      formData.append('latitude', lat);
+      formData.append('longitude', lng);
 
-    try {
-      const response = await fetch(`http://localhost:3000/report/${userId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify(novoRelato),
+      imagens.forEach((imagem) => {
+        formData.append('imagem', imagem.file); // ⚡ nome deve bater com multer.single('imagem')
       });
 
-      if (response.ok) {
-        alert('Denúncia enviada com sucesso!');
-        setTitulo('');
-        setDescricao('');
-        setTipoProblema(null);
-        setEndereco('');
-        setImagens([]);
-        setUrlImagem('');
-        onClose();
-      } else {
-        const erro = await response.json();
-        console.error('Erro ao enviar:', erro);
+      try {
+        const response = await fetch(`http://localhost:3000/report/${userId}`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+          body: formData,
+        });
+
+        if (response.ok) {
+          alert('Denúncia enviada com sucesso!');
+          setTitulo('');
+          setDescricao('');
+          setTipoProblema(null);
+          setEndereco('');
+          imagens.forEach(imagem => URL.revokeObjectURL(imagem.preview));
+          setImagens([]);
+          onClose();
+        } else {
+          const erro = await response.json();
+          console.error('Erro ao enviar:', erro);
+          alert('Erro ao enviar a denúncia');
+        }
+      } catch (error) {
+        console.error('Erro ao enviar:', error);
         alert('Erro ao enviar a denúncia');
       }
-    } catch (error) {
-      console.error('Erro ao enviar:', error);
-      alert('Erro ao enviar a denúncia');
-    }
-  };
+    };
+
 
   const getCategoryColorClasses = (color, isSelected) => {
     const baseClasses = "flex items-center gap-2 sm:gap-3 p-3 sm:p-4 border-2 rounded-lg sm:rounded-xl transition-all duration-200 cursor-pointer group hover:scale-[1.02] hover:shadow-lg";
@@ -106,7 +111,7 @@ export default function ReportModal({ isOpen, onClose, lat, lng }) {
       />
       
       {/* Modal */}
-      <div className="relative bg-white dark:bg-gray-900 dark:border dark:border-gray-700 dark:text-white rounded-xl sm:rounded-2xl shadow-2xl p-4 sm:p-6 lg:p-8 w-full max-w-sm sm:max-w-md lg:max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto transform transition-all duration-300 scale-100">
+      <div className="relative bg-white dark:bg-gray-900 dark:border dark:border-gray-700 dark:text-white rounded-xl sm:rounded-2xl shadow-2xl p-4 sm:p-6 lg:p-8 w-full max-w-sm sm:max-w-md lg:max-w-2xl max-h-[95vh] sm:max-h-[90vh] transform transition-all duration-300 scale-100 overflow-y-scroll scrollbar-none scrollbar-thumb-gray-600 scrollbar-track-transparent">
         {/* Header */}
         <div className="flex items-center justify-between mb-4 sm:mb-6 lg:mb-8">
           <div className="flex items-center gap-2 sm:gap-3">
@@ -146,19 +151,60 @@ export default function ReportModal({ isOpen, onClose, lat, lng }) {
             />
           </div>
 
-          {/* Imagem URL */}
+          {/* Upload de Imagens */}
           <div className="space-y-2">
             <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200">
               <Camera className="w-4 h-4 inline mr-2" />
-              URL da Imagem (Opcional)
+              Imagens (Opcional)
             </label>
-            <input
-              type="url"
-              value={urlImagem}
-              onChange={(e) => setUrlImagem(e.target.value)}
-              placeholder="https://exemplo.com/imagem.jpg"
-              className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-3 transition-all duration-200 focus:outline-none focus:ring-2 focus:border-blue-500 focus:ring-blue-500/20 dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
-            />
+            
+            {/* Botão de Upload */}
+            <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg sm:rounded-xl p-4 sm:p-6 text-center hover:border-blue-400 dark:hover:border-blue-500 transition-colors">
+              <input
+                type="file"
+                id="file-upload"
+                multiple
+                accept="image/*"
+                onChange={handleImagemChange}
+                className="hidden"
+              />
+              <label
+                htmlFor="file-upload"
+                className="cursor-pointer flex flex-col items-center gap-2"
+              >
+                <Upload className="w-8 h-8 text-gray-400 dark:text-gray-500" />
+                <div>
+                  <span className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500">
+                    Clique para fazer upload
+                  </span>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    PNG, JPG, JPEG até 10MB cada
+                  </p>
+                </div>
+              </label>
+            </div>
+
+            {/* Preview das Imagens */}
+            {imagens.length > 0 && (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-3">
+                {imagens.map((imagem, index) => (
+                  <div key={index} className="relative group">
+                    <img
+                      src={imagem.preview}
+                      alt={`Preview ${index + 1}`}
+                      className="w-full h-20 sm:h-24 object-cover rounded-lg border border-gray-200 dark:border-gray-600"
+                    />
+                    <button
+                      onClick={() => removerImagem(index)}
+                      className="absolute -top-2 -right-2 p-1 bg-red-500 hover:bg-red-600 text-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                      aria-label="Remover imagem"
+                    >
+                      <Trash2 className="w-3 h-3" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Descrição */}
