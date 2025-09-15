@@ -22,6 +22,7 @@ import Preferencias from "./components/Preferencias";
 import ReportPage from "./pages/ReportPage";
 import MoreOptions from "./components/MoreOptions";
 import ModalUpdate from "./components/UpdateRole";
+import AdmPrefeitura from "./pages/AdmPrefeitura";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
       <Router>
         
         <Routes>
+          <Route path="/Prefeitura" element={<AdmPrefeitura/>}/>
           <Route path="/" element={<HomeWrapper />} />
           <Route path="/registro" element={<Registro />} />
           <Route path="/login" element={<Login />} />
