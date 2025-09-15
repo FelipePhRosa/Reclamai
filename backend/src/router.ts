@@ -1,14 +1,17 @@
 import { RequestHandler } from 'express';
 import { Router } from "express";
+import multer from 'multer';
 import ReportControllers from "./controllers/reportController";
 import UserController from "./controllers/userController";
 import AuthController from "./controllers/AuthController";
 import { authenticate } from './services/authMiddleware';
+import upload from './services/upload'
 
 const router = Router();
 const userController = new UserController();
 const reportControllers = new ReportControllers();
 const authController = new AuthController();
+const uploadtemp = multer({ dest: 'uploads/' });
 
 router.get('/', async (req, res) => {
     res.json({ 
@@ -40,7 +43,7 @@ router.post('/login', authController.login.bind(authController));
 
 router.post('/register', userController.createUser.bind(userController));
 
-router.post('/report/:userId', authenticate, reportControllers.createReport.bind(reportControllers));
+router.post('/report/:userId', authenticate, uploadtemp.single('imagem'), reportControllers.createReport.bind(reportControllers));
 router.post('/report/:reportId/like', authenticate, userController.userLiked.bind(userController))
 
 router.post('/approveReport/:reportId', authenticate, reportControllers.approveReport.bind(reportControllers) as RequestHandler);
