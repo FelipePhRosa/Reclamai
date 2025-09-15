@@ -10,6 +10,7 @@ import {
   FileWarning,
   Bot,
   LogOut,
+  Landmark,
   Sun,
   Moon
 } from 'lucide-react';
@@ -45,11 +46,12 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
   const { logout } = useContext(AuthContext);
 
   const allItemsAdm = [
+    { label: 'Prefeitura', icon: <Landmark />, path: '/Prefeitura' },
     { label: 'Home', icon: <House />, path: '/' },
     { label: 'Chat da Comunidade', icon: <MessageSquare />, path: '/chat' },
     { label: 'Mapa de Problemas', icon: <Map />, path: '/mapa' },
     { label: 'Problemas Reportados', icon: <TriangleAlert />, path: '/Report' },
-    { label: 'Reportar Problema', icon: <MapPin />, path: '/reportar' },
+    //{ label: 'Reportar Problema', icon: <MapPin />, path: '/reportar' },
     { label: 'Denúncias Pendentes', icon: <FileWarning />, path: '/pendingreports' },
     { label: 'Usuários', icon: <UsersRound />, path: '/userList' }
   ];
@@ -67,7 +69,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
     { label: 'Chat da Comunidade', icon: <MessageSquare />, path: '/chat' },
     { label: 'Mapa de Problemas', icon: <Map />, path: '/mapa' },
     { label: 'Problemas Reportados', icon: <TriangleAlert />, path: '/Report' },
-    { label: 'Reportar Problema', icon: <MapPin />, path: '/reportar' }
+    //{ label: 'Reportar Problema', icon: <MapPin />, path: '/reportar' }
   ];
   
   const items = userRole >= 1 && userRole <= 4 ? allItemsAdm : allItemsUser;
