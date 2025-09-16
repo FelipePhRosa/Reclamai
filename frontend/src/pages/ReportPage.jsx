@@ -202,7 +202,7 @@ export default function ReportPage() {
                     </div>
                   )}
                   <img 
-                    src={report.image} 
+                    src={report.image  ? `http://localhost:3000/uploads/${report.image}` : '/placeholder.png'} 
                     alt={report.reportTitle}
                     className={`w-full h-full object-cover transition-all duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
                     onLoad={() => setImageLoaded(true)}
@@ -213,7 +213,7 @@ export default function ReportPage() {
 
               {/* Title and Description */}
               <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl rounded-2xl shadow-xl border border-gray-200/50 dark:border-gray-700/50 p-8">
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-white leading-tight mb-6 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-200 bg-clip-text text-transparent">
+                <h2 className="text-3xl font-bold text-gray-900 dark:text-white leading-tight mb-6 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-200 bg-clip-text">
                   {report.reportTitle}
                 </h2>
                 
