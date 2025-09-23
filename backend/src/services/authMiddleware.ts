@@ -47,21 +47,21 @@ export const authenticate = async (
 };
 
 export const isOwner = async (
-  req: AuthRequest,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const user = await connection('users')
-      .where({ id: req.user?.id })
-      .first();
+    req: AuthRequest,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const user = await connection('users')
+        .where({ id: req.user?.id })
+        .first();
 
-    if (!user?.isOwner) {
-      return res.status(403).json({ error: "Acess Denied: You need been Owner." });
+      if (!user?.isOwner) {
+        return res.status(403).json({ error: "Acess Denied: You need been Owner." });
+      }
+
+      next();
+    } catch (error) {
+      return res.status(500).json({ error: "Error server to verify Owner." });
     }
-
-    next();
-  } catch (error) {
-    return res.status(500).json({ error: "Error server to verify Owner." });
-  }
-};
+  };
