@@ -4,12 +4,14 @@ import multer from 'multer';
 import ReportControllers from "./controllers/reportController";
 import UserController from "./controllers/userController";
 import AuthController from "./controllers/AuthController";
+import CitiesControllers from './controllers/citiesController';
 import { authenticate } from './services/authMiddleware';
 import upload from './services/upload'
 
 const router = Router();
 const userController = new UserController();
 const reportControllers = new ReportControllers();
+const citiesControllers = new CitiesControllers();
 const authController = new AuthController();
 const uploadtemp = multer({ dest: 'uploads/' });
 
@@ -49,6 +51,8 @@ router.post('/report/:reportId/like', authenticate, userController.userLiked.bin
 router.post('/approveReport/:reportId', authenticate, reportControllers.approveReport.bind(reportControllers) as RequestHandler);
 router.post('/declineReport/:reportId', authenticate, reportControllers.declineReport.bind(reportControllers) as RequestHandler);
 
+router.post('/cr_city', authenticate, citiesControllers.createCity.bind(citiesControllers))
+
 router.post('/updateRole', authenticate, userController.updateRole.bind(userController));
 
 
@@ -56,6 +60,7 @@ router.get('/userList', userController.listAllUsers.bind(userController));
 router.get('/userById', userController.listUserById.bind(userController));
 router.get('/myreports', authenticate, reportControllers.getMyReports.bind(reportControllers));
 router.get('/reportList', reportControllers.getAllReports.bind(reportControllers));
+router.get('/cityById', authenticate, citiesControllers.getCityById.bind(citiesControllers))
 
 router.get('/report/:id', reportControllers.getReportById.bind(reportControllers));
 router.get('/report/:id/like', authenticate, reportControllers.getLikeStatus.bind(reportControllers));
@@ -65,7 +70,8 @@ router.get('/reportDecline', reportControllers.getAllReportsDecline.bind(reportC
 router.get('/likes/:reportId', reportControllers.getAllLikes.bind(reportControllers));
 
 router.delete('/delUser', userController.deleteUser.bind(userController));
-router.delete('/delReport', reportControllers.deleteReport.bind(reportControllers))
+router.delete('/delCity', authenticate, citiesControllers.deleteCity.bind(citiesControllers));
+router.delete('/delReport', reportControllers.deleteReport.bind(reportControllers));
 
 export default router;
     
