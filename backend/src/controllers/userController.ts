@@ -25,7 +25,6 @@ export default class UserController{
                 return;
             };
 
-            
             const user = await this.userService.createUser({
                 nameUser,
                 fullName,
@@ -34,7 +33,10 @@ export default class UserController{
                 role: role ?? 5,
                 avatar_url
             })
-            res.status(201).json({ message: `User: ${fullName}, registered successfully`});
+            res.status(201).json({ 
+                message: `User: ${fullName}, registered successfully`,
+                details: user
+            });
             return;
 
         } catch (error) {
@@ -81,7 +83,8 @@ export default class UserController{
         try {
             const user = await this.userService.getUserById(userId)
             if (!user){
-                res.status(404).json({ message: `User Not Found.`})
+                res.status(404).json({ message: `User Not Found.`});
+                return;
             }
             res.status(200).json({ 
                 message: `// ${user?.nameUser} - Informations. `,
