@@ -208,30 +208,30 @@ export default class ReportControllers{
     }
     
     async getLikeStatus(req: AuthRequest, res: Response): Promise<void> {
-    const reportId = Number(req.params.id);
-    const userId = Number(req.user?.id);
+        const reportId = Number(req.params.id);
+        const userId = Number(req.user?.id);
 
-    if (!reportId || isNaN(reportId)) {
-        res.status(400).json({ message: 'Report ID inválido.' });
-        return;
-    }
-
-    try {
-        const report = await this.reportService.getReportById(reportId, userId);
-        if (!report) {
-            res.status(404).json({ message: 'Report não encontrado.' });
+        if (!reportId || isNaN(reportId)) {
+            res.status(400).json({ message: 'Report ID inválido.' });
             return;
         }
 
-        res.json({
-            liked: Boolean(report.likedByCurrentUser),
-            totalLikes: Number(report.likes)
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Erro interno.' });
+        try {
+            const report = await this.reportService.getReportById(reportId, userId);
+            if (!report) {
+                res.status(404).json({ message: 'Report não encontrado.' });
+                return;
+            }
+
+            res.json({
+                liked: Boolean(report.likedByCurrentUser),
+                totalLikes: Number(report.likes)
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Erro interno.' });
+        }
     }
-}
 
     async getAllLikes(req: Request, res: Response): Promise<void> {
         const reportId = Number(req.params.reportId)
