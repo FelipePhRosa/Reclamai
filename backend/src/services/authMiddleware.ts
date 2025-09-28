@@ -46,7 +46,7 @@ export const authenticate = async (
   }
 };
 
-export const isOwner = async (
+export const isOwner = async ( //dia 26/09/25 nao lembro do propósito disso pq sempre usei o authenticate nas rotas, e no controller fazia a validação da role, então, nao sei pra que tem isso mas vou deixa pra caso eu lembre
     req: AuthRequest,
     res: Response,
     next: NextFunction
