@@ -5,6 +5,12 @@ import bcrypt from "bcryptjs";
 import { AuthRequest } from "../types/express";
 import { cpf as cpfValidator } from "cpf-cnpj-validator";
 
+interface UpdateUserInfoDTO{
+    fullName?: string,
+    email?: string,
+    avatar?: string
+}
+
 export default class UserController{
     constructor(private userService = new UserService()){}
     
@@ -236,5 +242,70 @@ export default class UserController{
             return;
         }
     }
+
+    async updateUserInfo(req: AuthRequest, res: Response) {
+        const userId = Number(req.user?.id);
+
+        if(!userId){
+            res.status(401).json({
+                message: `User not authenticated.`
+            });
+            return;
+        }
+        try{
+            const { fullName, email, avatar_url } = req.body;
+            // Validar se há dados para atualizar
+            const updateData: any = {};
+            if (fullName) updateData.fullName = fullName;
+            if (email) updateData.email = email;
+            if (avatar_url) updateData.avatar_url = avatar_url;
+
+            if (Object.keys(updateData).length === 0) {
+                throw new Error('NO_DATA_PROVIDED');
+            }
+
+            // Se está tentando atualizar o email, verificar se já existe
+            if (email) {
+                const existingUser = await connection('users')
+                    .where({ email })
+                    .whereNot({ id: userId })
+                    .first();
+
+                if (existingUser) {
+                    throw new Error('EMAIL_ALREADY_IN_USE');
+                }
+
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    throw new Error('INVALID_EMAIL_FORMAT');
+                }
+            }
+
+            await this.userService.updateUserInfo(userId, updateData)
+
+            const updatedUser = await connection('users')
+                .where({ id: userId })
+                .select('id', 'fullName', 'email', 'avatar_url', 'created_at')
+                .first();
+                
+            if (!updatedUser) {
+                throw new Error('USER_NOT_FOUND');
+            }
+
+            res.status(200).json({
+                message: `Alterações feitas com sucesso!`,
+                data: updateData
+            });
+            return;
+
+        } catch ( error ){
+            res.status(500).json({
+                message: `Internal Server Error. - 500`,
+                details: error
+            });
+            return;
+        }
+    }
+
 
 }
