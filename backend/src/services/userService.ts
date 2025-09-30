@@ -13,6 +13,12 @@ interface UserData{
     avatar_url: string
 }
 
+interface UpdateUserInfoDTO{
+    fullName?: string,
+    email?: string,
+    avatar_url?: string    
+}
+
 export default class UserService {
     async createUser(userData: UserData){
         return await connection('users').insert(userData)
@@ -59,6 +65,10 @@ export default class UserService {
 
     async updateRole(userId: number, newRole: number){
         return await connection('users').where({ id: userId }).update({ role: newRole });
+    }
+
+    async updateUserInfo(userId: number, updateData: UpdateUserInfoDTO) {
+        return await connection('users').where({ id: userId }).update(updateData);
     }
 
 }
