@@ -304,7 +304,7 @@ export default class UserController{
                 details: error
             });
             return;
-        }
+        
     }
 
 
