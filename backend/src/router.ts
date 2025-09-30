@@ -56,12 +56,14 @@ router.post('/cr_city', authenticate, citiesControllers.createCity.bind(citiesCo
 router.post('/updateRole', authenticate, userController.updateRole.bind(userController));
 
 
+router.put('/editProfile', authenticate, userController.updateUserInfo.bind(userController));
+
 router.get('/userList', userController.listAllUsers.bind(userController));
 router.get('/userById', userController.listUserById.bind(userController));
 router.get('/myreports', authenticate, reportControllers.getMyReports.bind(reportControllers));
 router.get('/reportList', reportControllers.getAllReports.bind(reportControllers));
 router.get('/cityById', authenticate, citiesControllers.getCityById.bind(citiesControllers))
-
+router.get('/reportsByCity', authenticate, reportControllers.getAllReportsByCity.bind(reportControllers));
 router.get('/report/:id', reportControllers.getReportById.bind(reportControllers));
 router.get('/report/:id/like', authenticate, reportControllers.getLikeStatus.bind(reportControllers));
 router.get('/report/:id/likes', reportControllers.getAllLikes.bind(reportControllers));
