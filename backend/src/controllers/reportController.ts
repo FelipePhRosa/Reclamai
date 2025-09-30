@@ -15,7 +15,7 @@ export default class ReportControllers{
         }
 
         try{
-            const { reportTitle, category_id, description, address, latitude, longitude } = req.body
+            const { reportTitle, category_id, description, city_id, address, latitude, longitude } = req.body
             const image = req.file?.filename;
             const user = await connection('users').where({ id: userId }).first()
 
@@ -28,6 +28,7 @@ export default class ReportControllers{
                  reportTitle,
                  user_id: userId,
                  category_id,
+                 city_id,
                  description,
                  address,
                  latitude,
@@ -186,6 +187,48 @@ export default class ReportControllers{
                 message: `Internal Server Error.`,
                 details: error
             });
+        }
+    }
+
+    async getAllReportsByCity(req: AuthRequest, res: Response){
+        const user = Number(req.user?.id);
+        const userRole = Number(req.user?.role);
+
+        try{
+            const { city_id, status } = req.body
+
+            if(!user){
+                res.status(404).json({
+                    message: `Searcher not authenticated or not founded.`
+                });
+                return;
+            }
+
+            if(userRole < 2){
+                res.status(403).json({
+                    message: `You don't have permissions for that action.`
+                });
+                return;
+            }
+
+            const validStatuses = ['pendente', 'aprovado', 'rejeitado'];
+            const statusFilter = status && validStatuses.includes(status) ? status : undefined;
+
+            const reports = await this.reportService.getAllReportsByCity(city_id, statusFilter);
+
+            res.status(200).json({
+                message: `// All Informations for ${city_id.name}`,
+                data: reports
+            });
+
+            return;
+
+        } catch ( error ){
+            res.status(500).json({
+                message: `Internal Server Error - 500`,
+                details: error
+            });
+            return;
         }
     }
 
