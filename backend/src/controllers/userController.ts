@@ -240,7 +240,7 @@ export default class UserController{
                 details: error instanceof Error ? error.message : error
             });
             return;
-        }
+        
     }
 
     async updateUserInfo(req: AuthRequest, res: Response) {
