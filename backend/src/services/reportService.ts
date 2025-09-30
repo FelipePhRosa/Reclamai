@@ -4,6 +4,7 @@ interface ReportData{
     reportTitle: string,
     user_id: number,
     category_id: number,
+    city_id: number,
     description: string,
     address: string,
     latitude: number,
@@ -73,6 +74,17 @@ export default class ReportService {
     async getAllReportsRejected(){
         return await connection('reports').where({ status: 'rejeitado' }).select('*')
     }
+
+    async getAllReportsByCity(city_id: number, status?: string) {
+        const query = connection('reports').where({ city_id });
+
+        if (status) {
+            query.andWhere({ status });
+        }
+
+        return await query.select('*');
+    }
+
 
     async deleteReport(reportId: number){
         return await connection('reports').where({ id: reportId }).delete();
