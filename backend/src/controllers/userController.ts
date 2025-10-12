@@ -36,11 +36,11 @@ export default class UserController{
                 nameUser,
                 fullName,
                 email,
-                telefone, //adicionei
-                cpf, //adicionei
+                telefone, 
+                cpf, 
                 password_hash: hashedPassword,
                 role: role ?? 5,
-                avatar_url //adicionei
+                avatar_url 
             })
             res.status(201).json({ 
                 message: `User: ${fullName}, registered successfully`,
