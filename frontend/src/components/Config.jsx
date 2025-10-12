@@ -25,6 +25,8 @@ import History from './History'
 import About from './About'
 
 const SettingsInterface = () => {
+  const { user, setUser } = useContext(AuthContext);
+
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem('darkMode');
     return saved ? JSON.parse(saved) : document.documentElement.classList.contains('dark');
@@ -36,21 +38,70 @@ const SettingsInterface = () => {
     localStorage.setItem('darkMode', JSON.stringify(darkMode));
   }, [darkMode]);
 
-
-  const { user } = useContext(AuthContext);
-  const primeiroNome = user?.nameUser ? user.nameUser.split(" ")[0] : "Usuário";
-  const segundoNome = user?.fullName || 'John Wick';
-  const EmailUser = user?.email || "E-mail";
-  const TelefoneUser = user?.telefone || "Número de Celular";
-
-  const [ edit, setEdit ] = useState(false)
-  const [ nome, setNome ] = useState(user.fullName || '');
-  const [ username, setUser ] = useState(user.nameUser || 'Username')
-  const [ email, setEmail ] = useState(user.email || '');
-  const [ telefone, setTelefone ] = useState('');
-
   const [activeTab, setActiveTab] = useState('account');
-  const [showPassword, setShowPassword] = useState(false);
+  const [edit, setEdit] = useState(false);
+
+  //Conta 
+  const [nome, setNome] = useState(user?.fullName || '');
+  const [username, setUsername] = useState(user?.nameUser || '');
+  const [email, setEmail] = useState(user?.email || '');
+  const [telefone, setTelefone] = useState(user?.telefone || '');
+  const [avatarUrl, setAvatarUrl] = useState(user?.avatar_url || '');
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [preview, setPreview] = useState(null);
+
+  useEffect(() => {
+    if (user) {
+      setNome(user.fullName || '');
+      setUsername(user.nameUser || '');
+      setEmail(user.email || '');
+      setTelefone(user.telefone || '');
+      setAvatarUrl(user.avatar_url || '');
+    }
+  }, [user]);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setAvatarFile(file);
+    setPreview(URL.createObjectURL(file));
+  };
+
+  const handleSave = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const formData = new FormData();
+      formData.append('fullName', nome);
+      formData.append('nameUser', username);
+      formData.append('email', email);
+      formData.append('telefone', telefone);
+      if (avatarFile) formData.append('avatar', avatarFile);
+
+      const response = await fetch('http://localhost:3000/api/user/update', {
+        method: 'PUT',
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        alert(`Erro: ${data.details || data.message}`);
+        return;
+      }
+
+      alert('Alterações salvas com sucesso!');
+      setEdit(false);
+
+      setUser((prev) => ({ ...prev, ...data.data }));
+      setAvatarUrl(data.data.avatar_url);
+      setPreview(null);
+    } catch (error) {
+      console.error('Erro ao atualizar:', error);
+      alert('Erro ao atualizar informações do usuário');
+    }
+  };
+
+  // Notificações 
   const [notifications, setNotifications] = useState({
     email: true,
     push: false,
@@ -149,7 +200,7 @@ const SettingsInterface = () => {
                         <input
                           type='text'
                           value={username}
-                          onChange={(e) => setUser(e.target.value)}
+                          onChange={(e) => setUsername(e.target.value)}
                           className='w-70 p-2 px-4 flex border rounded-xl dark:text-gray-200 dark:bg-gray-700'
                           placeholder='@Reclamai'
                           />
@@ -198,7 +249,7 @@ const SettingsInterface = () => {
                       placeholder='Número de Celular'
                     />
                   ) : (
-                    <p className='dark:text-gray-200 font-semibold border py-2 px-4 border-gray-700 w-90 rounded-xl'>{TelefoneUser}</p>
+                    <p className='dark:text-gray-200 font-semibold border py-2 px-4 border-gray-700 w-90 rounded-xl'>{telefone || 'Número de Celular'}</p>
                   )}
 
                 </div>
@@ -208,7 +259,8 @@ const SettingsInterface = () => {
                 </div>
               </div>
               {edit ? (
-                <button className="mt-8 font-semibold px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                <button className="mt-8 font-semibold px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                onClick={handleSave}>
                 Salvar Alterações
               </button>
               ) : (
