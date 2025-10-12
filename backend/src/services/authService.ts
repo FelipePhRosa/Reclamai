@@ -3,7 +3,7 @@ import jwt, { Secret, SignOptions } from "jsonwebtoken";
 import connection from "../connection";
 
 interface LoginCredentials {
-  identifier: string; // pode ser email OU nome de usuário
+  identifier: string; 
   password: string;
 }
 
@@ -39,7 +39,7 @@ export default class AuthService {
     try {
       console.log("Login attempt:", credentials);
 
-      // Normaliza o identificador: tira espaços e coloca tudo em minúsculo
+      
       const identifierClean = credentials.identifier.trim().toLowerCase();
 
       const user = await connection("users")
