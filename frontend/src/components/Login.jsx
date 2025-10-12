@@ -30,6 +30,8 @@ async function handleLogin(e) {
       nameUser: data.name,
       fullName: data.fullName,
       email: data.email,
+      telefone: data.telefone,
+      cpf: data.cpf,
       role: data.role,
       avatar_url: data.avatar_url
     });
