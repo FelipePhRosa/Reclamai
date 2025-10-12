@@ -16,7 +16,8 @@ export default class UserController{
     
     async createUser(req: Request, res: Response) {
         try{
-            const { nameUser, fullName, email, password, role, avatar_url } = req.body
+            console.log("REQ.BODY =>", req.body);
+            const { nameUser, fullName, email, password, role, avatar_url, telefone, cpf } = req.body
 
             const hashedPassword = await bcrypt.hash(password, 10);
             if (!nameUser || !fullName || !email || !password) {
@@ -35,9 +36,11 @@ export default class UserController{
                 nameUser,
                 fullName,
                 email,
+                telefone, //adicionei
+                cpf, //adicionei
                 password_hash: hashedPassword,
                 role: role ?? 5,
-                avatar_url
+                avatar_url //adicionei
             })
             res.status(201).json({ 
                 message: `User: ${fullName}, registered successfully`,
@@ -246,66 +249,61 @@ export default class UserController{
     async updateUserInfo(req: AuthRequest, res: Response) {
         const userId = Number(req.user?.id);
 
-        if(!userId){
-            res.status(401).json({
-                message: `User not authenticated.`
-            });
+        if (!userId) {
+            res.status(401).json({ message: `User not authenticated.` });
             return;
         }
-        try{
-            const { fullName, email, avatar_url } = req.body;
-            // Validar se há dados para atualizar
+
+        try {
+            const { fullName, email, telefone, cpf } = req.body;
+
             const updateData: any = {};
             if (fullName) updateData.fullName = fullName;
             if (email) updateData.email = email;
-            if (avatar_url) updateData.avatar_url = avatar_url;
+            if (telefone) updateData.telefone = telefone;
+            if (cpf) updateData.cpf = cpf;
+
+            const image = req.file?.filename;
+            if (image) updateData.avatar_url = image;
 
             if (Object.keys(updateData).length === 0) {
-                throw new Error('NO_DATA_PROVIDED');
+                res.status(400).json({ message: 'No data provided for update.' });
+                return;
             }
 
-            // Se está tentando atualizar o email, verificar se já existe
             if (email) {
                 const existingUser = await connection('users')
                     .where({ email })
                     .whereNot({ id: userId })
                     .first();
-
-                if (existingUser) {
-                    throw new Error('EMAIL_ALREADY_IN_USE');
-                }
+                if (existingUser) throw new Error('EMAIL_ALREADY_IN_USE');
 
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(email)) {
-                    throw new Error('INVALID_EMAIL_FORMAT');
-                }
+                if (!emailRegex.test(email)) throw new Error('INVALID_EMAIL_FORMAT');
             }
 
-            await this.userService.updateUserInfo(userId, updateData)
+            if (cpf && !cpfValidator.isValid(cpf)) throw new Error('INVALID_CPF');
+
+            await this.userService.updateUserInfo(userId, updateData);
 
             const updatedUser = await connection('users')
                 .where({ id: userId })
-                .select('id', 'fullName', 'email', 'avatar_url', 'created_at')
+                .select('id', 'fullName', 'email', 'avatar_url', 'telefone', 'cpf', 'created_at')
                 .first();
-                
-            if (!updatedUser) {
-                throw new Error('USER_NOT_FOUND');
-            }
+
+            if (!updatedUser) throw new Error('USER_NOT_FOUND');
 
             res.status(200).json({
-                message: `Alterações feitas com sucesso!`,
-                data: updateData
+                message: `User updated successfully!`,
+                data: updatedUser
             });
-            return;
 
-        } catch ( error ){
+        } catch (error) {
+            console.error('Erro ao atualizar usuário:', error);
             res.status(500).json({
-                message: `Internal Server Error. - 500`,
-                details: error
+                message: "Internal Server Error",
+                details: error instanceof Error ? error.message : error,
             });
-            return;
         }
     }
-
-
 }
