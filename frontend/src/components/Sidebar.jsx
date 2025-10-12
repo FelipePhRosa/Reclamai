@@ -135,14 +135,16 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
 
       <Link to='/settings'>
         <div className="mt-auto flex gap-2 p-2 bg-gray-200 dark:bg-gray-800 rounded-xl transition-colors duration-200">
-          <img
-            src={
-              user?.avatar_url ||
-              'https://w7.pngwing.com/pngs/177/551/png-transparent-user-interface-design-computer-icons-default-stephen-salazar-graphy-user-interface-design-computer-wallpaper-sphere-thumbnail.png'
-            }
-            className="w-12 h-12 object-cover rounded-xl"
-            alt="avatar"
-          />
+        <img
+        //a img salva tipo o reporte mudei isso atualiza todas as imagens ao mesmo tempo com o setuser
+          src={
+            user?.avatar_url
+              ? `http://localhost:3000/uploads/${user.avatar_url}`
+              : 'https://w7.pngwing.com/pngs/177/551/png-transparent-user-interface-design-computer-icons-default-stephen-salazar-graphy-user-interface-design-computer-wallpaper-sphere-thumbnail.png'
+          }
+          className="w-12 h-12 object-cover rounded-xl"
+          alt="avatar"
+        />
           {isSidebarOpen && (
             <div className="flex flex-col items-start justify-center ml-2 w-36 overflow-hidden">
               <h2 className="text-sm font-semibold text-black dark:text-white">{user?.nameUser}</h2>

@@ -26,14 +26,19 @@ export default function MobileBottomNav() {
     { icon: <MessageSquare size={24} />, path: '/chat' },
     { icon: <FileWarning size={24} />, path: '/pendingreports' },
     { icon: <TriangleAlert size={24} />, path: '/report' },
-    { icon: <img
-        src={
-          user?.avatar_url ||
-          'https://w7.pngwing.com/pngs/177/551/png-transparent-user-interface-design-computer-icons-default-stephen-salazar-graphy-user-interface-design-computer-wallpaper-sphere-thumbnail.png'
-        }
-        className="w-8 h-8 object-cover rounded-xl"
-        alt="avatar"
-      />, path:'/settings'}
+    { icon: <img  //atualiza todas o avatar
+  src={
+    user?.avatar_url
+      ? user.avatar_url.startsWith("blob:")
+        ? user.avatar_url
+        : user.avatar_url.startsWith("http")
+        ? user.avatar_url
+        : `http://localhost:3000/uploads/${user.avatar_url}`
+      : "https://w7.pngwing.com/pngs/177/551/png-transparent-user-interface-design-computer-icons-default-stephen-salazar-graphy-user-interface-design-computer-wallpaper-sphere-thumbnail.png"
+  }
+  className="w-8 h-8 object-cover rounded-xl"
+  alt="avatar"
+/> , path:'/settings'}
   ];
 
 
