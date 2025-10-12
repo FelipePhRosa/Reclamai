@@ -56,7 +56,10 @@ router.post('/cr_city', authenticate, citiesControllers.createCity.bind(citiesCo
 router.post('/updateRole', authenticate, userController.updateRole.bind(userController));
 
 
-router.put('/editProfile', authenticate, userController.updateUserInfo.bind(userController));
+router.put("/api/user/update", authenticate, upload.single("avatar"),userController.updateUserInfo.bind(userController)); // rota para atualizar o update
+
+
+
 
 router.get('/userList', userController.listAllUsers.bind(userController));
 router.get('/userById', userController.listUserById.bind(userController));
