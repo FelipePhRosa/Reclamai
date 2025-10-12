@@ -29,6 +29,8 @@ export default function Registro() {
           nameUser,
           fullName,
           email,
+          telefone,
+          cpf,
           password,  // aqui envia password, não password_hash
         }),
       });
