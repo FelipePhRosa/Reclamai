@@ -8,5 +8,6 @@ export interface AuthRequest extends Request {
     fullName: string;
     role: number;
     avatar_url: string;
+    telefone: string;
   };
 }
