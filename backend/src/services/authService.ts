@@ -13,6 +13,7 @@ interface TokenPayload {
   fullName: string;
   role: number;
   avatar_url: string;
+  telefone: string;
 }
 
 export default class AuthService {
@@ -68,7 +69,8 @@ export default class AuthService {
         email: user.email,
         fullName: user.fullName,
         role: user.role,
-        avatar_url: user.avatar_url
+        avatar_url: user.avatar_url,
+        telefone: user.telefone
       });
 
       return {
@@ -76,6 +78,8 @@ export default class AuthService {
         name: user.nameUser,
         fullName: user.fullName,
         email: user.email,
+        telefone: user.telefone,
+        cpf: user.cpf,
         role: user.role,
         avatar_url: user.avatar_url,
         token,

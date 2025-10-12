@@ -36,7 +36,8 @@ export const authenticate = async (
       email: decoded.email,
       fullName: decoded.fullName,
       role: decoded.role,
-      avatar_url: decoded.avatar_url
+      avatar_url: decoded.avatar_url,
+      telefone: decoded.telefone
     };
 
     next();
