@@ -16,7 +16,9 @@ interface UserData{
 interface UpdateUserInfoDTO{
     fullName?: string,
     email?: string,
-    avatar_url?: string    
+    avatar_url?: string, 
+    telefone?: string, 
+    cpf?: string, 
 }
 
 export default class UserService {
@@ -69,6 +71,6 @@ export default class UserService {
 
     async updateUserInfo(userId: number, updateData: UpdateUserInfoDTO) {
         return await connection('users').where({ id: userId }).update(updateData);
-    }
+    } 
 
 }
