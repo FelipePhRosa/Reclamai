@@ -59,7 +59,9 @@ router.post('/updateRole', authenticate, userController.updateRole.bind(userCont
 router.put("/api/user/update", authenticate, upload.single("avatar"),userController.updateUserInfo.bind(userController)); // rota para atualizar o update
 
 
-
+router.post('/auth/login/otp', userController.requestLoginOTP.bind(userController));
+router.post('/auth/verify-otp', userController.verifyLoginOTP.bind(userController));
+router.post('/auth/resend-otp', userController.resendOTP.bind(userController));
 
 router.get('/userList', userController.listAllUsers.bind(userController));
 router.get('/userById', userController.listUserById.bind(userController));
