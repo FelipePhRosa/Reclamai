@@ -10,7 +10,8 @@ interface UserData{
     telefone?: string,
     cpf?: string,
     role: number,
-    avatar_url: string
+    avatar_url: string,
+    is_verified: number
 }
 
 interface UpdateUserInfoDTO{
