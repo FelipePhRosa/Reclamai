@@ -4,6 +4,8 @@ import UserService from "../services/userService";
 import bcrypt from "bcryptjs";
 import { AuthRequest } from "../types/express";
 import { cpf as cpfValidator } from "cpf-cnpj-validator";
+import OTPService from "../services/otpService";
+import AuthService from "../services/authService";
 
 interface UpdateUserInfoDTO{
     fullName?: string,
@@ -12,12 +14,15 @@ interface UpdateUserInfoDTO{
 }
 
 export default class UserController{
-    constructor(private userService = new UserService()){}
+    constructor(
+        private userService = new UserService(),
+        private otpService = new OTPService(),
+        private authService = new AuthService()){}
     
     async createUser(req: Request, res: Response) {
         try{
             console.log("REQ.BODY =>", req.body);
-            const { nameUser, fullName, email, password, role, avatar_url, telefone, cpf } = req.body
+            const { nameUser, fullName, email, password, role, avatar_url, telefone, cpf, is_verified } = req.body
 
             const hashedPassword = await bcrypt.hash(password, 10);
             if (!nameUser || !fullName || !email || !password) {
@@ -40,11 +45,11 @@ export default class UserController{
                 cpf, 
                 password_hash: hashedPassword,
                 role: role ?? 5,
-                avatar_url 
+                avatar_url,
+                is_verified: 0 
             })
             res.status(201).json({ 
-                message: `User: ${fullName}, registered successfully`,
-                details: user
+                message: `User: ${fullName}, registered successfully`
             });
             return;
 
@@ -306,4 +311,188 @@ export default class UserController{
             });
         }
     }
+
+    async requestLoginOTP(req: Request, res: Response) {
+        try {
+            const { email, password } = req.body;
+
+            if (!email || !password) {
+                res.status(400).json({ 
+                    message: 'Email and password are required.' 
+                });
+                return;
+            }
+
+            // Busca usuário
+            const user = await connection('users')
+                .where({ email })
+                .first();
+
+            if (!user) {
+                res.status(401).json({ 
+                    message: 'Invalid credentials.' 
+                });
+                return;
+            }
+
+            // Verifica senha
+            const isPasswordValid = await bcrypt.compare(password, user.password_hash);
+
+            if (!isPasswordValid) {
+                res.status(401).json({ 
+                    message: 'Invalid credentials.' 
+                });
+                return;
+            }
+
+            // Envia OTP
+            const result = await this.otpService.sendOTPEmail(email);
+
+            if (!result.success) {
+                res.status(500).json({ 
+                    message: 'Failed to send verification code.' 
+                });
+                return;
+            }
+
+            res.status(200).json({
+                message: 'Verification code sent to your email.',
+                requiresOTP: true
+            });
+            return;
+
+        } catch (error) {
+            console.error('Error in requestLoginOTP:', error);
+            res.status(500).json({
+                message: 'Internal server error.',
+                details: error instanceof Error ? error.message : error
+            });
+            return;
+        }
+    }
+
+    async verifyLoginOTP(req: Request, res: Response) {
+        try {
+            const { email, code } = req.body;
+
+            if (!email || !code) {
+                res.status(400).json({ message: "Email and code are required." });
+                return;
+            }
+
+            const otpResult = await this.otpService.verifyOTP(email, code);
+            if (!otpResult.valid) {
+                res.status(401).json({ message: otpResult.message });
+                return;
+            }
+
+            // Busca usuário
+            const user = await connection("users")
+            .where({ email })
+            .select(
+                "id",
+                "nameUser",
+                "fullName",
+                "email",
+                "role",
+                "avatar_url",
+                "telefone",
+                "cpf",
+                "is_verified"
+            )
+            .first();
+
+            if (!user) {
+                res.status(404).json({ message: "User not found." });
+                return;
+            }
+
+            if (user.is_verified == 0){
+                await connection("users").where({ id: user.id }).update({ is_verified: 1 });
+            }
+            
+            const token = this.authService.generateToken({
+            userId: user.id,
+            email: user.email,
+            fullName: user.fullName,
+            role: user.role,
+            avatar_url: user.avatar_url,
+            telefone: user.telefone,
+            });
+
+            res.status(200).json({
+            message: "Login successful via OTP!",
+            user: {
+                id: user.id,
+                nameUser: user.nameUser,
+                fullName: user.fullName,
+                email: user.email,
+                role: user.role,
+                avatar_url: user.avatar_url,
+                telefone: user.telefone,
+                cpf: user.cpf,
+            },
+            token,
+            });
+            return;
+        } catch (error) {
+            console.error("Error in verifyLoginOTP:", error);
+            res.status(500).json({
+            message: "Internal server error.",
+            details: error instanceof Error ? error.message : error,
+            });
+            return;
+        }
+        }
+
+
+    async resendOTP(req: Request, res: Response) {
+        try {
+            const { email } = req.body;
+
+            if (!email) {
+                res.status(400).json({ 
+                    message: 'Email is required.' 
+                });
+                return;
+            }
+
+            // Verifica se usuário existe
+            const user = await connection('users')
+                .where({ email })
+                .first();
+
+            if (!user) {
+                res.status(404).json({ 
+                    message: 'User not found.' 
+                });
+                return;
+            }
+
+            // Envia novo OTP
+            const result = await this.otpService.sendOTPEmail(email);
+
+            if (!result.success) {
+                res.status(500).json({ 
+                    message: 'Failed to resend verification code.' 
+                });
+                return;
+            }
+
+            res.status(200).json({
+                message: 'Verification code resent successfully.'
+            });
+            return;
+
+        } catch (error) {
+            console.error('Error in resendOTP:', error);
+            res.status(500).json({
+                message: 'Internal server error.',
+                details: error instanceof Error ? error.message : error
+            });
+            return;
+        }
+    }
+
 }
+
