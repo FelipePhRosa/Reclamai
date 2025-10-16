@@ -20,7 +20,6 @@ import History from "./components/History";
 import Notificacoes from "./components/Notifications";
 import Preferencias from "./components/Preferencias";
 import ReportPage from "./pages/ReportPage";
-import MoreOptions from "./components/MoreOptions";
 import ModalUpdate from "./components/UpdateRole";
 import AdmPrefeitura from "./pages/AdmPrefeitura";
 
