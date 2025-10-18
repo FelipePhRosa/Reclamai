@@ -55,13 +55,12 @@ router.post('/cr_city', authenticate, citiesControllers.createCity.bind(citiesCo
 
 router.post('/updateRole', authenticate, userController.updateRole.bind(userController));
 
-
-router.put("/api/user/update", authenticate, upload.single("avatar"),userController.updateUserInfo.bind(userController)); // rota para atualizar o update
-
+router.put("/api/user/update", authenticate, upload.single("avatar"), userController.updateUserInfo.bind(userController));
 
 router.post('/auth/login/otp', userController.requestLoginOTP.bind(userController));
 router.post('/auth/verify-otp', userController.verifyLoginOTP.bind(userController));
 router.post('/auth/resend-otp', userController.resendOTP.bind(userController));
+router.post('/resetpass', userController.resetPassword.bind(userController));
 
 router.get('/userList', userController.listAllUsers.bind(userController));
 router.get('/userById', userController.listUserById.bind(userController));
