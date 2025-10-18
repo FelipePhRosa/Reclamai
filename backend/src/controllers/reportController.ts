@@ -2,9 +2,13 @@ import { Request, Response } from "express";
 import connection from "../connection";
 import ReportService from "../services/reportService";
 import { AuthRequest } from "../types/express";
+import CitiesService from "../services/citiesService";
 
 export default class ReportControllers{
-    constructor(private reportService = new ReportService()){}
+    constructor(
+        private reportService = new ReportService(),
+        private citiesService = new CitiesService()
+    ){}
 
     async createReport(req: Request, res: Response) {
         const userId = Number(req.params.userId);
@@ -204,7 +208,7 @@ export default class ReportControllers{
                 return;
             }
 
-            if(userRole < 2){
+            if(userRole > 2){
                 res.status(403).json({
                     message: `You don't have permissions for that action.`
                 });
@@ -216,8 +220,10 @@ export default class ReportControllers{
 
             const reports = await this.reportService.getAllReportsByCity(city_id, statusFilter);
 
+            const city = await this.citiesService.getCityById(city_id)
+
             res.status(200).json({
-                message: `// All Informations for ${city_id.name}`,
+                message: `// All Informations for ${city.name}`,
                 data: reports
             });
 
