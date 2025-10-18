@@ -23,15 +23,27 @@ export default class UserController{
     async createUser(req: Request, res: Response) {
         try{
             console.log("REQ.BODY =>", req.body);
-            const { nameUser, fullName, email, password, role, avatar_url, telefone, cpf, is_verified } = req.body
+            const { nameUser, fullName, email, birth_date, city_id, password, role, avatar_url, telefone, cpf, is_verified } = req.body
 
             const hashedPassword = await bcrypt.hash(password, 10);
-            if (!nameUser || !fullName || !email || !password) {
+            if (!nameUser || !fullName || !email || !password || !birth_date || !cpf || !telefone || !city_id) {
                 res.status(400).json({
                     message: `Please complete all required fields.`
                 });
                 return;
             }
+
+            const birthDateObj = new Date(birth_date);
+            const today = new Date();
+            let age = today.getFullYear() - birthDateObj.getFullYear();
+            const monthDiff = today.getMonth() - birthDateObj.getMonth();
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDateObj.getDate())) {
+                    age--;
+                }
+                if (age < 18) {
+                    res.status(400).json({ message: "You must be at least 18 years old." });
+                    return;
+                }
 
             const userAlreadyExists = await connection('users').where({ email })
 
@@ -44,8 +56,10 @@ export default class UserController{
                 nameUser,
                 fullName,
                 email,
+                birth_date,
                 telefone, 
-                cpf, 
+                cpf,
+                city_id,
                 password_hash: hashedPassword,
                 role: role ?? 5,
                 avatar_url,
@@ -370,65 +384,6 @@ export default class UserController{
         }
     }
 
-    async requestLoginOTP(req: Request, res: Response) {
-        try {
-            const { email, password } = req.body;
-
-            if (!email || !password) {
-                res.status(400).json({ 
-                    message: 'Email and password are required.' 
-                });
-                return;
-            }
-
-            // Busca usuário
-            const user = await connection('users')
-                .where({ email })
-                .first();
-
-            if (!user) {
-                res.status(401).json({ 
-                    message: 'Invalid credentials.' 
-                });
-                return;
-            }
-
-            // Verifica senha
-            const isPasswordValid = await bcrypt.compare(password, user.password_hash);
-
-            if (!isPasswordValid) {
-                res.status(401).json({ 
-                    message: 'Invalid credentials.' 
-                });
-                return;
-            }
-
-            // Envia OTP
-            const result = await this.otpService.sendOTPEmail(email);
-
-            if (!result.success) {
-                res.status(500).json({ 
-                    message: 'Failed to send verification code.' 
-                });
-                return;
-            }
-
-            res.status(200).json({
-                message: 'Verification code sent to your email.',
-                requiresOTP: true
-            });
-            return;
-
-        } catch (error) {
-            console.error('Error in requestLoginOTP:', error);
-            res.status(500).json({
-                message: 'Internal server error.',
-                details: error instanceof Error ? error.message : error
-            });
-            return;
-        }
-    }
-
     async verifyLoginOTP(req: Request, res: Response) {
         try {
             const { email, code } = req.body;
@@ -501,7 +456,7 @@ export default class UserController{
             });
             return;
         }
-        }
+    }
 
 
     async resendOTP(req: Request, res: Response) {
