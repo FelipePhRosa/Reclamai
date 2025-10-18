@@ -19,6 +19,7 @@ interface UpdateUserInfoDTO{
     email?: string,
     avatar_url?: string, 
     telefone?: string, 
+    password_hash?: string,
     cpf?: string, 
 }
 
