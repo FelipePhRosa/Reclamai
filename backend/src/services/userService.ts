@@ -6,9 +6,11 @@ interface UserData{
     nameUser: string,
     fullName: string,
     email: string,
+    birth_date: string,
     password_hash: string,
-    telefone?: string,
-    cpf?: string,
+    telefone: string,
+    cpf: string,
+    city_id: number,
     role: number,
     avatar_url: string,
     is_verified: number
