@@ -6,6 +6,7 @@ import { AuthRequest } from "../types/express";
 import { cpf as cpfValidator } from "cpf-cnpj-validator";
 import OTPService from "../services/otpService";
 import AuthService from "../services/authService";
+import validatePassword from "../errors/validatePassword";
 
 interface UpdateUserInfoDTO{
     fullName?: string,
@@ -26,7 +27,9 @@ export default class UserController{
 
             const hashedPassword = await bcrypt.hash(password, 10);
             if (!nameUser || !fullName || !email || !password) {
-                res.status(400).json( `Please complete all required fields.` )
+                res.status(400).json({
+                    message: `Please complete all required fields.`
+                });
                 return;
             }
 
@@ -58,6 +61,61 @@ export default class UserController{
             res.status(500).json({
                 message: "Error to insert new User.",
                 details: error instanceof Error ? error.message : error,
+            });
+            return;
+        }
+    }
+
+    async resetPassword(req: Request, res: Response){
+        try{
+            const { email, code, newPassword } = req.body
+                if(!email || !code || !newPassword){
+                    res.status(400).json({
+                        message: `Please complete all required fields.`
+                    });
+                    return;
+                };
+            
+            const passwordValidation = validatePassword(newPassword);
+                if (!passwordValidation.valid) {
+                    res.status(400).json({
+                        message: passwordValidation.message,
+                    });
+                    return;
+                }
+
+            const user = await connection('users').where({ email: email }).first();
+                if(!user){
+                    res.status(404).json({
+                        message: `User not found.`
+                    });
+                    return;
+                };
+
+            const verifyCode = await this.otpService.verifyOTP(email, code);
+
+            if (!verifyCode.valid){
+                res.status(404).json({
+                    message: verifyCode.message
+                });
+                return;
+            };
+            
+            const saltRounds = 10;
+            const password_hash = await bcrypt.hash(newPassword, saltRounds);
+
+            await connection('users').where({ email: email }).update({ password_hash, last_login: null})
+            
+            res.status(200).json({
+                success: true,
+                message: `Senha Alterada com sucesso.`
+            });
+            return;
+        } catch( error ){
+            console.error('Erro ao resetar a senha: ', error)
+            res.status(500).json({
+                success: false,
+                message: `Internal Server Error`
             });
             return;
         }
