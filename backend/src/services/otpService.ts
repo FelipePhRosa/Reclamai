@@ -21,29 +21,6 @@ function generateOTP(length: number = 6): string {
 }
 
 export class OTPService {
-  async createOTPTable() {
-    try {
-      await connection.schema.hasTable('otps').then(async (exists) => {
-        if (!exists) {
-          await connection.schema.createTable('otps', (table) => {
-            table.increments('id').primary();
-            table.string('email', 255).notNullable();
-            table.string('code', 6).notNullable();
-            table.datetime('expires_at').notNullable();
-            table.integer('attempts').defaultTo(0);
-            table.timestamp('created_at').defaultTo(connection.fn.now());
-            table.index('email');
-            table.index('expires_at');
-          });
-          console.log('✅ Tabela OTPs criada com sucesso');
-        }
-      });
-    } catch (error) {
-      console.error('Erro ao criar tabela OTPs:', error);
-      throw error;
-    }
-  }
-
   async sendOTPEmail(email: string, expirationMinutes: number = 5) {
     try {
       // Remove OTPs anteriores deste email
@@ -115,6 +92,7 @@ export class OTPService {
                   color: #0079db;
                   letter-spacing: 10px;
                   font-family: 'Sora', sans-serif;
+                  text-shadow: 2px;
                 }
                 .info {
                   background: #e7f3ff;
