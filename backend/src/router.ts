@@ -51,13 +51,11 @@ router.post('/report/:reportId/like', authenticate, userController.userLiked.bin
 router.post('/approveReport/:reportId', authenticate, reportControllers.approveReport.bind(reportControllers) as RequestHandler);
 router.post('/declineReport/:reportId', authenticate, reportControllers.declineReport.bind(reportControllers) as RequestHandler);
 
-router.post('/cr_city', authenticate, citiesControllers.createCity.bind(citiesControllers))
-
+router.post('/cr_city', authenticate, citiesControllers.createCity.bind(citiesControllers));
 router.post('/updateRole', authenticate, userController.updateRole.bind(userController));
 
-router.put("/api/user/update", authenticate, upload.single("avatar"), userController.updateUserInfo.bind(userController));
+router.put('/api/user/update', authenticate, upload.single("avatar"), userController.updateUserInfo.bind(userController));
 
-router.post('/auth/login/otp', userController.requestLoginOTP.bind(userController));
 router.post('/auth/verify-otp', userController.verifyLoginOTP.bind(userController));
 router.post('/auth/resend-otp', userController.resendOTP.bind(userController));
 router.post('/resetpass', userController.resetPassword.bind(userController));
