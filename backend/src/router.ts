@@ -52,6 +52,7 @@ router.post('/approveReport/:reportId', authenticate, reportControllers.approveR
 router.post('/declineReport/:reportId', authenticate, reportControllers.declineReport.bind(reportControllers) as RequestHandler);
 
 router.post('/cr_city', authenticate, citiesControllers.createCity.bind(citiesControllers));
+
 router.post('/updateRole', authenticate, userController.updateRole.bind(userController));
 
 router.put('/api/user/update', authenticate, upload.single("avatar"), userController.updateUserInfo.bind(userController));
@@ -60,11 +61,19 @@ router.post('/auth/verify-otp', userController.verifyLoginOTP.bind(userControlle
 router.post('/auth/resend-otp', userController.resendOTP.bind(userController));
 router.post('/resetpass', userController.resetPassword.bind(userController));
 
+
+
+router.get('/dashboard', authenticate, citiesControllers.dashboardByCity.bind(citiesControllers))
+
+
+
+
 router.get('/userList', userController.listAllUsers.bind(userController));
 router.get('/userById', userController.listUserById.bind(userController));
 router.get('/myreports', authenticate, reportControllers.getMyReports.bind(reportControllers));
 router.get('/reportList', reportControllers.getAllReports.bind(reportControllers));
 router.get('/cityById', authenticate, citiesControllers.getCityById.bind(citiesControllers))
+router.get('/allCities', citiesControllers.getAllCities.bind(citiesControllers));
 router.get('/reportsByCity', authenticate, reportControllers.getAllReportsByCity.bind(reportControllers));
 router.get('/report/:id', reportControllers.getReportById.bind(reportControllers));
 router.get('/report/:id/like', authenticate, reportControllers.getLikeStatus.bind(reportControllers));
