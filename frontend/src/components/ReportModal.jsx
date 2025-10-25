@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react'; //adicionei o useEffect
 import { Lightbulb, Droplet, CircleHelp, UserMinus, Home, CircleDashed, X, MapPin, Camera, CarFront, Upload, Trash2 } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 
@@ -10,6 +10,34 @@ export default function ReportModal({ isOpen, onClose, lat, lng }) {
   const [tipoProblema, setTipoProblema] = useState(null);
   const [endereco, setEndereco] = useState('');
   const [imagens, setImagens] = useState([]);
+  //adicionei
+const [cities, setCities] = useState([]);
+const [selectedCity, setSelectedCity] = useState('');
+//
+
+
+//adicionei
+useEffect(() => {
+  if (!isOpen) return;
+
+  async function fetchCities() {
+    try {
+      const res = await fetch('http://localhost:3000/allCities', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) throw new Error('Erro ao buscar cidades');
+      const data = await res.json();
+      setCities(data);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  fetchCities();
+}, [isOpen, token]);
+//
 
   const tipos = [
     { id: 2, icon: <Droplet className="w-5 h-5" />, label: 'Alagamento', color: 'blue' },
@@ -44,6 +72,7 @@ export default function ReportModal({ isOpen, onClose, lat, lng }) {
 
       const formData = new FormData();
       formData.append('reportTitle', titulo);
+      formData.append('city_id', selectedCity) //adicionei
       formData.append('description', descricao);
       formData.append('category_id', tipoProblema); // se precisar, parseInt(tipoProblema)
       formData.append('address', endereco);
@@ -220,6 +249,25 @@ export default function ReportModal({ isOpen, onClose, lat, lng }) {
               className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-3 resize-none h-20 sm:h-24 transition-all duration-200 focus:outline-none focus:ring-2 focus:border-blue-500 focus:ring-blue-500/20 dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
             />
           </div>
+
+          {/* cidade adicionei */}
+          <div className="space-y-2">
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200">
+              Cidade
+            </label>
+            <select
+              value={selectedCity}
+              onChange={(e) => setSelectedCity(Number(e.target.value))}
+              className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-3 transition-all duration-200 focus:outline-none focus:ring-2 focus:border-blue-500 focus:ring-blue-500/20 dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
+              required
+            >
+              <option value="">Selecione a cidade</option>
+              {cities.map(city => (
+                <option key={city.id} value={city.id}>{city.name}</option>
+              ))}
+            </select>
+          </div>
+
 
           {/* Endereço */}
           <div className="space-y-2">
