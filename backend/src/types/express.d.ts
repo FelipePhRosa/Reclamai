@@ -9,5 +9,6 @@ export interface AuthRequest extends Request {
     role: number;
     avatar_url: string;
     telefone: string;
+    city_id: number;
   };
 }
