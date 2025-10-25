@@ -97,4 +97,8 @@ export default class ReportService {
     async getMyReports(user_id: number){
       return await connection('reports').where({ user_id }).orderBy('created_at', 'desc');
     }
+
+    async getReportsByCity(city_id: number){
+        return await connection('reports').where({ city_id: city_id }).orderBy('created_at', 'desc');
+    }
 }
