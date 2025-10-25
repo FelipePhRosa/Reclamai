@@ -105,6 +105,8 @@ export default class UserController{
                     });
                     return;
                 };
+            
+            const otp = await connection('otps').where({ email }).orderBy('created_at', 'desc').first();
 
             const verifyCode = await this.otpService.verifyOTP(email, code);
 
@@ -119,7 +121,7 @@ export default class UserController{
             const password_hash = await bcrypt.hash(newPassword, saltRounds);
 
             await connection('users').where({ email: email }).update({ password_hash, last_login: null})
-            
+            await connection('otps').where({ id: otp.id }).delete();
             res.status(200).json({
                 success: true,
                 message: `Senha Alterada com sucesso.`
@@ -425,13 +427,16 @@ export default class UserController{
             }
             
             const token = this.authService.generateToken({
-            userId: user.id,
-            email: user.email,
-            fullName: user.fullName,
-            role: user.role,
-            avatar_url: user.avatar_url,
-            telefone: user.telefone,
+                userId: user.id,
+                email: user.email,
+                fullName: user.fullName,
+                role: user.role,
+                avatar_url: user.avatar_url,
+                telefone: user.telefone,
+                city_id: user.city_id
             });
+            
+            await connection('otps').where({ email, code }).delete()
 
             res.status(200).json({
             message: "Login successful via OTP!",
@@ -443,6 +448,7 @@ export default class UserController{
                 role: user.role,
                 avatar_url: user.avatar_url,
                 telefone: user.telefone,
+                city_id: user.city_id,
                 cpf: user.cpf,
             },
             token,
@@ -498,14 +504,15 @@ export default class UserController{
             return;
 
         } catch (error) {
-            console.error('Error in resendOTP:', error);
             res.status(500).json({
                 message: 'Internal server error.',
-                details: error instanceof Error ? error.message : error
+                details: error
             });
             return;
         }
     }
+
+    
 
 }
 
