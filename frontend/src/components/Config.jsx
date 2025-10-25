@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import React, { useState, useEffect, useContext } from 'react';
 import { 
   Settings, 
@@ -170,8 +172,14 @@ const SettingsInterface = () => {
               <div className="grid grid-cols-2 gap-4">
               <div className="relative w-full h-32">
                 <img
-                  src={user?.avatar_url || "https://w7.pngwing.com/pngs/177/551/png-transparent-user-interface-design-computer-icons-default-stephen-salazar-graphy-user-interface-design-computer-wallpaper-sphere-thumbnail.png"}
-                  alt=""
+                  src={
+                    preview
+                      ? preview
+                      : avatarUrl
+                        ? `http://localhost:3000/uploads/${avatarUrl}`
+                        : "https://w7.pngwing.com/pngs/177/551/png-transparent-user-interface-design-computer-icons-default-stephen-salazar-graphy-user-interface-design-computer-wallpaper-sphere-thumbnail.png"
+                  }
+                  alt="Avatar"
                   className="w-32 h-32 rounded-full object-cover border border-gray-400 bg-gray-100"
                 />
                 
@@ -210,7 +218,15 @@ const SettingsInterface = () => {
                     </div>
                 </div>
                 <div className="absolute bottom-0 left-23 bg-white rounded-full p-1 border border-gray-300 cursor-pointer hover:bg-gray-100">
+                  <label className="absolute bottom-0 right-0 bg-white rounded-full p-1 border border-gray-300 cursor-pointer hover:bg-gray-100">
                   <Camera size={20} className="text-gray-600" />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+                </label>
                 </div>
               </div>
               <div className='flex flex-col justify-center'>
@@ -236,6 +252,12 @@ const SettingsInterface = () => {
                   <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-white">Senha:</label>
                   <div className="relative">
                     <p className='dark:text-gray-200 font-semibold border py-2 px-4 border-gray-700 w-90 rounded-xl'>************</p>
+                    <Link
+                    to="/redefinirsenha"
+                    className='dark:text-white hover:text-blue-400 hover:cursor-pointer'
+                    >
+                    Redefinir Senha
+                    </Link>
                   </div>
                 </div>
                 <div>
