@@ -22,6 +22,7 @@ import Preferencias from "./components/Preferencias";
 import ReportPage from "./pages/ReportPage";
 import ModalUpdate from "./components/UpdateRole";
 import AdmPrefeitura from "./pages/AdmPrefeitura";
+import RedefinirSenha from "./components/RedefinirSenha";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
           <Route path="/notifications" element={<Notificacoes/>}/>
           <Route path="/preferences" element={<Preferencias/>}/>
           <Route path="/report/:id" element={<ReportPage />} />
+          <Route path="/redefinirsenha" element={<RedefinirSenha/>}/>
         </Routes>
       </Router>
     </AuthProvider>
