@@ -216,8 +216,8 @@ export class OTPService {
       }
 
       // Código válido - remove do banco
-      await connection('otps').where({ id: otp.id }).delete();
-
+      //await connection('otps').where({ id: otp.id }).delete();
+      await connection('otps').where({ id: otp.id }).update({ validated: true });
       return {
         valid: true,
         message: 'Código verificado com sucesso',
