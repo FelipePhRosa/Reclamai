@@ -20,6 +20,14 @@ export default class CitiesService {
     }
 
     async deleteCity(cityId: Number){
-        return await connection('cities').where({ id: cityId }).delete()
+        return await connection('cities').where({ id: cityId }).delete();
+    }
+
+    async getPopulationCity(cityId: Number){
+        return await connection('users').where({ city_id: cityId }).count('* as total').first();
+    }
+
+    async getTotalReportsByCity(cityId: Number){
+        return await connection('reports').where({ city_id: cityId }).count('* as total').first();
     }
 }
