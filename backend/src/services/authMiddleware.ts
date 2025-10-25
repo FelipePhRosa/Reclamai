@@ -37,7 +37,8 @@ export const authenticate = async (
       fullName: decoded.fullName,
       role: decoded.role,
       avatar_url: decoded.avatar_url,
-      telefone: decoded.telefone
+      telefone: decoded.telefone,
+      city_id: decoded.city_id
     };
 
     next();

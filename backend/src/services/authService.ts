@@ -14,6 +14,7 @@ interface TokenPayload {
   role: number;
   avatar_url: string;
   telefone: string;
+  city_id: number;
 }
 
 export default class AuthService {
@@ -70,7 +71,8 @@ export default class AuthService {
         fullName: user.fullName,
         role: user.role,
         avatar_url: user.avatar_url,
-        telefone: user.telefone
+        telefone: user.telefone,
+        city_id: user.city_id
       });
 
       return {
@@ -82,6 +84,7 @@ export default class AuthService {
         cpf: user.cpf,
         role: user.role,
         avatar_url: user.avatar_url,
+        city_id: user.city_id,
         token,
       };
     } catch (error) {
