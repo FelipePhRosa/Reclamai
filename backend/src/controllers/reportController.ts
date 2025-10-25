@@ -393,4 +393,28 @@ export default class ReportControllers{
             return;
         }
     }
+
+    async getReportsByCity(req: Request, res: Response){
+        const city_id = req.body
+
+        if(!city_id){
+            res.status(404).json({
+                message: 'City not found.'
+            });
+            return;
+        }
+
+        try{
+            const reportsFiltred = await this.reportService.getReportsByCity(city_id);
+            res.status(200).json({
+                message: `Todos reports da cidade ${city_id}`,
+                details: reportsFiltred
+            })
+        } catch(error){
+            res.status(500).json({
+                message: 'Internal Server Error (500)',
+                details: error
+            })
+        }
+    }
 }
