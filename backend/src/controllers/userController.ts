@@ -106,25 +106,51 @@ export default class UserController{
                     return;
                 };
             
-            const otp = await connection('otps').where({ email }).orderBy('created_at', 'desc').first();
+            // Busca OTP mais recente com esse email e código
+            const otp = await connection('otps')
+                .where({ email, code })
+                .orderBy('created_at', 'desc')
+                .first();
 
-            const verifyCode = await this.otpService.verifyOTP(email, code);
-
-            if (!verifyCode.valid){
+            if (!otp){
                 res.status(404).json({
-                    message: verifyCode.message
+                    message: 'Código não encontrado. Solicite um novo código.'
                 });
                 return;
-            };
+            }
+
+            // Verifica se o OTP foi validado (precisa ter sido verificado antes)
+            if (!otp.validated) {
+                res.status(400).json({
+                    message: 'Código não foi verificado. Verifique o código primeiro na etapa anterior.'
+                });
+                return;
+            }
+
+            // Verifica expiração
+            if (new Date() > new Date(otp.expires_at)) {
+                await connection('otps').where({ id: otp.id }).delete();
+                res.status(400).json({
+                    message: 'Código expirado. Solicite um novo código.'
+                });
+                return;
+            }
             
             const saltRounds = 10;
             const password_hash = await bcrypt.hash(newPassword, saltRounds);
 
-            await connection('users').where({ email: email }).update({ password_hash, last_login: null})
+            // Atualiza a senha
+            await connection('users').where({ email: email }).update({ 
+                password_hash, 
+                last_login: null
+            });
+            
+            // Remove o OTP após a senha ser alterada com sucesso
             await connection('otps').where({ id: otp.id }).delete();
+            
             res.status(200).json({
                 success: true,
-                message: `Senha Alterada com sucesso.`
+                message: `Senha alterada com sucesso.`
             });
             return;
         } catch( error ){
@@ -464,6 +490,38 @@ export default class UserController{
         }
     }
 
+    async verifyOTPOnly(req: Request, res: Response) {
+        try {
+            const { email, code } = req.body;
+
+            if (!email || !code) {
+                res.status(400).json({ message: "Email e código são obrigatórios." });
+                return;
+            }
+
+            // Apenas verifica o OTP, sem excluir
+            const otpResult = await this.otpService.verifyOTP(email, code);
+            
+            if (!otpResult.valid) {
+                res.status(401).json({ message: otpResult.message });
+                return;
+            }
+
+            res.status(200).json({
+                message: "Código verificado com sucesso!",
+                valid: true
+            });
+            return;
+
+        } catch (error) {
+            console.error("Erro ao verificar OTP:", error);
+            res.status(500).json({
+                message: "Erro interno do servidor.",
+                details: error,
+            });
+            return;
+        }
+    }
 
     async resendOTP(req: Request, res: Response) {
         try {
