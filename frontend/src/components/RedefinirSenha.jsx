@@ -100,40 +100,44 @@ export default function RedefinirSenha() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-         <div className="w-full max-w-sm mb-4">
-
-
-
-
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 p-4">
+      <div className="w-full max-w-md mb-6">
         {/* Botão de voltar */}
-    <Link to="/settings" className="flex items-center gap-2 text-blue-500 hover:text-blue-700">
-      <Undo2 size={20} />
-      Voltar
-    </Link>
-  </div>
-      <div className="bg-white p-6 rounded shadow-md w-full max-w-sm">
-        
+        <Link to="/settings" className="inline-flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors font-medium">
+          <Undo2 size={20} />
+          Voltar
+        </Link>
+      </div>
+      
+      <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-100">
         {message && (
-          <p className={`mb-4 text-center font-medium ${isError ? "text-red-600" : "text-green-600"}`}>
+          <div className={`mb-6 p-4 rounded-lg text-center font-medium ${isError ? "bg-red-50 text-red-700 border border-red-200" : "bg-green-50 text-green-700 border border-green-200"}`}>
             {message}
-          </p>
+          </div>
         )}
 
         {step === 1 && (
           <>
-            <h2 className="text-2xl mb-4 font-bold text-center text-blue-600">Recuperar senha</h2>
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <h2 className="text-3xl mb-2 font-bold text-gray-800">Recuperar senha</h2>
+              <p className="text-gray-500 text-sm">Digite seu e-mail para receber o código de verificação</p>
+            </div>
             <input
               type="email"
-              placeholder="Seu e-mail"
-              className="border p-2 w-full mb-4 rounded"
+              placeholder="seu@email.com"
+              className="border border-gray-300 p-3 w-full mb-4 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
             <button
               onClick={handleSendEmail}
               disabled={loading}
-              className="bg-blue-500 text-white p-2 rounded w-full hover:bg-blue-600"
+              className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-3 rounded-lg w-full hover:from-blue-600 hover:to-blue-700 font-semibold transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Enviando..." : "Enviar código"}
             </button>
@@ -142,18 +146,27 @@ export default function RedefinirSenha() {
 
         {step === 2 && (
           <>
-            <h2 className="text-2xl mb-4 font-bold text-blue-600 text-center">Verificar código</h2>
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h2 className="text-3xl mb-2 font-bold text-gray-800">Verificar código</h2>
+              <p className="text-gray-500 text-sm">Digite o código que enviamos para seu e-mail</p>
+            </div>
             <input
               type="text"
-              placeholder="Código recebido"
-              className="border p-2 w-full mb-4 rounded"
+              placeholder="000000"
+              className="border border-gray-300 p-3 w-full mb-4 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition text-center text-2xl tracking-widest"
               value={code}
               onChange={(e) => setCode(e.target.value)}
+              maxLength={6}
             />
             <button
               onClick={handleVerifyCode}
               disabled={loading}
-              className="bg-blue-500 text-white p-2 rounded w-full hover:bg-blue-600"
+              className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-3 rounded-lg w-full hover:from-blue-600 hover:to-blue-700 font-semibold transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Verificando..." : "Verificar código"}
             </button>
@@ -162,18 +175,26 @@ export default function RedefinirSenha() {
 
         {step === 3 && (
           <>
-            <h2 className="text-2xl mb-4 font-bold text-blue-600 text-center">Nova senha</h2>
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </div>
+              <h2 className="text-3xl mb-2 font-bold text-gray-800">Nova senha</h2>
+              <p className="text-gray-500 text-sm">Escolha uma senha forte para sua conta</p>
+            </div>
             <input
               type="password"
               placeholder="Digite a nova senha"
-              className="border p-2 w-full mb-4 rounded"
+              className="border border-gray-300 p-3 w-full mb-4 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
             />
             <button
               onClick={handleResetPassword}
               disabled={loading}
-              className="bg-green-500 text-white p-2 rounded w-full hover:bg-green-600"
+              className="bg-gradient-to-r from-green-500 to-green-600 text-white p-3 rounded-lg w-full hover:from-green-600 hover:to-green-700 font-semibold transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Redefinindo..." : "Redefinir senha"}
             </button>
