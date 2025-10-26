@@ -60,7 +60,7 @@ function History() {
                 <ReportCard
                   key={report.id}
                   id={report.id}
-                  image={report.image}
+                  image={report.image ? `http://localhost:3000/uploads/${report.image}` : '/placeholder.png'} 
                   status={report.status}
                   statusColor="green"
                   category={report.category}
