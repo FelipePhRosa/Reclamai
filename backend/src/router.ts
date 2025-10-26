@@ -57,7 +57,8 @@ router.post('/updateRole', authenticate, userController.updateRole.bind(userCont
 
 router.put('/api/user/update', authenticate, upload.single("avatar"), userController.updateUserInfo.bind(userController));
 
-router.post('/auth/verify-otp', userController.verifyLoginOTP.bind(userController));
+router.post('/auth/login-otp', userController.verifyLoginOTP.bind(userController));
+router.post('/auth/verify-otp', userController.verifyOTPOnly.bind(userController));
 router.post('/auth/resend-otp', userController.resendOTP.bind(userController));
 router.post('/resetpass', userController.resetPassword.bind(userController));
 
