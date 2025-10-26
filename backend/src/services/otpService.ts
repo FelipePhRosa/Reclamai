@@ -1,6 +1,8 @@
 import nodemailer from 'nodemailer';
 import connection from '../connection';
 
+
+
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST || 'smtp.gmail.com',
   port: parseInt(process.env.SMTP_PORT || '587'),
@@ -169,7 +171,7 @@ export class OTPService {
     }
   }
 
-  async verifyOTP(email: string, code: string) {
+async verifyOTP(email: string, code: string, allowValidated: boolean = false) {
     try {
       // Busca OTP mais recente
       const otp = await connection('otps')
@@ -182,6 +184,14 @@ export class OTPService {
         return {
           valid: false,
           message: 'Código não encontrado. Solicite um novo código.',
+        };
+      }
+
+      // Verifica se já foi validado (apenas se allowValidated for false)
+      if (otp.validated && !allowValidated) {
+        return {
+          valid: false,
+          message: 'Código já foi utilizado. Solicite um novo código.',
         };
       }
 
@@ -215,9 +225,11 @@ export class OTPService {
         };
       }
 
-      // Código válido - remove do banco
-      //await connection('otps').where({ id: otp.id }).delete();
-      await connection('otps').where({ id: otp.id }).update({ validated: true });
+      // Código válido - marca como validado apenas se ainda não estiver
+      if (!otp.validated) {
+        await connection('otps').where({ id: otp.id }).update({ validated: true });
+      }
+      
       return {
         valid: true,
         message: 'Código verificado com sucesso',
