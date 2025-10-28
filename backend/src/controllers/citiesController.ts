@@ -205,16 +205,18 @@ export default class citiesControllers{
         }
         try {
             const city = await this.citiesService.getCityById(prefeito.city_id)
-            const totalReports = await this.citiesService.getTotalReportsByCity(prefeito.city_id)
+            const totalReports = await this.citiesService.getTotalReportsByCity(prefeito.city_id);
 
             const totalPopulationCity = await this.citiesService.getPopulationCity(prefeito.city_id);
 
-            const totalReportsAccepted = await this.citiesService.
+            const AllReports = await this.citiesService.getAllReportsByCity(prefeito.city_id);
 
             res.status(200).json({
                 message: `Total de reports e População na cidade ${city.name}`,
-                Resultados: totalReports,
-                TotalPopulationCity: totalPopulationCity
+                TotalReports: totalReports,
+                AllReports: AllReports,
+                TotalPopulationCity: totalPopulationCity,
+
             });
             return;
         } catch (error) {
@@ -223,6 +225,6 @@ export default class citiesControllers{
                 details: error,
             });
             return;
-        }
-    }
+        }
+    }
 }

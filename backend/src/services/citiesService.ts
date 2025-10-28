@@ -26,8 +26,12 @@ export default class CitiesService {
     async getPopulationCity(cityId: Number){
         return await connection('users').where({ city_id: cityId }).count('* as total').first();
     }
-
+    
     async getTotalReportsByCity(cityId: Number){
-        return await connection('reports').where({ city_id: cityId }).count('* as total').first();
+        return await connection('reports').where({ city_id: cityId, status: 'aprovado'}).count('* as total').first();
     }
+
+    async getAllReportsByCity(cityId: Number){
+        return await connection('reports').where({ city_id: cityId }).select();
+    }
 }
