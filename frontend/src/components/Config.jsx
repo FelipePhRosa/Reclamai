@@ -167,126 +167,194 @@ const SettingsInterface = () => {
       case 'account':
         return (
           <div className="space-y-6">
-            <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-xl dark:border-gray-400 dark:bg-linear-to-tr from-gray-900 to-neutral-500 from-84%">
-              <h3 className="text-lg font-semibold mb-8 dark:text-white">Informações Pessoais</h3>
-              <div className="grid grid-cols-2 gap-4">
-              <div className="relative w-full h-32">
-                <img
-                  src={
-                    preview
-                      ? preview
-                      : avatarUrl
-                        ? `http://localhost:3000/uploads/${avatarUrl}`
-                        : "https://w7.pngwing.com/pngs/177/551/png-transparent-user-interface-design-computer-icons-default-stephen-salazar-graphy-user-interface-design-computer-wallpaper-sphere-thumbnail.png"
-                  }
-                  alt="Avatar"
-                  className="w-32 h-32 rounded-full object-cover border border-gray-400 bg-gray-100"
-                />
-                
-                <div className='absolute bottom-0 left-40'> 
-                  <div className='absolute bottom-24 left-74 w-10 bg-gray-200 hover:bg-gray-600 h-10 rounded-xl flex justify-center items-center p-2 shadow-2xl dark:bg-gray-700 dark:hover:bg-gray-600 duration-300 transition cursor-pointer'>
-                    <Pencil 
-                      size={20} 
-                      className="cursor-pointer text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-900" 
-                      onClick={() => setEdit(!edit)} 
+            {/* Header Section with Avatar and Status */}
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg">
+              <div className="flex items-start gap-8">
+                {/* Avatar Section */}
+                <div className="relative flex-shrink-0">
+                  <div className="relative group">
+                    <img
+                      src={
+                        preview
+                          ? preview
+                          : avatarUrl
+                            ? `http://localhost:3000/uploads/${avatarUrl}`
+                            : "https://w7.pngwing.com/pngs/177/551/png-transparent-user-interface-design-computer-icons-default-stephen-salazar-graphy-user-interface-design-computer-wallpaper-sphere-thumbnail.png"
+                      }
+                      alt="Avatar"
+                      className="w-32 h-32 rounded-full object-cover border-4 border-white dark:border-gray-700 shadow-xl"
                     />
+                    <label className="absolute bottom-1 right-1 bg-white dark:bg-gray-700 rounded-full p-2 border-2 border-gray-200 dark:border-gray-600 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600 transition-all shadow-lg">
+                      <Camera size={18} className="text-gray-600 dark:text-gray-300" />
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        className="hidden"
+                      />
+                    </label>
                   </div>
-                    <div className='flex flex-col gap-2 ml-10'>
-                      <label className="text-sm font-medium text-gray-700 dark:text-white">Nome:</label>
-                      {edit ? (
-                        <input
-                          type="text"
-                          value={nome}
-                          onChange={(e) => setNome(e.target.value)}
-                          className="w-70 p-2 px-4 flex border rounded-xl dark:text-gray-200 dark:bg-gray-700"
-                        />
-                      ) : (
-                        <p className='dark:text-gray-200 font-semibold border p-2 px-4 border-gray-700 w-70 rounded-xl overflow-hidden'>{nome}</p>
-                      )}
-                      <label className='text-sm font-medium text-gray-700 dark:text-white'>Usuário: </label>
-                      {edit ? (
-                        <input
-                          type='text'
-                          value={username}
-                          onChange={(e) => setUsername(e.target.value)}
-                          className='w-70 p-2 px-4 flex border rounded-xl dark:text-gray-200 dark:bg-gray-700'
-                          placeholder='@Reclamai'
-                          />
-                      ) : (
-                        <p className='dark:text-gray-200 font-semibold border p-2 px-4 border-gray-700 w-70 rounded-xl overflow-hidden'>@{username}</p>
-                      )}
+                </div>
+
+                {/* User Info Section */}
+                <div className="flex-1">
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{nome}</h2>
+                      <p className="text-gray-600 dark:text-gray-400">@{username}</p>
                     </div>
-                </div>
-                <div className="absolute bottom-0 left-23 bg-white rounded-full p-1 border border-gray-300 cursor-pointer hover:bg-gray-100">
-                  <label className="absolute bottom-0 right-0 bg-white rounded-full p-1 border border-gray-300 cursor-pointer hover:bg-gray-100">
-                  <Camera size={20} className="text-gray-600" />
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    className="hidden"
-                  />
-                </label>
+                    <button
+                      onClick={() => setEdit(!edit)}
+                      className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors shadow-sm"
+                    >
+                      <Pencil size={16} className="text-gray-600 dark:text-gray-300" />
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                        {edit ? 'Cancelar' : 'Editar Perfil'}
+                      </span>
+                    </button>
+                  </div>
+
+                  {/* Status Badge */}
+                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg">
+                    <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                    <span className="text-sm font-semibold text-red-700 dark:text-red-400">Não Verificado</span>
+                  </div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                    Você precisa confirmar seu email para ser verificado.
+                  </p>
                 </div>
               </div>
-              <div className='flex flex-col justify-center'>
-                  <h1 className='text-xl font-semibold dark:text-white'>Status:</h1>
-                  <span className='font-semibold text-red-500 text-3xl'>Não Verificado!</span>
-                  <p className='font-semibold text-gray-500 dark:text-gray-300 text-lg w-75 mt-1'>Você precisa confirmar seu email para ser verificado.</p>
-              </div>
-              <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-white">Email:</label>
+            </div>
+
+            {/* Personal Information */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Informações Pessoais</h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Nome */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    Nome Completo
+                  </label>
                   {edit ? (
                     <input
-                      type='text'
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className='w-90 py-2 px-4 flex border rounded-xl dark:text-gray-200 dark:bg-gray-700'
-                      placeholder='suportereclamai@gmail.com'
+                      type="text"
+                      value={nome}
+                      onChange={(e) => setNome(e.target.value)}
+                      className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all dark:text-gray-200"
+                      placeholder="Seu nome completo"
                     />
                   ) : (
-                    <p className='dark:text-gray-200 font-semibold border p-2 px-4 border-gray-700 w-90 rounded-xl overflow-hidden'>{email}</p>
+                    <div className="px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg">
+                      <p className="text-gray-900 dark:text-gray-200 font-medium">{nome}</p>
+                    </div>
                   )}
                 </div>
+
+                {/* Username */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-white">Senha:</label>
-                  <div className="relative">
-                    <p className='dark:text-gray-200 font-semibold border py-2 px-4 border-gray-700 w-90 rounded-xl'>************</p>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    Nome de Usuário
+                  </label>
+                  {edit ? (
+                    <input
+                      type="text"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all dark:text-gray-200"
+                      placeholder="@seuusuario"
+                    />
+                  ) : (
+                    <div className="px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg">
+                      <p className="text-gray-900 dark:text-gray-200 font-medium">@{username}</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Email */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    Email
+                  </label>
+                  {edit ? (
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all dark:text-gray-200"
+                      placeholder="seu@email.com"
+                    />
+                  ) : (
+                    <div className="px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg">
+                      <p className="text-gray-900 dark:text-gray-200 font-medium">{email}</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Telefone */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    Telefone
+                  </label>
+                  {edit ? (
+                    <input
+                      type="tel"
+                      value={telefone}
+                      onChange={(e) => setTelefone(e.target.value)}
+                      className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all dark:text-gray-200"
+                      placeholder="(00) 00000-0000"
+                    />
+                  ) : (
+                    <div className="px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg">
+                      <p className="text-gray-900 dark:text-gray-200 font-medium">
+                        {telefone || 'Não informado'}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Senha */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    Senha
+                  </label>
+                  <div className="px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg flex items-center justify-between">
+                    <p className="text-gray-900 dark:text-gray-200 font-medium">••••••••••••</p>
                     <Link
-                    to="/redefinirsenha"
-                    className='dark:text-white hover:text-blue-400 hover:cursor-pointer'
+                      to="/redefinirsenha"
+                      className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
                     >
-                    Redefinir Senha
+                      Alterar
                     </Link>
                   </div>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-white">Telefone:</label>
-                  {edit ? (
-                    <input
-                      type="number"
-                      value={telefone}
-                      onChange={(e) => setTelefone(e.target.value)}
-                      className='w-90 py-2 px-4 flex border rounded-xl dark:text-gray-200 dark:bg-gray-700'
-                      placeholder='Número de Celular'
-                    />
-                  ) : (
-                    <p className='dark:text-gray-200 font-semibold border py-2 px-4 border-gray-700 w-90 rounded-xl'>{telefone || 'Número de Celular'}</p>
-                  )}
 
-                </div>
+                {/* Data de Nascimento */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-white">Data de Nascimento:</label>
-                  <p className='dark:text-gray-200 font-semibold border p-2 px-4 border-gray-700 w-90 rounded-xl'>21/11/2003</p>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    Data de Nascimento
+                  </label>
+                  <div className="px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg">
+                    <p className="text-gray-900 dark:text-gray-200 font-medium">21/11/2003</p>
+                  </div>
                 </div>
               </div>
-              {edit ? (
-                <button className="mt-8 font-semibold px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-                onClick={handleSave}>
-                Salvar Alterações
-              </button>
-              ) : (
-                <p></p>
+
+              {edit && (
+                <div className="flex gap-3 mt-8">
+                  <button
+                    onClick={handleSave}
+                    className="flex-1 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors shadow-lg hover:shadow-xl"
+                  >
+                    Salvar Alterações
+                  </button>
+                  <button
+                    onClick={() => setEdit(false)}
+                    className="px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-semibold rounded-lg transition-colors"
+                  >
+                    Cancelar
+                  </button>
+                </div>
               )}
             </div>
           </div>
