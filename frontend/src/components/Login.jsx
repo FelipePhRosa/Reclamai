@@ -116,7 +116,7 @@ export default function Login() {
           style={{
             backgroundImage: 'url(/background.png)',
             imageRendering: 'crisp-edges',
-            filter: 'brightness(1.05) contrast(1.02)'
+            filter: 'brightness(1.09) contrast(1.15)'
           }}
         />
         
@@ -181,7 +181,7 @@ export default function Login() {
               <button 
                 type="submit" 
                 onClick={handleLogin} 
-                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-3 rounded-lg w-full hover:from-blue-700 hover:to-purple-700 hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
+                className="bg-gradient-to-r cursor-pointer from-blue-600 to-purple-600 text-white font-semibold py-3 rounded-lg w-full hover:from-blue-700 hover:to-purple-700 hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300 focus:outline-none focus:ring-0"
               >
                 Entrar
               </button>
