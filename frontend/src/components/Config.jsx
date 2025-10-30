@@ -171,7 +171,7 @@ const SettingsInterface = () => {
             <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg">
               <div className="flex items-start gap-8">
                 {/* Avatar Section */}
-                <div className="relative flex-shrink-0">
+                <div className="relative shrink-0">
                   <div className="relative group">
                     <img
                       src={
