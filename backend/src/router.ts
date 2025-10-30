@@ -41,8 +41,8 @@ router.get('/', async (req, res) => {
     );    
 });
 
-router.post('/login', authController.login.bind(authController));
-
+router.post('/login', authController.login.bind(authController) as unknown as RequestHandler);
+router.post('/loginMidia', authController.socialLogin.bind(authController) as unknown as RequestHandler);
 router.post('/register', userController.createUser.bind(userController));
 
 router.post('/report/:userId', authenticate, uploadtemp.single('imagem'), reportControllers.createReport.bind(reportControllers));
