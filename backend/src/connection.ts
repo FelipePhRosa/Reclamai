@@ -7,7 +7,7 @@ const connection = knex({
     host: process.env.DB_HOST || "localhost",
     user: process.env.DB_USER || "root",
     port: Number(process.env.DB_PORT) || 3306,
-    password: process.env.DB_PASSWORD || "senacrs",
+    password: process.env.DB_PASSWORD || "801680",
     database: process.env.DB_NAME || "reclamai",
   },
 })

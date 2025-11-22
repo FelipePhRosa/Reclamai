@@ -6,7 +6,8 @@ import {
   TriangleAlert,
   House,
   FileWarning,
-  Bot
+  Bot,
+  Users
 } from 'lucide-react';
 import { useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -23,6 +24,7 @@ export default function MobileBottomNav() {
 
   const items = [
     { icon: <House size={24} />, path: '/' },
+    { icon: <Users size={24} />, path: '/Comunidade'},
     { icon: <MessageSquare size={24} />, path: '/chat' },
     { icon: <FileWarning size={24} />, path: '/pendingreports' },
     { icon: <TriangleAlert size={24} />, path: '/report' },

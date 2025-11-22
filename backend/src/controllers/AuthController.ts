@@ -59,27 +59,97 @@ export default class AuthController {
     }
   }
 
-  // Login social
-  async socialLogin(req: Request, res: Response) {
-    console.log("Social Login Request Body:", req.body);
+// Login social
+async socialLogin(req: Request, res: Response) {
+  try {
     const { email, name, fullName, avatar, providerId, provider } = req.body;
 
+    const loginResult = await this.authService.socialLogin({
+      email,
+      name,
+      fullName,
+      avatar,
+      provider: provider as "google" | "facebook",
+      providerId,
+    });
+
+    return res.status(200).json(loginResult);
+
+  } catch (error) {
+    console.error('Social login error:', error);
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : 'An unexpected error occurred during login with this provider';
+
+    return res.status(401).json({ success: false, error: errorMessage });
+  }
+}
+
+
+    // Google
+  async googleCallback(req: Request, res: Response) {
     try {
-      const loginResult = await this.authService.socialLogin({
-        email,
-        name,
-        fullName,
-        avatar,
-        provider: provider as "google" | "facebook",
-        providerId,
+      const { code } = req.query;
+      if (!code) {
+        return res.status(400).send('Missing code');
+      }
+
+
+      const tokenResp = await fetch('https://oauth2.googleapis.com/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          code: String(code),
+          client_id: process.env.GOOGLE_CLIENT_ID || '',
+          client_secret: process.env.GOOGLE_CLIENT_SECRET || '',
+          redirect_uri: process.env.GOOGLE_REDIRECT_URI || '',
+          grant_type: 'authorization_code'
+        }) as unknown as string
       });
 
-      return res.status(200).json(loginResult);
+      const tokenData = await tokenResp.json();
+      console.log('Google token response:', tokenData);
 
-    } catch (error) {
-      console.error('Social login error:', error);
-      const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred during login with this provider';
-      return res.status(401).json({ success: false, error: errorMessage });
+      if (!tokenResp.ok) {
+        return res.status(400).json({ error: 'Failed to exchange code with Google', details: tokenData });
+      }
+
+      const accessToken = tokenData.access_token;
+      if (!accessToken) return res.status(400).json({ error: 'No access token received' });
+
+      const userResp = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+        headers: { Authorization: `Bearer ${accessToken}` }
+      });
+      const userInfo = await userResp.json();
+      console.log('Google userinfo:', userInfo);
+
+      const payload = {
+        email: userInfo.email,
+        name: userInfo.given_name || userInfo.name || userInfo.email?.split('@')[0],
+        fullName: userInfo.name || userInfo.email?.split('@')[0],
+        avatar: userInfo.picture || '',
+        provider: 'google',
+        providerId: userInfo.id || userInfo.sub
+      };
+
+      const result = await this.authService.socialLogin(payload as any);
+
+      const frontendUrl = 'http://localhost:5173';
+      const userParam = encodeURIComponent(JSON.stringify({
+        userId: result.userId,
+        nameUser: result.nameUser,
+        fullName: result.fullName,
+        email: result.email,
+        role: result.role,
+        avatar_url: result.avatar_url,
+        is_verified: result.is_verified
+      }));
+      const redirectUrl = `${frontendUrl}/auth/callback?token=${encodeURIComponent(result.token)}&user=${userParam}`;
+      return res.redirect(redirectUrl);
+    } catch (err) {
+      console.error('Error in googleCallback:', err);
+      return res.status(500).send('Internal server error');
     }
   }
 }

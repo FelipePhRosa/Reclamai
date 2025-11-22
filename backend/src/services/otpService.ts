@@ -172,73 +172,50 @@ export class OTPService {
   }
 
 async verifyOTP(email: string, code: string, allowValidated: boolean = false) {
-    try {
-      // Busca OTP mais recente
-      const otp = await connection('otps')
-        .where({ email })
-        .orderBy('created_at', 'desc')
-        .first();
+  try {
+    // Busca OTP mais recente
+    const otp = await connection('otps')
+      .where({ email })
+      .orderBy('created_at', 'desc')
+      .first();
 
-      // Verifica se existe
-      if (!otp) {
-        return {
-          valid: false,
-          message: 'Código não encontrado. Solicite um novo código.',
-        };
-      }
-
-      // Verifica se já foi validado (apenas se allowValidated for false)
-      if (otp.validated && !allowValidated) {
-        return {
-          valid: false,
-          message: 'Código já foi utilizado. Solicite um novo código.',
-        };
-      }
-
-      // Verifica expiração
-      if (new Date() > new Date(otp.expires_at)) {
-        await connection('otps').where({ id: otp.id }).delete();
-        return {
-          valid: false,
-          message: 'Código expirado. Solicite um novo código.',
-        };
-      }
-
-      // Verifica tentativas
-      if (otp.attempts >= 3) {
-        await connection('otps').where({ id: otp.id }).delete();
-        return {
-          valid: false,
-          message: 'Muitas tentativas inválidas. Solicite um novo código.',
-        };
-      }
-
-      // Verifica código
-      if (otp.code !== code) {
-        await connection('otps')
-          .where({ id: otp.id })
-          .increment('attempts', 1);
-
-        return {
-          valid: false,
-          message: `Código inválido. ${3 - (otp.attempts + 1)} tentativas restantes.`,
-        };
-      }
-
-      // Código válido - marca como validado apenas se ainda não estiver
-      if (!otp.validated) {
-        await connection('otps').where({ id: otp.id }).update({ validated: true });
-      }
-      
-      return {
-        valid: true,
-        message: 'Código verificado com sucesso',
-      };
-    } catch (error) {
-      console.error('Erro ao verificar OTP:', error);
-      throw error;
+    if (!otp) {
+      return { valid: false, message: 'Código não encontrado. Solicite um novo código.' };
     }
+
+    if (otp.validated && !allowValidated) {
+      return { valid: false, message: 'Código já foi utilizado. Solicite um novo código.' };
+    }
+
+    if (new Date() > new Date(otp.expires_at)) {
+      await connection('otps').where({ id: otp.id }).delete();
+      return { valid: false, message: 'Código expirado. Solicite um novo código.' };
+    }
+
+    if (otp.attempts >= 3) {
+      await connection('otps').where({ id: otp.id }).delete();
+      return { valid: false, message: 'Muitas tentativas inválidas. Solicite um novo código.' };
+    }
+
+    if (otp.code !== code) {
+      await connection('otps').where({ id: otp.id }).increment('attempts', 1);
+      return { valid: false, message: `Código inválido. ${3 - (otp.attempts + 1)} tentativas restantes.` };
+    }
+
+    // ✅ Código válido - marca OTP como validado
+    if (!otp.validated) {
+      await connection('otps').where({ id: otp.id }).update({ validated: true });
+    }
+
+    // ✅ Marca o usuário como verificado
+    await connection('users').where({ email }).update({ is_verified: 1 });
+
+    return { valid: true, message: 'Código verificado com sucesso' };
+  } catch (error) {
+    console.error('Erro ao verificar OTP:', error);
+    throw error;
   }
+}
 
   async cleanExpiredOTPs() {
     try {

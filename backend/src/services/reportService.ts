@@ -17,30 +17,34 @@ export default class ReportService {
         return await connection('reports').insert(reportData);
     }
 
-    async getAllReports(userId?: number) {
-      const reports = await connection('reports')
-        .where({ status: 'aprovado' })
-        .select(
-          'reports.*',
-          // Subquery: total de likes
-          connection('likes')
-            .count('*')
-            .whereRaw('likes.report_id = reports.id')
-            .as('likes'),
+async getAllReports(userId?: number, role?: string) {
+  // Usuários comuns não veem rejeitados
+  const statuses = role === '1' 
+    ? ['aprovado', 'resolvida', 'rejeitado'] // adm vê tudo
+    : ['aprovado', 'resolvida'];             // usuário comum vê só aprovadas e resolvidas
 
-          // Subquery: se o usuário curtiu
-          connection.raw(
-            `(SELECT EXISTS (
-                SELECT 1 FROM likes 
-                WHERE likes.report_id = reports.id AND likes.user_id = ?
-            )) as likedByCurrentUser`,
-            [userId ?? 0]
-          )
-        )
-        .orderBy('created_at', 'desc');
+  const reports = await connection('reports')
+    .whereIn('status', statuses)
+    .select(
+      'reports.*',
+      connection('likes')
+        .count('*')
+        .whereRaw('likes.report_id = reports.id')
+        .as('likes'),
+      connection.raw(
+        `(SELECT EXISTS (
+            SELECT 1 FROM likes 
+            WHERE likes.report_id = reports.id AND likes.user_id = ?
+        )) as likedByCurrentUser`,
+        [userId ?? 0]
+      )
+    )
+    .orderBy('created_at', 'desc');
 
-      return reports;
-    }
+  return reports;
+}
+
+
 
     async getReportById(reportId: number, userId?: number) {
         const report = await connection('reports')

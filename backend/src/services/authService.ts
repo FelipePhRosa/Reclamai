@@ -93,6 +93,8 @@ export default class AuthService {
         role: user.role,
         avatar_url: user.avatar_url,
         token,
+        is_verified: user.is_verified,
+        isNewUser: false
       };
     } catch (error) {
       console.error("Login error:", error);
@@ -179,7 +181,8 @@ async socialLogin(credentials: SocialLoginCredentials) {
         avatar_url: user.avatar_url,
         provider: user.provider,
         token,
-        isNewUser: !user.created_at || new Date().getTime() - new Date(user.created_at).getTime() < 5000
+        is_verified: user.is_verified,   // ADICIONADO
+        isNewUser: !user.created_at || (Date.now() - new Date(user.created_at).getTime()) < 5000
       };
     } catch (err) {
       console.log("Error when logging in", err)

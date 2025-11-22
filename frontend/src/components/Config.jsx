@@ -173,17 +173,20 @@ const SettingsInterface = () => {
                 {/* Avatar Section */}
                 <div className="relative shrink-0">
                   <div className="relative group">
-                    <img
-                      src={
-                        preview
-                          ? preview
-                          : avatarUrl
-                            ? `http://localhost:3000/uploads/${avatarUrl}`
-                            : "https://w7.pngwing.com/pngs/177/551/png-transparent-user-interface-design-computer-icons-default-stephen-salazar-graphy-user-interface-design-computer-wallpaper-sphere-thumbnail.png"
-                      }
-                      alt="Avatar"
-                      className="w-32 h-32 rounded-full object-cover border-4 border-white dark:border-gray-700 shadow-xl"
-                    />
+              <img
+                src={
+                  preview && preview.length > 0
+                    ? preview
+                    : user.avatar_url && user.avatar_url.startsWith("http")
+                      ? user.avatar_url
+                      : avatarUrl
+                        ? `http://localhost:3000/uploads/${avatarUrl.replace(/^\/+/, "")}`
+                        : "https://w7.pngwing.com/pngs/177/551/png-transparent-user-interface-design-computer-icons-default-stephen-salazar-graphy-user-interface-design-computer-wallpaper-sphere-thumbnail.png"
+                }
+                alt="Avatar"
+                className="w-32 h-32 rounded-full object-cover border-4 border-white dark:border-gray-700 shadow-xl"
+              />
+
                     <label className="absolute bottom-1 right-1 bg-white dark:bg-gray-700 rounded-full p-2 border-2 border-gray-200 dark:border-gray-600 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600 transition-all shadow-lg">
                       <Camera size={18} className="text-gray-600 dark:text-gray-300" />
                       <input
@@ -214,14 +217,39 @@ const SettingsInterface = () => {
                     </button>
                   </div>
 
-                  {/* Status Badge */}
-                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg">
-                    <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-                    <span className="text-sm font-semibold text-red-700 dark:text-red-400">Não Verificado</span>
-                  </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                    Você precisa confirmar seu email para ser verificado.
-                  </p>
+         
+                  {/* Status Badge (Verificado / Não Verificado) */}
+                  <Link to="/verifyEmail">
+                    <div
+                      className={`inline-flex items-center gap-2 px-4 py-2 border rounded-lg cursor-pointer transition
+                        ${user?.is_verified
+                          ? "bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-800"
+                          : "bg-red-100 dark:bg-red-900/30 border-red-200 dark:border-red-800"
+                        }
+                      `}
+                    >
+                      <div
+                        className={`w-2 h-2 rounded-full animate-pulse
+                          ${user?.is_verified ? "bg-green-500" : "bg-red-500"}
+                        `}
+                      ></div>
+
+                      <span
+                        className={`text-sm font-semibold
+                          ${user?.is_verified ? "text-green-700 dark:text-green-400" : "text-red-700 dark:text-red-400"}
+                        `}
+                      >
+                        {user?.is_verified ? "Verificado" : "Não Verificado"}
+                      </span>
+                    </div>
+                  </Link>
+
+                  {!user?.is_verified && (
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                      Clique para verificar seu e-mail.
+                    </p>
+                  )}
+
                 </div>
               </div>
             </div>

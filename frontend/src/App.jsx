@@ -23,6 +23,8 @@ import ReportPage from "./pages/ReportPage";
 import ModalUpdate from "./components/UpdateRole";
 import AdmPrefeitura from "./pages/AdmPrefeitura";
 import RedefinirSenha from "./components/RedefinirSenha";
+import VerifyEmail from "./components/VerifyEmail";
+import Comunidade from "./pages/Comunidade";
 
 function App() {
   return (
@@ -37,6 +39,7 @@ function App() {
           <Route path="/pendingreports" element={<PendingReports />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/mapa" element={<Mapa />} />
+          <Route path="/Comunidade" element={<Comunidade/>} />
           <Route path="/Report" element={<Report />} />
           <Route path="/reportar" element={<ReportarProblemas />} />
           <Route path="/userList" element={<UserList/>}/>
@@ -51,6 +54,7 @@ function App() {
           <Route path="/preferences" element={<Preferencias/>}/>
           <Route path="/report/:id" element={<ReportPage />} />
           <Route path="/redefinirsenha" element={<RedefinirSenha/>}/>
+          <Route path="/verifyEmail" element={<VerifyEmail/>}/>
         </Routes>
       </Router>
     </AuthProvider>

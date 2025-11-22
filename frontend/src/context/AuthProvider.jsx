@@ -4,9 +4,7 @@ import axios from 'axios';
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token') || null);
-  const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem('user')) || null
-  );
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null);
 
 useEffect(() => {
   console.log('🔍 TOKEN:', token);

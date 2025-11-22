@@ -30,11 +30,17 @@ return (
           <h2 className="text-xl font-semibold dark:text-white">Foto de perfil</h2>
 
           <div className="relative w-32 h-32">
-            <img
-              src={user?.avatar_url || "https://w7.pngwing.com/pngs/177/551/png-transparent-user-interface-design-computer-icons-default-stephen-salazar-graphy-user-interface-design-computer-wallpaper-sphere-thumbnail.png"}
-              alt=""
-              className="w-full h-full rounded-full object-cover border border-gray-400 bg-gray-100"
-            />
+        <img
+          src={
+            user?.avatar_url
+              ? user.avatar_url.includes("http")
+                ? user.avatar_url
+                : `http://localhost:3000/uploads/${user.avatar_url.replace(/^\/+/, "")}`
+              : "https://w7.pngwing.com/pngs/177/551/png-transparent-user-interface-design-computer-icons-default-stephen-salazar-graphy-user-interface-design-computer-wallpaper-sphere-thumbnail.png"
+          }
+          alt=""
+          className="w-full h-full rounded-full object-cover border border-gray-400 bg-gray-100"
+/>
             <div className="absolute bottom-0 right-0 bg-white rounded-full p-1 border border-gray-300 cursor-pointer hover:bg-gray-100">
               <Camera size={20} className="text-gray-600" />
             </div>

@@ -476,6 +476,7 @@ export default class UserController{
                 telefone: user.telefone,
                 city_id: user.city_id,
                 cpf: user.cpf,
+                is_verified: 1,
             },
             token,
             });

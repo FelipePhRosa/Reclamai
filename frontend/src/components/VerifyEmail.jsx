@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { MailCheck, Undo2 } from "lucide-react";
+import { AuthContext } from "../context/AuthContext";
 
 export default function VerifyEmail() {
-    const [email, setEmail] = useState("");
+    const {user, setUser} = useContext(AuthContext);
+    const [email, setEmail] = useState( user?.email ||"");
     const [code, setCode] = useState("");
     const [mensagem, setMensagem] = useState("");
     const [error, setError] = useState(null);
@@ -30,8 +32,10 @@ export default function VerifyEmail() {
             }
 
             setMensagem("E-mail verificado com sucesso!");
+                // Atualiza o estado do user localmente
+                setUser(prev => ({ ...prev, is_verified: 1 }));
             setError(null);
-            navigate("/login")
+            navigate("/settings")
 
         } catch (err) {
             setError(err.message || String(err));

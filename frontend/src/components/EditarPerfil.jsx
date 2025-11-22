@@ -85,19 +85,17 @@ const handleFileChange = (e) => {
           <div className="flex flex-col items-center gap-5">
             <h2 className="text-xl font-semibold dark:text-white">Foto de perfil</h2>
             <div className="relative w-32 h-32">
-             <img
-  src={
-    avatarPreview
-      ? avatarPreview.startsWith("blob:")
-        ? avatarPreview
-        : avatarPreview.startsWith("http")
-        ? avatarPreview
-        : `http://localhost:3000/uploads/${avatarPreview}`
-      : "https://w7.pngwing.com/pngs/177/551/png-transparent-user-interface-design-computer-icons-default-stephen-salazar-graphy-user-interface-design-computer-wallpaper-sphere-thumbnail.png"
-  }
-  alt="Avatar"
-  className="w-full h-full rounded-full object-cover border border-gray-400 bg-gray-100"
-/>  {/*garante que  preview da img  carregue */}
+      <img
+        src={
+          avatarPreview
+            ? avatarPreview.includes("http")
+              ? avatarPreview
+              : `http://localhost:3000/uploads/${avatarPreview.replace(/^\/+/, "")}`
+            : "https://w7.pngwing.com/pngs/177/551/png-transparent-user-interface-design-computer-icons-default-stephen-salazar-graphy-user-interface-design-computer-wallpaper-sphere-thumbnail.png"
+        }
+        alt="Avatar"
+        className="w-full h-full rounded-full object-cover border border-gray-400 bg-gray-100"
+      /> {/*garante que  preview da img  carregue */}
 
               {editMode && (
                 <>
