@@ -38,7 +38,7 @@ function Home() {
       ].map(({ title, value, color, Icon }) => (
         <div
           key={title}
-          className="flex justify-between items-center bg-white p-4 rounded-md border-2 border-gray-200 dark:bg-gray-700 dark:border-gray-700"
+          className="flex justify-between items-center bg-white  shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:-translate-y-1 p-4 rounded-md  dark:bg-gray-700 "
         >
           <div className='dark:text-white'>
             <h2 className="font-bold">{title}</h2>

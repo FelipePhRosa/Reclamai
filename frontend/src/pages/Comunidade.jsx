@@ -88,7 +88,7 @@ export default function Comunidade() {
   return (
     <Layout>
       {/* Cabeçalho */}
-      <div className="flex flex-col text-center py-4 px-2 sm:px-4 md:px-8">
+      <div className="flex flex-col text-center py-4 px-2 sm:px-4 md:px-8 ">
         <h1 className="font-semibold text-2xl sm:text-3xl md:text-4xl dark:text-white">
           Problemas Resolvidos
         </h1>
@@ -107,7 +107,7 @@ export default function Comunidade() {
         ].map((stat, i) => (
           <div
             key={i}
-            className="flex flex-col items-center justify-center border-2 border-gray-200 w-36 sm:w-40 md:w-44 h-28 sm:h-32 p-3 rounded dark:border-gray-600"
+            className="flex flex-col items-center justify-center  border-2 border-gray-200 w-36 sm:w-40 md:w-44 h-28 sm:h-32 p-3 rounded-2xl dark:border-gray-700 bg-white shadow-lg  hover:shadow-xl transition-all duration-300 hover:-translate-y-1 "
           >
             <h2 className={`font-bold text-xl sm:text-2xl md:text-3xl ${stat.color}`}>
               {stat.value}
@@ -118,17 +118,17 @@ export default function Comunidade() {
       </div>
 
       {/* Lista de problemas */}
-      <div className="flex flex-col gap-6 px-2 sm:px-4 md:px-8">
+      <div className="flex flex-col gap-6 py-3 px-2 sm:px-4 md:px-8">
         {problemas.map((p, idx) => (
           <div
             key={idx}
-            className={`border-2 rounded-lg p-4 dark:border-gray-600 ${
-              p.destaque ? "border-green-400 dark:bg-gray-800" : "border-gray-300 dark:bg-gray-700"
+            className={`border-2  rounded-lg p-4 dark:border-gray-600 ${
+              p.destaque ? "border-gray-300 dark:bg-gray-800 shadow-lg shadow-green-300 hover:-translate-y-1 transition-all duration-300" : "border-gray-200 dark:bg-gray-700 shadow-lg hover:-translate-y-1 transition-all duration-300 hover:shadow-xl"
             }`}
           >
             {/* Banner de destaque no topo do card (apenas se for destaque) */}
             {p.destaque && (
-              <div className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-t-md mb-3 w-max">
+              <div className="flex items-center gap-2 bg-green-500  text-white px-4 py-2 rounded-xl mb-3 w-max hover:bg-green-400 shadow-lg ">
                 <Star className="text-white" />
                 <p className="font-semibold text-sm sm:text-base md:text-lg">
                   Destaque da Comunidade
@@ -141,13 +141,13 @@ export default function Comunidade() {
               <h2 className="font-semibold text-base sm:text-lg md:text-xl dark:text-white">{p.titulo}</h2>
               <div className="flex gap-2 flex-wrap">
                 <button
-                  className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm md:text-sm dark:text-white ${
+                  className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm md:text-sm dark:text-white border-2 border-gray-300  dark:border-gray-400 shadow-lg hover:-translate-y-1 transition-all duration-300 hover:cursor-pointer hover:shadow-xl ${
                     p.destaque ? "bg-black text-white" : "border-2 dark:border-gray-400"
                   }`}
                 >
                   {p.destaque ? "Impacto" : "Solução"}
                 </button>
-                <button className="border-2 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm md:text-sm dark:text-white dark:border-gray-400">
+                <button className="border-2 border-gray-300  shadow-lg hover:-translate-y-1 transition-all duration-300 hover:cursor-pointer hover:shadow-xl  px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm md:text-sm dark:text-white dark:border-gray-400">
                   {p.destaque ? "Iluminação" : "Infraestrutura"}
                 </button>
               </div>
@@ -165,9 +165,9 @@ export default function Comunidade() {
               ].map((item, i) => (
                 <div
                   key={i}
-                  className="flex flex-col items-center border-2 border-gray-300 w-32 sm:w-40 md:w-44 p-2 rounded dark:border-gray-600"
+                  className="flex flex-col items-center border-2 border-gray-200 w-32 sm:w-40 md:w-44 p-2 rounded-xl dark:border-gray-600 shadow-lg hover:shadow-xl "
                 >
-                  <h2 className={`font-semibold ${item.color} text-sm sm:text-lg md:text-xl`}>{item.value}</h2>
+                  <h2 className={`font-bold ${item.color} text-sm sm:text-lg md:text-xl`}>{item.value}</h2>
                   <p className="text-gray-400 text-xs sm:text-sm md:text-base text-center">{item.label}</p>
                 </div>
               ))}
@@ -182,43 +182,43 @@ export default function Comunidade() {
 
             {/* Apenas para o destaque: detalhes e fotos */}
             {p.destaque && (
-              <div className="border-2 border-blue-300 rounded p-2 mt-4">
+              <div className="shadow-lg border border-gray-300 rounded p-2 mt-4">
                 <div className="flex gap-2 items-center mb-2">
-                  <FileText className="text-blue-400" />
-                  <h2 className="text-blue-400 font-bold text-sm sm:text-base md:text-lg">Detalhes da solução</h2>
+                  <FileText className="text-gray-400" />
+                  <h2 className="text-gray-400 font-bold text-sm sm:text-base md:text-lg">Detalhes da solução</h2>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
                   <div>
-                    <h2 className="font-bold text-blue-400 text-sm sm:text-base md:text-lg">Metodologia:</h2>
-                    <p className="text-blue-400 text-xs sm:text-sm md:text-base">{p.metodologia}</p>
+                    <h2 className="font-bold text-gray-400 text-sm sm:text-base md:text-lg">Metodologia:</h2>
+                    <p className="text-gray-400 text-xs sm:text-sm md:text-base">{p.metodologia}</p>
                   </div>
                   <div>
-                    <h2 className="font-bold text-blue-400 text-sm sm:text-base md:text-lg">Empresa:</h2>
-                    <p className="text-blue-400 text-xs sm:text-sm md:text-base">{p.empresa}</p>
+                    <h2 className="font-bold text-gray-400 text-sm sm:text-base md:text-lg">Empresa:</h2>
+                    <p className="text-gray-400 text-xs sm:text-sm md:text-base">{p.empresa}</p>
                   </div>
                   <div>
-                    <h2 className="font-bold text-blue-400 text-sm sm:text-base md:text-lg">Custo Total:</h2>
-                    <p className="text-blue-400 text-xs sm:text-sm md:text-base">{p.custo}</p>
+                    <h2 className="font-bold text-gray-400 text-sm sm:text-base md:text-lg">Custo Total:</h2>
+                    <p className="text-gray-400 text-xs sm:text-sm md:text-base">{p.custo}</p>
                   </div>
                   <div>
-                    <h2 className="font-bold text-blue-400 text-sm sm:text-base md:text-lg">Especificações:</h2>
-                    <p className="text-blue-400 text-xs sm:text-sm md:text-base">{p.especificacoes}</p>
+                    <h2 className="font-bold text-gray-400 text-sm sm:text-base md:text-lg">Especificações:</h2>
+                    <p className="text-gray-400 text-xs sm:text-sm md:text-base">{p.especificacoes}</p>
                   </div>
-                  <div className="col-span-1 sm:col-span-2 h-1 bg-blue-200 mt-2" />
+                  <div className="col-span-1 sm:col-span-2 h-1 bg-gray-300 mt-2 " />
                 </div>
 
                 <div className="flex pt-2 gap-2 items-center text-xs sm:text-sm md:text-base">
                   <FileText className="text-gray-400" />
-                  <p className="text-gray-400">Baixe o relatório completo para todos os detalhes técnicos, materiais utilizados e planos de manutenção.</p>
+                  <p className="text-gray-600  hover:cursor-pointer hover:text-blue-400 hover:font-semibold">Baixe o relatório completo para todos os detalhes técnicos, materiais utilizados e planos de manutenção.</p>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
                   <div>
-                    <h2 className="text-red-500 font-semibold text-sm sm:text-base md:text-lg">Antes</h2>
+                    <h2 className="text-gray-600 font-semibold text-sm sm:text-base md:text-lg">Antes</h2>
                     <img src={p.antes} alt="Antes" className="w-full h-auto sm:h-60 object-cover rounded" />
                   </div>
                   <div>
-                    <h2 className="text-green-500 font-semibold text-sm sm:text-base md:text-lg">Depois</h2>
+                    <h2 className="text-gray-600 font-semibold text-sm sm:text-base md:text-lg">Depois</h2>
                     <img src={p.depois} alt="Depois" className="w-full h-auto sm:h-60 object-cover rounded" />
                   </div>
                 </div>
@@ -226,20 +226,20 @@ export default function Comunidade() {
             )}
 
             {/* Estatísticas e ações finais */}
-            <div className="border-t border-gray-300 dark:border-gray-600 mt-2 pt-2 flex flex-wrap justify-between items-center text-xs sm:text-sm md:text-base gap-2">
+            <div className="border-t border-gray-300 dark:border-gray-600 mt-2 pt-2 flex flex-wrap justify-between items-center text-xs sm:text-sm md:text-base gap-2 ">
               {/* Estatísticas no começo */}
               <div className="flex gap-2 flex-wrap">
-                <div className="flex gap-1 items-center dark:text-white"><Eye /> <p>{p.estatisticas.views}</p></div>
-                <div className="flex gap-1 items-center dark:text-white"><ThumbsUp /> <p>{p.estatisticas.likes}</p></div>
-                <div className="flex gap-1 items-center dark:text-white"><MessageCircle /> <p>{p.estatisticas.comentarios}</p></div>
+                <div className="flex gap-1 items-center text-gray-500  dark:text-white"><Eye /> <p>{p.estatisticas.views}</p></div>
+                <div className="flex gap-1 items-center text-gray-500 dark:text-white"><ThumbsUp /> <p>{p.estatisticas.likes}</p></div>
+                <div className="flex gap-1 items-center text-gray-500 dark:text-white "><MessageCircle /> <p>{p.estatisticas.comentarios}</p></div>
               </div>
 
               {/* Ações no final */}
               <div className="flex gap-2 flex-wrap">
-                <button className="flex gap-1 items-center px-2 sm:px-3 py-1 border-2 rounded dark:border-gray-400 dark:text-white">
+                <button className="flex gap-1 items-center px-2 sm:px-3 py-1 border-2 border-gray-200 rounded dark:border-gray-400 dark:text-white shadow-lg hover:-translate-y-1 transition-all duration-300 hover:cursor-pointer hover:shadow-xl">
                   <Download /> Relatório Detalhado
                 </button>
-                <button className="flex gap-1 items-center px-2 sm:px-3 py-1 border-2 rounded dark:border-gray-400 dark:text-white">
+                <button className="flex gap-1 items-center px-2 sm:px-3 py-1 border-2 border-gray-200 rounded dark:border-gray-400 dark:text-white shadow-lg hover:-translate-y-1 transition-all duration-300 hover:cursor-pointer hover:shadow-xl">
                   <Share2 /> Compartilhar
                 </button>
               </div>
