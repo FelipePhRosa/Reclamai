@@ -25,7 +25,7 @@ function Layout({ children }) {
       {/* Conteúdo principal */}
       <div
         className={`flex-1 transition-all duration-300 ease-linear
-          ${isSidebarOpen ? 'ml-0 lg:ml-50' : 'ml-6'}
+          ${isSidebarOpen ? 'ml-0 lg:ml-50' : 'ml-16'}
           sm:px-4 md:px-6 lg:px-8
            md:pb-4`} /* padding-bottom ajustado */
       >

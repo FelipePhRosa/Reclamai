@@ -17,7 +17,7 @@ function ReportCard({
   likedByCurrentUser,
 }) {
   return (
-    <div className="flex items-stretch rounded-2xl shadow-lg overflow-hidden bg-white mt-5 max-h-[200px] pl-5 hover:-translate-y-1 transition-all duration-300">
+    <div className="flex items-stretch rounded-2xl shadow-lg overflow-hidden bg-white mt-5 max-h-[200px] pl-5 hover:-translate-y-1 transition-all duration-300 dark:bg-gray-600">
       {/* Imagem */}
         <img 
           src={image} 

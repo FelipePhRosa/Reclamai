@@ -107,7 +107,7 @@ export default function Comunidade() {
         ].map((stat, i) => (
           <div
             key={i}
-            className="flex flex-col items-center justify-center  border-2 border-gray-200 w-36 sm:w-40 md:w-44 h-28 sm:h-32 p-3 rounded-2xl dark:border-gray-700 bg-white shadow-lg  hover:shadow-xl transition-all duration-300 hover:-translate-y-1 "
+            className="flex flex-col items-center justify-center  border-2 border-gray-200 w-36 sm:w-40 md:w-44 h-28 sm:h-32 p-3 rounded-2xl dark:border-gray-700 bg-white dark:bg-gray-600 shadow-lg  hover:shadow-xl transition-all duration-300 hover:-translate-y-1 "
           >
             <h2 className={`font-bold text-xl sm:text-2xl md:text-3xl ${stat.color}`}>
               {stat.value}
