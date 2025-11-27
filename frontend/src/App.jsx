@@ -25,6 +25,7 @@ import AdmPrefeitura from "./pages/AdmPrefeitura";
 import RedefinirSenha from "./components/RedefinirSenha";
 import VerifyEmail from "./components/VerifyEmail";
 import Comunidade from "./pages/Comunidade";
+import AuthCallback from "./pages/AuthCallback"
 
 function App() {
   return (
@@ -55,6 +56,7 @@ function App() {
           <Route path="/report/:id" element={<ReportPage />} />
           <Route path="/redefinirsenha" element={<RedefinirSenha/>}/>
           <Route path="/verifyEmail" element={<VerifyEmail/>}/>
+          <Route path="/auth/callback" element={<AuthCallback />} />
         </Routes>
       </Router>
     </AuthProvider>
