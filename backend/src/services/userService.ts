@@ -11,6 +11,7 @@ interface UserData{
     telefone: string,
     cpf: string,
     city_id: number,
+    neighborhood_id: number,
     role: number,
     avatar_url: string,
     is_verified: number
