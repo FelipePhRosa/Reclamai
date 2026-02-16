@@ -38,7 +38,8 @@ export const authenticate = async (
       role: decoded.role,
       avatar_url: decoded.avatar_url,
       telefone: decoded.telefone,
-      city_id: decoded.city_id
+      city_id: decoded.city_id,
+      neighborhood_id: decoded.neighborhood_id
     };
 
     next();
