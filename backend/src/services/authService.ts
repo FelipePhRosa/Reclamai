@@ -23,6 +23,8 @@ interface TokenPayload {
   role: number;
   avatar_url: string;
   telefone: string;
+  city_id: number;
+  neighborhood_id: number;
 }
 
 export default class AuthService {
@@ -79,7 +81,9 @@ export default class AuthService {
         fullName: user.fullName,
         role: user.role,
         avatar_url: user.avatar_url,
-        telefone: user.telefone
+        telefone: user.telefone,
+        city_id: user.city_id,
+        neighborhood_id: user.neighborhood_id
       });
 
       return {
@@ -91,6 +95,8 @@ export default class AuthService {
         birth_date: user.birth_date,
         cpf: user.cpf,
         role: user.role,
+        city_id: user.city_id,
+        neighborhood_id: user.neighborhood_id,
         avatar_url: user.avatar_url,
         token,
         is_verified: user.is_verified,
@@ -169,7 +175,9 @@ async socialLogin(credentials: SocialLoginCredentials) {
         fullName: user.fullName,
         role: user.role,
         avatar_url: user.avatar_url,
-        telefone: user.telefone
+        telefone: user.telefone,
+        city_id: user.city_id,
+        neighborhood_id: user.neighborhood_id
       });
 
       return {
@@ -179,10 +187,13 @@ async socialLogin(credentials: SocialLoginCredentials) {
         email: user.email,
         role: user.role,
         avatar_url: user.avatar_url,
+        telefone: user.telefone,
+        city_id: user.city_id,
+        neighborhood_id: user.neighborhood_id,
         provider: user.provider,
         token,
         is_verified: user.is_verified,   // ADICIONADO
-        isNewUser: !user.created_at || (Date.now() - new Date(user.created_at).getTime()) < 5000
+        needsVerification: user.is_verified === 0
       };
     } catch (err) {
       console.log("Error when logging in", err)
