@@ -5,6 +5,7 @@ interface ReportData{
     user_id: number,
     category_id: number,
     city_id: number,
+    neighborhood_id: number,
     description: string,
     address: string,
     latitude: number,
