@@ -19,13 +19,27 @@ export default class ReportControllers{
         }
 
         try{
-            const { reportTitle, category_id, description, city_id, address, latitude, longitude } = req.body
+            const { reportTitle, category_id, description, city_id, neighborhood_id, address, latitude, longitude } = req.body
             const image = req.file?.filename;
             const user = await connection('users').where({ id: userId }).first()
 
+            if(!reportTitle || !category_id || !description || !city_id || !neighborhood_id || !address ){
+                res.status(400).json({
+                    message: `Please complete all fields.`
+                })
+            }
             if (!user){
                 res.status(404).json({ error: `User not found.`});
                 return;
+            }
+
+            const neighborhood = await connection('neighborhoods')
+                .where({ id: neighborhood_id, city_id }).first();
+
+                if (!neighborhood) {
+                return res.status(400).json({
+                    message: 'Invalid neighborhood for this city.'
+                });
             }
 
             await this.reportService.createReport({
@@ -33,6 +47,7 @@ export default class ReportControllers{
                  user_id: userId,
                  category_id,
                  city_id,
+                 neighborhood_id,
                  description,
                  address,
                  latitude,
