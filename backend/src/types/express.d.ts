@@ -10,5 +10,6 @@ export interface AuthRequest extends Request {
     avatar_url: string;
     telefone: string;
     city_id: number;
+    neighborhood_id: number;
   };
 }
