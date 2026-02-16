@@ -4,6 +4,7 @@ import CitiesService from "../services/citiesService";
 import NeighborHoodService from "../services/neighborhoodService";
 import { AuthRequest } from "../types/express";
 import connection from "../connection";
+import { authPlugins } from "mysql2";
 
 export default class neighborhoodsControllers{
     constructor(
@@ -188,6 +189,33 @@ export default class neighborhoodsControllers{
             res.status(500).json({
                 message: `Error to delete Neighborhood.`,
                 details: error
+            });
+        }
+    }
+
+    
+    async dashboardNeighborhood(req: AuthRequest, res: Response){
+        const { city_id, neighborhood_id } = req.body   
+
+        try{
+            const city = await this.citiesService.getCityById(city_id);
+            const neighboorhood = await this.neighborhoodService.getNeighborhoodById(neighborhood_id, city_id)
+
+            const totalAccountInNeighborhood = await this.neighborhoodService.TotalAccountInNeighborhood(neighborhood_id, city_id);
+            const allReportsByNeighborhood = await this.neighborhoodService.getAllReportsByNeighborhood(neighborhood_id, city_id);
+            const totalReportsByNeighborhood = await this.neighborhoodService.getTotalReportsByNeighborhood(neighborhood_id, city_id);
+
+            res.status(200).json({
+                message: `Dashboard ${neighboorhood.name} - ${city.name}`,
+                Details: totalAccountInNeighborhood[0],
+                TotalReports: totalReportsByNeighborhood,
+                allReports: allReportsByNeighborhood
+            });
+
+
+        } catch(error){
+            res.status(500).json({
+                message: `Internal Server Error (500)`
             });
         }
     }
