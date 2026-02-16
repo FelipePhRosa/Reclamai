@@ -67,6 +67,8 @@ router.post('/auth/resend-otp', userController.resendOTP.bind(userController));
 router.post('/resetpass', userController.resetPassword.bind(userController));
 
 router.get('/dashboard', authenticate, citiesControllers.dashboardByCity.bind(citiesControllers));
+router.get('/dashboardNeighbordoor', neighborHoodsControllers.dashboardNeighborhood.bind(neighborHoodsControllers));
+
 
 router.get('/userList', userController.listAllUsers.bind(userController));
 router.get('/userById', userController.listUserById.bind(userController));
