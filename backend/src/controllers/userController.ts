@@ -23,10 +23,10 @@ export default class UserController{
     async createUser(req: Request, res: Response) {
         try{
             console.log("REQ.BODY =>", req.body);
-            const { nameUser, fullName, email, birth_date, city_id, password, role, avatar_url, telefone, cpf, is_verified } = req.body
+            const { nameUser, fullName, email, birth_date, city_id, neighborhood_id, password, role, avatar_url, telefone, cpf, is_verified } = req.body
 
             const hashedPassword = await bcrypt.hash(password, 10);
-            if (!nameUser || !fullName || !email || !password || !birth_date || !cpf || !telefone || !city_id) {
+            if (!nameUser || !fullName || !email || !password || !birth_date || !city_id || !neighborhood_id || !cpf || !telefone || !city_id) {
                 res.status(400).json({
                     message: `Please complete all required fields.`
                 });
@@ -60,10 +60,11 @@ export default class UserController{
                 telefone, 
                 cpf,
                 city_id,
+                neighborhood_id,
                 password_hash: hashedPassword,
                 role: role ?? 5,
                 avatar_url,
-                is_verified: 0 
+                is_verified: Number(is_verified) === 1 ? 1 : 0
             })
             res.status(201).json({ 
                 message: `User: ${fullName}, registered successfully`
@@ -459,7 +460,8 @@ export default class UserController{
                 role: user.role,
                 avatar_url: user.avatar_url,
                 telefone: user.telefone,
-                city_id: user.city_id
+                city_id: user.city_id,
+                neighborhood_id: user.neighborhood_id
             });
             
             await connection('otps').where({ email, code }).delete()
@@ -475,6 +477,7 @@ export default class UserController{
                 avatar_url: user.avatar_url,
                 telefone: user.telefone,
                 city_id: user.city_id,
+                neighborhood_id: user.neighborhood_id,
                 cpf: user.cpf,
                 is_verified: 1,
             },
