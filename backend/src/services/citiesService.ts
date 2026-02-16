@@ -15,6 +15,10 @@ export default class CitiesService {
         return await connection('cities').insert(citiesData);
     }
 
+    async getAllCities(){
+        return await connection('cities').select('*')
+    }
+
     async getCityById(cityId: Number){
         return await connection('cities').where({ id: cityId }).select('*').first();
     }
@@ -34,4 +38,5 @@ export default class CitiesService {
     async getAllReportsByCity(cityId: Number){
         return await connection('reports').where({ city_id: cityId }).select();
     }
+    
 }
