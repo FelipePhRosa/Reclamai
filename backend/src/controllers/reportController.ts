@@ -26,7 +26,8 @@ export default class ReportControllers{
             if(!reportTitle || !category_id || !description || !city_id || !neighborhood_id || !address ){
                 res.status(400).json({
                     message: `Please complete all fields.`
-                })
+                });
+                return;
             }
             if (!user){
                 res.status(404).json({ error: `User not found.`});
@@ -37,10 +38,11 @@ export default class ReportControllers{
                 .where({ id: neighborhood_id, city_id }).first();
 
                 if (!neighborhood) {
-                return res.status(400).json({
-                    message: 'Invalid neighborhood for this city.'
-                });
-            }
+                    res.status(400).json({
+                        message: 'Invalid neighborhood for this city.'
+                    });
+                    return
+                }
 
             await this.reportService.createReport({
                  reportTitle,
